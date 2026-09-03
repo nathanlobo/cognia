@@ -1,7 +1,9 @@
 'use client'
 
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { Sparkles, ArrowLeft, ArrowRight, Handshake, CornerUpLeft, CornerUpRight, Lightbulb, Volume2, Mic, Camera, PartyPopper, Check, X } from 'lucide-react'
+import { Sparkles, ArrowLeft, ArrowRight, Lightbulb, Volume2, VolumeX, Mic, Camera, PartyPopper, Check, X } from 'lucide-react'
+import { speak, stopSpeech, registerSpeakListener, prefetchTTS, preloadCommonPhrases, getTTSEnabled, setTTSEnabled } from '@/lib/tts'
+import { startSTT, stopSTT, resolveSpokenChoice } from '@/lib/stt'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types
@@ -18,7 +20,7 @@ type Phase =
   | 'complete'
 
 /** Which upper-body gesture this round expects the patient to perform */
-type GestureType = 'left-raise' | 'right-raise' | 'both-raise' | 'shoulder-touch' | 'head-tilt-left' | 'head-tilt-right' | 'nose-touch' | 'ear-cover' | 'none'
+type GestureType = 'left-raise' | 'right-raise' | 'both-raise' | 'ear-cover' | 'none'
 
 type CameraStatus = 'idle' | 'pending' | 'active' | 'denied'
 
@@ -33,6 +35,7 @@ interface Round {
   gesture: GestureType
   /** Difficulty of the question */
   difficulty?: 'easy' | 'medium' | 'hard'
+  level?: number
 }
 
 export interface SessionResult {
@@ -48,8 +51,11 @@ export interface SessionResult {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Static game data — 7 dual-task rounds mapping to Cognitive Domains
-// Domain 8 (Behaviour & Engagement) is implicitly logged via reactionTimeMs
+// Static game data — 7 dual-task rounds strictly using the 4 approved gestures:
+// 1. Raise left hand
+// 2. Raise right hand
+// 3. Touch both hands to ears
+// 4. Raise both hands
 // ─────────────────────────────────────────────────────────────────────────────
 
 const ROUNDS: Round[] = [
@@ -57,9 +63,9 @@ const ROUNDS: Round[] = [
     id: 1,
     domain: 'Episodic Memory',
     physicalInstruction: 'Raise your LEFT hand',
-    cognitiveQuestion: 'Which season comes right after winter?',
+    cognitiveQuestion: 'Which season comes after winter?',
     correctAnswer: 'Spring',
-    choices: ['Summer', 'Spring', 'Autumn', 'Fall'],
+    choices: ['Spring', 'Summer', 'Autumn', 'Winter'],
     gesture: 'left-raise',
     difficulty: 'easy',
   },
@@ -67,9 +73,9 @@ const ROUNDS: Round[] = [
     id: 2,
     domain: 'Working Memory',
     physicalInstruction: 'Raise your RIGHT hand',
-    cognitiveQuestion: 'Remember: Tea, Silk, Apple. Which item was second?',
+    cognitiveQuestion: 'Which was second: Tea, Silk, Apple?',
     correctAnswer: 'Silk',
-    choices: ['Apple', 'Silk', 'Tea', 'Water'],
+    choices: ['Silk', 'Tea', 'Apple', 'Water'],
     gesture: 'right-raise',
     difficulty: 'easy',
   },
@@ -77,7 +83,7 @@ const ROUNDS: Round[] = [
     id: 3,
     domain: 'Attention',
     physicalInstruction: 'Raise BOTH hands',
-    cognitiveQuestion: 'Find the odd number out: 4, 8, 7, 2',
+    cognitiveQuestion: 'Which number is odd?',
     correctAnswer: '7',
     choices: ['4', '8', '7', '2'],
     gesture: 'both-raise',
@@ -86,40 +92,40 @@ const ROUNDS: Round[] = [
   {
     id: 4,
     domain: 'Executive Function',
-    physicalInstruction: 'Touch BOTH shoulders',
-    cognitiveQuestion: 'Put steps in order: Boil water -> Add tea leaves -> Pour milk. What is step 2?',
-    correctAnswer: 'Add tea leaves',
-    choices: ['Boil water', 'Pour milk', 'Add tea leaves', 'Drink'],
-    gesture: 'shoulder-touch',
+    physicalInstruction: 'Touch both hands to your ears',
+    cognitiveQuestion: 'What is the first step to make tea?',
+    correctAnswer: 'Boil water',
+    choices: ['Boil water', 'Pour tea', 'Wash cup', 'Drink tea'],
+    gesture: 'ear-cover',
     difficulty: 'easy',
   },
   {
     id: 5,
     domain: 'Language',
     physicalInstruction: 'Raise your LEFT hand',
-    cognitiveQuestion: "What is the opposite of 'Warm'?",
+    cognitiveQuestion: "What is the opposite of 'Hot'?",
     correctAnswer: 'Cold',
-    choices: ['Hot', 'Cold', 'Cool', 'Freezing'],
+    choices: ['Cold', 'Warm', 'Sunny', 'Bright'],
     gesture: 'left-raise',
     difficulty: 'easy',
   },
   {
     id: 6,
     domain: 'Visuospatial',
-    physicalInstruction: 'Tilt your head LEFT',
-    cognitiveQuestion: 'Which object is shaped like a triangle?',
-    correctAnswer: 'Pizza slice',
-    choices: ['Coin', 'Pizza slice', 'Box', 'Ball'],
-    gesture: 'head-tilt-left',
+    physicalInstruction: 'Raise your RIGHT hand',
+    cognitiveQuestion: 'Which object is shaped like a circle?',
+    correctAnswer: 'Coin',
+    choices: ['Coin', 'Book', 'Box', 'Door'],
+    gesture: 'right-raise',
   },
   {
     id: 7,
     domain: 'Orientation',
-    physicalInstruction: 'Tilt your head RIGHT',
-    cognitiveQuestion: 'What meal do we eat in the morning?',
+    physicalInstruction: 'Touch both hands to your ears',
+    cognitiveQuestion: 'What meal is eaten in the morning?',
     correctAnswer: 'Breakfast',
-    choices: ['Lunch', 'Dinner', 'Breakfast', 'Snack'],
-    gesture: 'head-tilt-right',
+    choices: ['Breakfast', 'Lunch', 'Dinner', 'Snack'],
+    gesture: 'ear-cover',
   },
 ]
 
@@ -136,128 +142,16 @@ const LM = {
   RIGHT_ELBOW:    14,
   LEFT_WRIST:     15,
   RIGHT_WRIST:    16,
+  LEFT_PINKY:     17,
+  RIGHT_PINKY:    18,
+  LEFT_INDEX:     19,
+  RIGHT_INDEX:    20,
+  LEFT_THUMB:     21,
+  RIGHT_THUMB:    22,
 } as const
 
 /** How long (ms) the gesture must be held before it counts as confirmed */
-const HOLD_MS = 400
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Helpers
-// ─────────────────────────────────────────────────────────────────────────────
-
-let activeAudio: HTMLAudioElement | null = null
-let activeUtterance: SpeechSynthesisUtterance | null = null
-let speechSafetyTimer: ReturnType<typeof setTimeout> | null = null
-let speakListeners: ((text: string) => void)[] = []
-let currentSpeechId = 0
-
-export function stopSpeech() {
-  currentSpeechId++
-  if (speechSafetyTimer) {
-    clearTimeout(speechSafetyTimer)
-    speechSafetyTimer = null
-  }
-  if (activeAudio) {
-    activeAudio.pause()
-    activeAudio.onended = null
-    activeAudio.onerror = null
-    activeAudio = null
-  }
-  if (activeUtterance) {
-    activeUtterance.onend = null
-    activeUtterance.onerror = null
-    activeUtterance = null
-  }
-  try {
-    if (window.speechSynthesis) window.speechSynthesis.cancel()
-  } catch (e) {}
-  speakListeners.forEach(l => l(''))
-}
-
-if (typeof window !== 'undefined') {
-  window.addEventListener('stop-speech', stopSpeech)
-}
-
-function speak(text: string, onEnd?: () => void): void {
-  if (typeof window === 'undefined') {
-    onEnd?.()
-    return
-  }
-
-  stopSpeech()
-
-  currentSpeechId++
-  const speechId = currentSpeechId
-
-  speakListeners.forEach(l => l(text))
-
-  let hasEnded = false
-  const safeEnd = () => {
-    if (hasEnded) return
-    hasEnded = true
-    stopSpeech()
-    onEnd?.()
-  }
-
-  // Safety fallback: estimate reading time (approx 90ms per char + 2500ms network buffer)
-  const fallbackMs = Math.max(3500, text.length * 90 + 2500)
-  speechSafetyTimer = setTimeout(safeEnd, fallbackMs)
-
-  // 1. Try fetching human-like TTS from Deepgram
-  fetch('/api/tts', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ text, voice: 'aura-asteria-en' })
-  })
-  .then(async (res) => {
-    if (speechId !== currentSpeechId) return
-    if (!res.ok) throw new Error('TTS API failed')
-    const blob = await res.blob()
-    const url = URL.createObjectURL(blob)
-    const audio = new Audio(url)
-    activeAudio = audio
-
-    audio.onended = safeEnd
-    audio.onerror = () => { throw new Error('Audio play failed') }
-    
-    // Play human voice
-    audio.play().catch((e) => {
-      console.warn('Audio play blocked:', e)
-      fallbackToSpeechSynthesis(text, safeEnd)
-    })
-  })
-  .catch((err) => {
-    if (speechId !== currentSpeechId) return
-    console.warn('Deepgram TTS failed or key missing, falling back to Web Speech API:', err)
-    fallbackToSpeechSynthesis(text, safeEnd)
-  })
-}
-
-function fallbackToSpeechSynthesis(text: string, onEnd: () => void) {
-  if (!window.speechSynthesis) {
-    onEnd()
-    return
-  }
-  const utt = new SpeechSynthesisUtterance(text)
-  activeUtterance = utt
-  utt.rate   = 0.9
-  utt.pitch  = 1.0
-  utt.volume = 1.0
-  utt.lang   = 'en-US'
-
-  utt.onend = onEnd
-  utt.onerror = onEnd
-
-  try {
-    window.speechSynthesis.speak(utt)
-    if (window.speechSynthesis.paused) {
-      window.speechSynthesis.resume()
-    }
-  } catch (err) {
-    console.warn('[SpeechSynthesis speak failed]:', err)
-    onEnd()
-  }
-}
+const HOLD_MS = 350
 
 interface Landmark { x: number; y: number; z: number; visibility?: number }
 
@@ -267,31 +161,42 @@ function isGestureActive(landmarks: Landmark[], gesture: GestureType): boolean {
   const rs = landmarks[LM.RIGHT_SHOULDER]
   const lw = landmarks[LM.LEFT_WRIST]
   const rw = landmarks[LM.RIGHT_WRIST]
-  const le = landmarks[LM.LEFT_ELBOW]
-  const re = landmarks[LM.RIGHT_ELBOW]
   const nose = landmarks[LM.NOSE]
-  if (!ls || !rs || !lw || !rw) return false
+  if (!ls || !rs) return false
+
+  // All hand & finger landmarks (Index, Thumb, Pinky, Wrist)
+  const leftHandPoints = [
+    landmarks[LM.LEFT_INDEX],
+    landmarks[LM.LEFT_THUMB],
+    landmarks[LM.LEFT_PINKY],
+    landmarks[LM.LEFT_WRIST],
+  ].filter(Boolean)
+
+  const rightHandPoints = [
+    landmarks[LM.RIGHT_INDEX],
+    landmarks[LM.RIGHT_THUMB],
+    landmarks[LM.RIGHT_PINKY],
+    landmarks[LM.RIGHT_WRIST],
+  ].filter(Boolean)
+
+  const allHandPoints = [...leftHandPoints, ...rightHandPoints]
 
   // In MediaPipe's normalised coordinate space, y=0 is top.
-  // "wrist above shoulder" → wrist.y < shoulder.y
-  const leftRaised  = lw.y < ls.y && (lw.visibility ?? 0) > 0.5
-  const rightRaised = rw.y < rs.y && (rw.visibility ?? 0) > 0.5
+  // "hand above shoulder" → any hand point y < shoulder.y
+  const leftRaised  = leftHandPoints.some(p => p.y < ls.y && (p.visibility ?? 0) > 0.3)
+  const rightRaised = rightHandPoints.some(p => p.y < rs.y && (p.visibility ?? 0) > 0.3)
 
-  // Shoulder touch: relax to require just one wrist near any shoulder, or both wrists high up near shoulders.
-  // Dementia patients often struggle to cross their arms perfectly, and cameras drop points when arms cross.
-  const SHOULDER_TOUCH_THRESHOLD = 0.25 // normalised units
-  const leftWristNearShoulders = lw.y < ls.y + 0.3 && (Math.abs(lw.x - ls.x) < SHOULDER_TOUCH_THRESHOLD || Math.abs(lw.x - rs.x) < SHOULDER_TOUCH_THRESHOLD)
-  const rightWristNearShoulders = rw.y < rs.y + 0.3 && (Math.abs(rw.x - ls.x) < SHOULDER_TOUCH_THRESHOLD || Math.abs(rw.x - rs.x) < SHOULDER_TOUCH_THRESHOLD)
-  const bothShouldersTouched = leftWristNearShoulders || rightWristNearShoulders
+  // Shoulder touch: require any hand/wrist near either shoulder
+  const SHOULDER_TOUCH_THRESHOLD = 0.28
+  const leftHandNearShoulders = leftHandPoints.some(p => 
+    p.y < ls.y + 0.35 && (Math.abs(p.x - ls.x) < SHOULDER_TOUCH_THRESHOLD || Math.abs(p.x - rs.x) < SHOULDER_TOUCH_THRESHOLD)
+  )
+  const rightHandNearShoulders = rightHandPoints.some(p => 
+    p.y < rs.y + 0.35 && (Math.abs(p.x - ls.x) < SHOULDER_TOUCH_THRESHOLD || Math.abs(p.x - rs.x) < SHOULDER_TOUCH_THRESHOLD)
+  )
+  const bothShouldersTouched = leftHandNearShoulders || rightHandNearShoulders
 
   // ── Head Tilt Detection ───────────────────────────────────────────────────
-  // Primary metric: Eye slope and ear vertical offset.
-  // In MediaPipe (unmirrored normalized coords):
-  //  - landmarks[2] is user's LEFT eye (on right side of raw image frame, x > rightEye.x)
-  //  - landmarks[5] is user's RIGHT eye (on left side of raw image frame, x < leftEye.x)
-  // When user tilts head to their LEFT (towards left shoulder):
-  //  - Left eye / ear drops lower in screen space (higher y).
-  //  - Therefore: leftEye.y > rightEye.y or leftEar.y > rightEar.y.
   let headTiltedLeft = false
   let headTiltedRight = false
 
@@ -303,56 +208,42 @@ function isGestureActive(landmarks: Landmark[], gesture: GestureType): boolean {
   if (leftEye && rightEye) {
     const eyeDy = leftEye.y - rightEye.y
     const eyeDx = Math.abs(leftEye.x - rightEye.x) || 0.1
-    const eyeSlope = eyeDy / eyeDx // > 0 = tilted to user's left, < 0 = tilted to user's right
+    const eyeSlope = eyeDy / eyeDx
 
-    // Relaxed threshold for head tilt
-    if (eyeSlope > 0.08 || eyeDy > 0.015) {
+    if (eyeSlope > 0.07 || eyeDy > 0.015) {
       headTiltedLeft = true
-    } else if (eyeSlope < -0.08 || eyeDy < -0.015) {
+    } else if (eyeSlope < -0.07 || eyeDy < -0.015) {
       headTiltedRight = true
     }
   }
 
-  // Backup detection via ear landmarks
   if (!headTiltedLeft && !headTiltedRight && leftEar && rightEar) {
     const earDy = leftEar.y - rightEar.y
-    if (earDy > 0.025) {
-      headTiltedLeft = true
-    } else if (earDy < -0.025) {
-      headTiltedRight = true
-    }
+    if (earDy > 0.02) headTiltedLeft = true
+    else if (earDy < -0.02) headTiltedRight = true
   }
 
-  // Backup detection via nose offset from shoulder midpoint
   if (!headTiltedLeft && !headTiltedRight && nose) {
     const shoulderMidX = (ls.x + rs.x) / 2
     const shoulderWidth = Math.abs(rs.x - ls.x) || 0.3
     const noseOffset = (nose.x - shoulderMidX) / shoulderWidth
-    if (noseOffset > 0.07) headTiltedLeft = true
-    else if (noseOffset < -0.07) headTiltedRight = true
+    if (noseOffset > 0.06) headTiltedLeft = true
+    else if (noseOffset < -0.06) headTiltedRight = true
   }
 
-  // ── Nose Touch ────────────────────────────────────────────────────────────
-  const NOSE_TOUCH_THRESHOLD = 0.15
-  const leftWristTouchesNose = nose && Math.abs(lw.x - nose.x) < NOSE_TOUCH_THRESHOLD && Math.abs(lw.y - nose.y) < NOSE_TOUCH_THRESHOLD
-  const rightWristTouchesNose = nose && Math.abs(rw.x - nose.x) < NOSE_TOUCH_THRESHOLD && Math.abs(rw.y - nose.y) < NOSE_TOUCH_THRESHOLD
-  const noseTouched = leftWristTouchesNose || rightWristTouchesNose
-
-  // ── Ear Cover ─────────────────────────────────────────────────────────────
-  const EAR_COVER_THRESHOLD = 0.2
-  const leftWristCoversEar = leftEar && Math.abs(lw.x - leftEar.x) < EAR_COVER_THRESHOLD && Math.abs(lw.y - leftEar.y) < EAR_COVER_THRESHOLD
-  const rightWristCoversEar = rightEar && Math.abs(rw.x - rightEar.x) < EAR_COVER_THRESHOLD && Math.abs(rw.y - rightEar.y) < EAR_COVER_THRESHOLD
-  const earsCovered = leftWristCoversEar && rightWristCoversEar
+  // ── Touch Both Hands to Ears ──────────────────────────────────────────────
+  const EAR_TOUCH_DISTANCE = 0.28
+  const leftHandTouchesLeftEar = leftEar && leftHandPoints.some(p => Math.hypot(p.x - leftEar.x, p.y - leftEar.y) < EAR_TOUCH_DISTANCE || (p.y < ls.y && Math.abs(p.x - leftEar.x) < 0.22))
+  const rightHandTouchesRightEar = rightEar && rightHandPoints.some(p => Math.hypot(p.x - rightEar.x, p.y - rightEar.y) < EAR_TOUCH_DISTANCE || (p.y < rs.y && Math.abs(p.x - rightEar.x) < 0.22))
+  const bothHandsTouchEars = (leftHandTouchesLeftEar && rightHandTouchesRightEar) || 
+    (leftHandTouchesLeftEar && rightHandPoints.some(p => p.y < rs.y)) || 
+    (rightHandTouchesRightEar && leftHandPoints.some(p => p.y < ls.y))
 
   switch (gesture) {
     case 'left-raise':      return leftRaised
     case 'right-raise':     return rightRaised
     case 'both-raise':      return leftRaised && rightRaised
-    case 'shoulder-touch':  return bothShouldersTouched
-    case 'head-tilt-left':  return headTiltedLeft
-    case 'head-tilt-right': return headTiltedRight
-    case 'nose-touch':      return !!noseTouched
-    case 'ear-cover':       return !!earsCovered
+    case 'ear-cover':       return !!bothHandsTouchEars
     default:                return false
   }
 }
@@ -361,11 +252,7 @@ const GESTURE_LABELS: Record<GestureType, string> = {
   'left-raise':      '✓ Left hand raised!',
   'right-raise':     '✓ Right hand raised!',
   'both-raise':      '✓ Both hands raised!',
-  'shoulder-touch':  '✓ Both shoulders touched!',
-  'head-tilt-left':  '✓ Head tilted left!',
-  'head-tilt-right': '✓ Head tilted right!',
-  'nose-touch':      '✓ Touched nose!',
-  'ear-cover':       '✓ Ears covered!',
+  'ear-cover':       '✓ Touched both hands to ears!',
   'none':            '',
 }
 
@@ -373,11 +260,7 @@ const GESTURE_PROMPTS: Record<GestureType, string> = {
   'left-raise':      'Raise your LEFT hand',
   'right-raise':     'Raise your RIGHT hand',
   'both-raise':      'Raise BOTH hands',
-  'shoulder-touch':  'Touch BOTH shoulders with opposite hands',
-  'head-tilt-left':  'Tilt your head to the LEFT',
-  'head-tilt-right': 'Tilt your head to the RIGHT',
-  'nose-touch':      'Touch your nose',
-  'ear-cover':       'Cover your ears',
+  'ear-cover':       'Touch both hands to your ears',
   'none':            '',
 }
 
@@ -404,11 +287,19 @@ export default function GameScreen({ patientId, patientHistory, preferences, onC
   const [lastAnswer, setLastAnswer] = useState<{ chosen: string; correct: boolean } | null>(null)
   const [guideHighlightActive, setGuideHighlightActive] = useState(false)
   const [subtitle, setSubtitle] = useState('')
+  const [ttsOn, setTtsOn] = useState<boolean>(true)
 
   useEffect(() => {
-    const listener = (text: string) => setSubtitle(text)
-    speakListeners.push(listener)
-    return () => { speakListeners = speakListeners.filter(l => l !== listener) }
+    setTtsOn(getTTSEnabled())
+    const handleTtsChange = () => setTtsOn(getTTSEnabled())
+    window.addEventListener('tts_toggle_changed', handleTtsChange)
+    return () => window.removeEventListener('tts_toggle_changed', handleTtsChange)
+  }, [])
+
+  useEffect(() => {
+    preloadCommonPhrases()
+    const unsubscribe = registerSpeakListener((text: string) => setSubtitle(text))
+    return () => { unsubscribe() }
   }, [])
   
   // Streak & Celebration State
@@ -620,31 +511,56 @@ export default function GameScreen({ patientId, patientHistory, preferences, onC
 
   // ── Game logic ────────────────────────────────────────────────────────────
 
-  // Helper to split dual-tasks into Phase 1 (Physical Warmup) and Phase 2 (Cognitive)
+  // Helper to strictly separate rounds into Phase 1 (Pure Physical Motor Warmups) and Phase 2 (Pure Cognitive Questions)
   const separateRounds = (rawRounds: Round[]): Round[] => {
     const separated: Round[] = []
     
-    // Phase 1: Physical Warmups (First 3 rounds)
-    for (let i = 0; i < Math.min(3, rawRounds.length); i++) {
-      const r = rawRounds[i]
-      separated.push({
-        ...r,
-        domain: 'Warmup: ' + r.domain
-      })
+    // Phase 1: Pure Physical Warmup Rounds (strictly limited to the 4 approved gestures)
+    const sanitizePhysicalGesture = (g: any): { gesture: GestureType; instruction: string } => {
+      if (g === 'left-raise') return { gesture: 'left-raise', instruction: 'Raise your LEFT hand' }
+      if (g === 'right-raise') return { gesture: 'right-raise', instruction: 'Raise your RIGHT hand' }
+      if (g === 'both-raise') return { gesture: 'both-raise', instruction: 'Raise BOTH hands' }
+      if (g === 'ear-cover' || g === 'nose-touch' || g === 'shoulder-touch') return { gesture: 'ear-cover', instruction: 'Touch both hands to your ears' }
+      if (g === 'head-tilt-left') return { gesture: 'left-raise', instruction: 'Raise your LEFT hand' }
+      if (g === 'head-tilt-right') return { gesture: 'right-raise', instruction: 'Raise your RIGHT hand' }
+      return { gesture: 'both-raise', instruction: 'Raise BOTH hands' }
     }
 
-    // Phase 2: Cognitive Questions (Remaining rounds)
-    for (let i = 3; i < rawRounds.length; i++) {
-      const r = rawRounds[i]
-      separated.push({
-        ...r,
-        gesture: 'none',
-        physicalInstruction: '',
-        domain: 'Cognitive: ' + r.domain
-      })
-    }
+    const physicalCandidates = rawRounds.filter(r => r.gesture && r.gesture !== 'none' && r.physicalInstruction)
+    const sourcePhysical = (physicalCandidates.length > 0 ? physicalCandidates : rawRounds.filter(r => r.physicalInstruction)).slice(0, 3)
     
-    // Re-index levels
+    sourcePhysical.forEach((r) => {
+      const { gesture, instruction } = sanitizePhysicalGesture(r.gesture)
+      separated.push({
+        id: separated.length + 1,
+        domain: `Motor Warmup: ${r.domain.replace(/^(Warmup|Cognitive|Motor Warmup):\s*/i, '')}`,
+        physicalInstruction: instruction,
+        gesture: gesture,
+        cognitiveQuestion: '',
+        correctAnswer: 'none',
+        choices: [],
+        difficulty: r.difficulty || 'easy',
+      })
+    })
+
+    // Phase 2: Pure Cognitive Question Rounds (no physical gestures or camera requirements)
+    const cognitiveCandidates = rawRounds.filter(r => r.cognitiveQuestion && r.cognitiveQuestion.trim().length > 0 && r.choices && r.choices.length > 0)
+    const sourceCognitive = cognitiveCandidates.length > 0 ? cognitiveCandidates : rawRounds.filter(r => r.correctAnswer && r.correctAnswer !== 'none')
+    
+    sourceCognitive.forEach((r) => {
+      separated.push({
+        id: separated.length + 1,
+        domain: r.domain.replace(/^(Warmup|Cognitive|Motor Warmup):\s*/i, ''),
+        physicalInstruction: '',
+        gesture: 'none',
+        cognitiveQuestion: r.cognitiveQuestion,
+        correctAnswer: r.correctAnswer,
+        choices: r.choices,
+        difficulty: r.difficulty || 'easy',
+      })
+    })
+    
+    // Re-index levels and IDs sequentially
     return separated.map((r, i) => ({ ...r, level: i + 1, id: i + 1 }))
   }
 
@@ -681,18 +597,28 @@ export default function GameScreen({ patientId, patientHistory, preferences, onC
       })
       if (!res.ok) throw new Error('Failed to generate levels')
       const data = await res.json()
+      let preparedRounds: Round[] = []
       if (data && data.levels && data.levels.length > 0) {
-        setRounds(separateRounds(data.levels))
+        preparedRounds = separateRounds(data.levels)
       } else {
-        setRounds(separateRounds(ROUNDS))
+        preparedRounds = separateRounds(ROUNDS)
       }
+      setRounds(preparedRounds)
+
+      // Background prefetch audio for all rounds so speech playback is 0ms instant
+      preparedRounds.forEach((r, idx) => {
+        if (r.gesture !== 'none') {
+          prefetchTTS(`Round ${idx + 1} of ${preparedRounds.length}. Physical task: ${r.physicalInstruction}. `)
+        } else {
+          prefetchTTS(`Round ${idx + 1} of ${preparedRounds.length}. ${r.cognitiveQuestion}`)
+        }
+      })
       
       if (data?.isPersonalized) {
         setIsPersonalized(true)
       }
 
       // ASYNC: Fire-and-forget background replenishment for the NEXT session
-      // Silently enriches the question bank while the user plays
       const diff = data?.difficulty || 'easy'
       fetch('/api/replenish-bank', {
         method: 'POST',
@@ -702,11 +628,19 @@ export default function GameScreen({ patientId, patientHistory, preferences, onC
 
     } catch (err) {
       console.error('API failed, falling back to static rounds:', err)
-      setRounds(separateRounds(ROUNDS))
+      const fallbackPrepared = separateRounds(ROUNDS)
+      setRounds(fallbackPrepared)
+      fallbackPrepared.forEach((r, idx) => {
+        if (r.gesture !== 'none') {
+          prefetchTTS(`Round ${idx + 1} of ${fallbackPrepared.length}. Physical task: ${r.physicalInstruction}. `)
+        } else {
+          prefetchTTS(`Round ${idx + 1} of ${fallbackPrepared.length}. ${r.cognitiveQuestion}`)
+        }
+      })
     }
     // Signal the effect below to call startRound once state commits
     pendingStartRef.current = true
-    setPhase('speaking-physical') // Trigger re-render so the effect sees pendingStartRef
+    setPhase('speaking-physical')
   }, [patientHistory, patientId])
 
   useEffect(() => {
@@ -717,22 +651,27 @@ export default function GameScreen({ patientId, patientHistory, preferences, onC
 
   const startRound = useCallback((index: number, latestRounds?: Round[]) => {
     const roundsList = latestRounds ?? rounds
-    setPhase('speaking-physical')
     setLastAnswer(null)
     hasAdvancedToCognitiveRef.current = false
 
     const round = roundsList[index]
     if (!round) return
 
-    if (round.gesture === 'none') {
-      // Pure cognitive round: skip physical phase
-      setPhase('waiting-physical') // briefly set for transition
-      setTimeout(() => {
-        advanceToCognitive(round)
-      }, 50)
+    const isCognitiveOnly = round.gesture === 'none' || (round.correctAnswer !== 'none' && !round.physicalInstruction)
+
+    if (isCognitiveOnly) {
+      // Pure cognitive round: directly speak cognitive question
+      setPhase('speaking-cognitive')
+      const prompt = `Round ${index + 1} of ${roundsList.length}. ${round.cognitiveQuestion}`
+      speak(prompt, () => {
+        choiceShownAtRef.current = Date.now()
+        setPhase('answering')
+      })
       return
     }
 
+    // Pure physical round
+    setPhase('speaking-physical')
     const fullPrompt =
       `Round ${index + 1} of ${roundsList.length}. ` +
       `Physical task: ${round.physicalInstruction}. `
@@ -743,29 +682,30 @@ export default function GameScreen({ patientId, patientHistory, preferences, onC
   }, [rounds])
 
   // When fetchLevelsAndStart sets phase to 'speaking-physical' with pendingStartRef=true,
-  // we need to actually speak the prompt using the freshly-set rounds state
+  // we speak the prompt using the freshly-set rounds state
   useEffect(() => {
     if (phase === 'speaking-physical' && pendingStartRef.current) {
       pendingStartRef.current = false
       setLastAnswer(null)
-      setRounds((latestRounds) => {
-        const round = latestRounds[0]
-        if (round) {
-          hasAdvancedToCognitiveRef.current = false
-          if (round.gesture === 'none') {
-            setPhase('waiting-physical')
-            setTimeout(() => {
-              advanceToCognitive(round)
-            }, 50)
-          } else {
-            const fullPrompt = `Round 1 of ${latestRounds.length}. Physical task: ${round.physicalInstruction}. `
-            speak(fullPrompt, () => setPhase('waiting-physical'))
-          }
+      const round = rounds[0]
+      if (round) {
+        hasAdvancedToCognitiveRef.current = false
+        const isCognitiveOnly = round.gesture === 'none' || !round.physicalInstruction
+        if (isCognitiveOnly) {
+          setPhase('speaking-cognitive')
+          const prompt = `Round 1 of ${rounds.length}. ${round.cognitiveQuestion}`
+          speak(prompt, () => {
+            choiceShownAtRef.current = Date.now()
+            setPhase('answering')
+          })
+        } else {
+          setPhase('speaking-physical')
+          const fullPrompt = `Round 1 of ${rounds.length}. Physical task: ${round.physicalInstruction}. `
+          speak(fullPrompt, () => setPhase('waiting-physical'))
         }
-        return latestRounds
-      })
+      }
     }
-  }, [phase])
+  }, [phase, rounds])
 
   const hasAdvancedToCognitiveRef = useRef(false)
   useEffect(() => { hasAdvancedToCognitiveRef.current = false }, [roundIndex])
@@ -778,8 +718,11 @@ export default function GameScreen({ patientId, patientHistory, preferences, onC
       // Prevent multiple answer submissions for the same round (e.g. double-click or click + voice)
       if (resultsRef.current.some(r => r.roundId === round.id)) return
 
-      const reactionTimeMs = round.correctAnswer === 'none' ? 0 : Date.now() - choiceShownAtRef.current
-      const isCorrect      = round.correctAnswer === 'none' || chosen === round.correctAnswer
+      const isPhysicalRound = round.correctAnswer === 'none' || (round.gesture !== 'none' && !round.cognitiveQuestion)
+      const reactionTimeMs = isPhysicalRound ? 0 : Date.now() - choiceShownAtRef.current
+      const isCorrect = isPhysicalRound 
+        ? (chosen === 'completed' || physicalConfirmedRef.current)
+        : (chosen === round.correctAnswer)
 
       resultsRef.current.push({
         roundId:                  round.id,
@@ -788,27 +731,35 @@ export default function GameScreen({ patientId, patientHistory, preferences, onC
         correctAnswer:            round.correctAnswer,
         isCorrect,
         reactionTimeMs,
-        physicalGestureConfirmed: physicalConfirmedRef.current,
+        physicalGestureConfirmed: isPhysicalRound ? (chosen === 'completed' || physicalConfirmedRef.current) : false,
       })
 
       setLastAnswer({ chosen, correct: isCorrect })
       setPhase('feedback')
 
-      const feedbackText = round.correctAnswer === 'none'
-        ? 'Great job!'
+      const feedbackText = isPhysicalRound
+        ? (isCorrect ? 'Great job! Task completed.' : 'Moving to the next task.')
         : isCorrect
           ? 'Correct! Well done.'
           : `Not quite. The answer was ${round.correctAnswer}.`
 
-      speak(feedbackText, async () => {
+      // Guaranteed minimum visual delay of 3 seconds so the patient can clearly see the green/red highlight
+      const MIN_VISUAL_DELAY_MS = 3000
+      let speechFinished = false
+      let timerFinished = false
+      let advanced = false
+
+      const tryAdvance = async () => {
+        if (advanced) return
+        if (!speechFinished || !timerFinished) return
+        advanced = true
+
         const nextIndex = rounds.findIndex(r => r.id === round.id) + 1
         if (nextIndex >= totalRounds) {
           setPhase('complete')
           
           // Save to Supabase
           try {
-            // Import dynamically or we can just make an API call to avoid importing db.ts in client component
-            // Actually, we can just POST to a new server action or API route. But lib/db.ts uses standard client!
             const { saveGameSession, updatePatientStreak } = await import('@/lib/db')
             await saveGameSession(patientId, resultsRef.current)
             const streak = await updatePatientStreak(patientId)
@@ -824,30 +775,20 @@ export default function GameScreen({ patientId, patientHistory, preferences, onC
           setRoundIndex(nextIndex)
           startRound(nextIndex)
         }
+      }
+
+      setTimeout(() => {
+        timerFinished = true
+        tryAdvance()
+      }, MIN_VISUAL_DELAY_MS)
+
+      speak(feedbackText, () => {
+        speechFinished = true
+        tryAdvance()
       })
     },
-    [currentRound, rounds, totalRounds, onComplete, patientId, startRound],
+    [currentRound, rounds, totalRounds, onComplete, patientId, startRound, playChime],
   )
-
-  const advanceToCognitive = useCallback((roundOverride?: Round) => {
-    if (hasAdvancedToCognitiveRef.current) return
-    hasAdvancedToCognitiveRef.current = true
-
-    const round = roundOverride || currentRound
-    if (!round) return
-
-    if (round.correctAnswer === 'none') {
-      // Pure physical round: skip cognitive questions
-      handleAnswer('none', round)
-      return
-    }
-
-    setPhase('speaking-cognitive')
-    speak(`Now answer this question: ${round.cognitiveQuestion || ''}`, () => {
-      choiceShownAtRef.current = Date.now()
-      setPhase('answering')
-    })
-  }, [currentRound, handleAnswer])
 
   // ── Guide Mode: Delay before highlighting the correct answer (gives patient time to try first) ──
   useEffect(() => {
@@ -865,82 +806,72 @@ export default function GameScreen({ patientId, patientHistory, preferences, onC
   // ── Auto-advance when physical gesture confirmed ─────────────────────────
   useEffect(() => {
     if (phase === 'waiting-physical' && physicalConfirmed) {
-      // Small delay so the user sees the green checkmark before the next step starts
+      // Small delay so the user sees the green checkmark before advancing
       const timer = setTimeout(() => {
-        advanceToCognitive()
-      }, 1000)
+        handleAnswer('completed')
+      }, 800)
       return () => clearTimeout(timer)
     }
-  }, [phase, physicalConfirmed, advanceToCognitive])
+  }, [phase, physicalConfirmed, handleAnswer])
 
-
-
-  // ── Speech Recognition ─────────────────────────────────────────────
-  
-  // Keep stable refs to avoid unnecessary re-bindings in the recognition effect
+  // ── Speech Recognition Engine (Dual Web Speech + Whisper Fallback) ──────
   const handleAnswerRef = useRef(handleAnswer)
   useEffect(() => { handleAnswerRef.current = handleAnswer }, [handleAnswer])
   
   const currentRoundRef = useRef(currentRound)
   useEffect(() => { currentRoundRef.current = currentRound }, [currentRound])
 
+  const stopListening = useCallback(() => {
+    setIsListening(false)
+    stopSTT()
+  }, [])
+
+  const startListening = useCallback(async () => {
+    stopListening()
+    setIsListening(true)
+    setSpokenText('')
+
+    startSTT({
+      continuous: true,
+      timeoutMs: 30000,
+      onInterim: (interimText) => {
+        setSpokenText(interimText)
+        const choices = currentRoundRef.current?.choices || []
+        const matched = resolveSpokenChoice(interimText, choices)
+        if (matched) {
+          stopListening()
+          handleAnswerRef.current(matched)
+        }
+      },
+      onTranscript: (finalText) => {
+        setSpokenText(finalText)
+        const choices = currentRoundRef.current?.choices || []
+        const matched = resolveSpokenChoice(finalText, choices)
+        if (matched) {
+          stopListening()
+          handleAnswerRef.current(matched)
+        }
+      },
+      onError: (err) => {
+        console.warn('[GameScreen STT Error]:', err)
+      },
+    })
+  }, [stopListening])
+
+  // Lifecycle trigger when entering/leaving answering phase
   useEffect(() => {
-    // @ts-ignore - Vendor prefixes for Web Speech API
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
-    if (!SpeechRecognition) return
-
-    const recognition = new SpeechRecognition()
-    recognition.continuous = true
-    recognition.interimResults = true
-    recognition.lang = 'en-US'
-
-    recognition.onstart = () => {
-      setIsListening(true)
-      setSpokenText('')
-    }
-    recognition.onend = () => setIsListening(false)
-    recognition.onerror = () => setIsListening(false)
-
-    recognition.onresult = (event: any) => {
-      let fullText = ''
-      for (let i = event.resultIndex; i < event.results.length; i++) {
-        fullText += event.results[i][0].transcript
-      }
-      setSpokenText(fullText)
-
-      const transcript = fullText.toLowerCase().trim()
-      // Remove trailing punctuation that some TTS adds (e.g. "five.")
-      const cleanTranscript = transcript.replace(/[.,!?]/g, '')
-      const choices = currentRoundRef.current.choices
-
-      const numMap: Record<string, string> = {
-        'one': '1', 'two': '2', 'three': '3', 'four': '4', 'five': '5',
-        'six': '6', 'seven': '7', 'eight': '8', 'nine': '9', 'zero': '0'
-      }
-
-      // Check if transcript matches any choice
-      const matchedChoice = choices.find(c => {
-        const lowerC = c.toLowerCase()
-        return cleanTranscript === lowerC || cleanTranscript === numMap[lowerC] || numMap[cleanTranscript] === lowerC
-      })
-
-      if (matchedChoice) {
-        handleAnswerRef.current(matchedChoice)
-      }
-    }
-
     if (phase === 'answering') {
-      try { recognition.start() } catch (e) {}
+      const timer = setTimeout(() => {
+        startListening()
+      }, 150)
+      return () => {
+        clearTimeout(timer)
+        stopListening()
+      }
     } else {
-      try { recognition.stop() } catch (e) {}
-      setIsListening(false)
+      stopListening()
     }
-
-    return () => {
-      try { recognition.stop() } catch (e) {}
-      setIsListening(false)
-    }
-  }, [phase]) // only re-run when phase changes
+  }, [phase, startListening, stopListening])
 
   // ── Progress ──────────────────────────────────────────────────────────────
 
@@ -1100,9 +1031,7 @@ export default function GameScreen({ patientId, patientHistory, preferences, onC
           </h1>
 
           <p style={{ fontSize: 'var(--font-size-accessible-lg)', color: 'var(--color-content-secondary)' }}>
-            You answered&nbsp;
-            <strong>{resultsRef.current.filter((r) => r.isCorrect).length}</strong>&nbsp;
-            out of&nbsp;<strong>{totalRounds}</strong>&nbsp;questions correctly.
+            You completed the exercise session! Here is your summary:
           </p>
 
           {/* Session summary card */}
@@ -1118,44 +1047,47 @@ export default function GameScreen({ patientId, patientHistory, preferences, onC
               Session summary
             </p>
             <ul className="space-y-2">
-              {resultsRef.current.map((r) => (
-                <li
-                  key={r.roundId}
-                  className="flex items-start gap-3"
-                  style={{ fontSize: 'var(--font-size-accessible-sm)', color: 'var(--color-content-secondary)' }}
-                >
-                  <span aria-hidden="true">{r.isCorrect ? '✅' : '❌'}</span>
-                  <span>
-                    Round {r.roundId} — {r.isCorrect ? 'Correct' : `Wrong (${r.correctAnswer})`}
-                    &nbsp;— {(r.reactionTimeMs / 1000).toFixed(1)}s
-                    {r.physicalGestureConfirmed && (
-                      <span style={{ marginLeft: '0.4rem', color: '#16A34A', fontWeight: 700 }}>
-                        · 🤙 gesture ✓
-                      </span>
-                    )}
-                  </span>
-                </li>
-              ))}
+              {resultsRef.current.map((r) => {
+                const isPhysical = r.correctAnswer === 'none'
+                return (
+                  <li
+                    key={r.roundId}
+                    className="flex items-start gap-3"
+                    style={{ fontSize: 'var(--font-size-accessible-sm)', color: 'var(--color-content-secondary)' }}
+                  >
+                    <span aria-hidden="true">{r.isCorrect ? '✅' : '❌'}</span>
+                    <span>
+                      Round {r.roundId} — {r.domain} — {isPhysical 
+                        ? (r.physicalGestureConfirmed ? 'Physical task completed ✓' : 'Physical task skipped')
+                        : (r.isCorrect ? 'Correct ✓' : `Wrong (${r.correctAnswer})`)}
+                      {!isPhysical && ` — ${(r.reactionTimeMs / 1000).toFixed(1)}s`}
+                    </span>
+                  </li>
+                )
+              })}
             </ul>
             <p
               className="mt-4 pt-4"
               style={{ fontSize: 'var(--font-size-accessible-sm)', color: 'var(--color-content-muted)', borderTop: '2px solid #e2e8f0' }}
             >
-              Average response time:&nbsp;
-              <strong>
-                {resultsRef.current.length > 0
-                  ? (
-                      Math.round(
-                        resultsRef.current.reduce((s, r) => s + r.reactionTimeMs, 0) /
-                          resultsRef.current.length / 100,
-                      ) / 10
-                    ).toFixed(1)
-                  : 0}s
-              </strong>
-              &nbsp;·&nbsp;Physical gestures confirmed:&nbsp;
-              <strong>
-                {resultsRef.current.filter((r) => r.physicalGestureConfirmed).length}/{totalRounds}
-              </strong>
+              {(() => {
+                const cognitiveResults = resultsRef.current.filter(r => r.correctAnswer !== 'none')
+                const physicalResults = resultsRef.current.filter(r => r.correctAnswer === 'none')
+                const avgRt = cognitiveResults.length > 0
+                  ? (Math.round(cognitiveResults.reduce((s, r) => s + r.reactionTimeMs, 0) / cognitiveResults.length / 100) / 10).toFixed(1)
+                  : '0.0'
+                const gesturesDone = resultsRef.current.filter(r => r.physicalGestureConfirmed).length
+                return (
+                  <>
+                    Avg response time: <strong>{avgRt}s</strong>
+                    {physicalResults.length > 0 && (
+                      <>
+                        &nbsp;·&nbsp;Physical tasks: <strong>{gesturesDone}/{physicalResults.length}</strong>
+                      </>
+                    )}
+                  </>
+                )
+              })()}
             </p>
           </div>
 
@@ -1194,23 +1126,45 @@ export default function GameScreen({ patientId, patientHistory, preferences, onC
               </div>
             )}
 
-            <div className="flex items-center justify-between">
+            <div className="flex flex-wrap items-center justify-between gap-2">
               <span
+                className="px-4 py-1.5 rounded-full font-extrabold text-xs sm:text-sm border-2 shadow-2xs flex items-center gap-1.5"
                 style={{
-                  fontSize: 'var(--font-size-accessible-sm)',
-                  backgroundColor: '#DBEAFE',
-                  color: '#1E40AF',
-                  padding: '0.25rem 0.75rem',
-                  borderRadius: '9999px',
-                  fontWeight: 700,
-                  border: '2px solid #BFDBFE'
+                  backgroundColor: currentRound?.gesture !== 'none' ? '#E8EFEA' : '#FFF8EC',
+                  color: currentRound?.gesture !== 'none' ? '#577361' : '#D9A441',
+                  borderColor: currentRound?.gesture !== 'none' ? '#D4E4DC' : '#FDE6BA',
                 }}
               >
-                Domain {currentRound.id}/8: {currentRound.domain}
+                <span>{currentRound?.gesture !== 'none' ? '🧘 Physical Task' : '🧠 Brain Puzzle'}</span>
+                <span>&bull;</span>
+                <span>Round {roundIndex + 1} of {totalRounds}</span>
+                <span>&bull;</span>
+                <span>{currentRound?.domain}</span>
               </span>
-              <span style={{ fontSize: 'var(--font-size-accessible-sm)', color: 'var(--color-content-muted)', fontWeight: 600 }}>
-                {progressPct}%
-              </span>
+
+              <div className="flex items-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => {
+                    const next = !ttsOn
+                    setTtsOn(next)
+                    setTTSEnabled(next)
+                  }}
+                  title={ttsOn ? "Voice Dictation: ON (Click to mute)" : "Voice Dictation: MUTED (Click to unmute)"}
+                  className={`px-3.5 py-1.5 rounded-full transition cursor-pointer border shadow-2xs flex items-center gap-1.5 text-xs font-bold ${
+                    ttsOn 
+                      ? 'bg-[#E8EFEA] text-[#6F8F7A] border-[#D4E4DC] hover:bg-[#D4E4DC]' 
+                      : 'bg-[#F7F4EC] text-[#6B7C73] border-[#E3DEC3] hover:bg-[#EBE6D8]'
+                  }`}
+                >
+                  {ttsOn ? <Volume2 size={15} /> : <VolumeX size={15} />}
+                  <span>{ttsOn ? 'Voice On' : 'Muted'}</span>
+                </button>
+
+                <span className="text-xs sm:text-sm font-bold text-[#6B7C73]">
+                  {progressPct}%
+                </span>
+              </div>
             </div>
             
             <div
@@ -1219,31 +1173,34 @@ export default function GameScreen({ patientId, patientHistory, preferences, onC
               aria-valuemin={0}
               aria-valuemax={100}
               aria-label={`Round ${roundIndex + 1} of ${totalRounds}`}
-              className="w-full rounded-full overflow-hidden"
-              style={{ height: '12px', backgroundColor: '#E2E8F0' }}
+              className="w-full rounded-full overflow-hidden p-0.5 bg-[#EBE6D8]"
+              style={{ height: '14px' }}
             >
               <div
-                className="h-full rounded-full transition-all duration-500"
-                style={{ width: `${progressPct}%`, backgroundColor: 'var(--color-accessible-blue)' }}
+                className="h-full rounded-full transition-all duration-500 shadow-xs"
+                style={{ width: `${progressPct}%`, backgroundColor: currentRound?.gesture !== 'none' ? '#6F8F7A' : '#D9A441' }}
               />
             </div>
           </div>
 
-          {/* Physical instruction card */}
-          {currentRound.gesture !== 'none' && (
-            <section className="card-accessible" aria-labelledby="physical-label">
+          {/* Physical instruction card (Only shown on physical rounds) */}
+          {currentRound?.gesture !== 'none' && (
+            <section className="card-accessible bg-[#FFFDF7] border-2 border-[#EBE6D8] rounded-3xl p-6 md:p-8 shadow-xs" aria-labelledby="physical-label">
+              <div className="flex items-center justify-between mb-3">
+                <p
+                  id="physical-label"
+                  className="uppercase tracking-widest font-extrabold m-0 text-xs sm:text-sm text-[#6F8F7A]"
+                >
+                  🧘 Gentle Movement Warm-up
+                </p>
+                <span className="inline-flex items-center px-3.5 py-1 rounded-full text-xs font-bold bg-[#E8EFEA] text-[#577361] uppercase tracking-wide border border-[#D4E4DC]">
+                  {currentRound?.domain}
+                </span>
+              </div>
               <p
-                id="physical-label"
-                className="uppercase tracking-widest font-bold mb-3"
-                style={{ fontSize: 'var(--font-size-accessible-sm)', color: 'var(--color-accessible-blue)' }}
+                className="font-extrabold leading-snug text-2xl sm:text-3xl text-[#29352F]"
               >
-                Physical Task
-              </p>
-              <p
-                className="font-bold leading-snug"
-                style={{ fontSize: 'var(--font-size-accessible-xl)', color: 'var(--color-content-primary)' }}
-              >
-                {currentRound.physicalInstruction}
+                {currentRound?.physicalInstruction}
               </p>
 
             {/* Guide mode: slow-blinking gesture hint */}
@@ -1251,87 +1208,72 @@ export default function GameScreen({ patientId, patientHistory, preferences, onC
               <div
                 role="note"
                 aria-label={`Guide hint: ${GESTURE_PROMPTS[currentRound.gesture]}`}
-                style={{
-                  marginTop: '1rem',
-                  padding: '0.75rem 1.25rem',
-                  borderRadius: '1rem',
-                  backgroundColor: '#EDE9FE',
-                  border: '2.5px solid #A78BFA',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.75rem',
-                  animation: 'guide-blink 2s ease-in-out infinite',
-                }}
+                className="mt-4 p-4 rounded-2xl bg-[#FFF8EC] border-2 border-[#FDE6BA] flex items-center gap-3 shadow-xs"
+                style={{ animation: 'guide-blink 2s ease-in-out infinite' }}
               >
-                <span className="flex items-center text-purple-600">
-                  {currentRound.gesture === 'left-raise'      && <ArrowLeft size={28} />}
-                  {currentRound.gesture === 'right-raise'     && <ArrowRight size={28} />}
-                  {currentRound.gesture === 'both-raise'      && <div className="flex gap-1"><ArrowLeft size={24} /><ArrowRight size={24} /></div>}
-                  {currentRound.gesture === 'shoulder-touch'  && <Handshake size={28} />}
-                  {currentRound.gesture === 'head-tilt-left'  && <CornerUpLeft size={28} />}
-                  {currentRound.gesture === 'head-tilt-right' && <CornerUpRight size={28} />}
-                  {currentRound.gesture === 'nose-touch'      && <div className="text-2xl font-black">👃</div>}
-                  {currentRound.gesture === 'ear-cover'       && <Volume2 size={28} />}
+                <span className="flex items-center text-[#D9A441]">
+                  {currentRound.gesture === 'left-raise'  && <ArrowLeft size={28} />}
+                  {currentRound.gesture === 'right-raise' && <ArrowRight size={28} />}
+                  {currentRound.gesture === 'both-raise'  && <div className="flex gap-1"><ArrowLeft size={24} /><ArrowRight size={24} /></div>}
+                  {currentRound.gesture === 'ear-cover'   && <div className="text-2xl">👂</div>}
                 </span>
                 <div>
-                  <p style={{ margin: 0, fontWeight: 800, fontSize: 'var(--font-size-accessible-sm)', color: '#5B21B6', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                    <Lightbulb size={16} /> Guide Hint
+                  <p className="m-0 font-extrabold text-xs sm:text-sm text-[#D9A441] flex items-center gap-1.5">
+                    <Lightbulb size={16} /> Gentle Hint
                   </p>
-                  <p style={{ margin: 0, fontSize: 'var(--font-size-accessible-sm)', color: '#6D28D9', fontWeight: 600 }}>
+                  <p className="m-0 text-xs sm:text-sm font-bold text-[#29352F]">
                     {GESTURE_PROMPTS[currentRound.gesture]}
                   </p>
                 </div>
               </div>
             )}
 
-            {/* If we are speaking or waiting for the physical action, show a "Skip to Question" button */}
+            {/* Physical round action buttons */}
             {(phase === 'waiting-physical' || phase === 'speaking-physical') && (
-              <button
-                type="button"
-                onClick={() => {
-                  stopSpeech()
-                  advanceToCognitive()
-                }}
-                className="mt-6 w-full"
-                style={{
-                  minHeight: 'var(--min-height-touch-lg)',
-                  fontSize: 'var(--font-size-accessible-base)',
-                  fontWeight: 600,
-                  backgroundColor: '#E2E8F0',
-                  color: '#334155',
-                  borderRadius: '1rem',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  cursor: 'pointer',
-                }}
-              >
-                <div className="flex items-center gap-2">
-                  {currentRound.correctAnswer === 'none' ? 'Skip Task' : 'Skip to Question'} <ArrowRight size={20} />
-                </div>
-              </button>
+              <div className="flex flex-col sm:flex-row gap-3 mt-6">
+                <button
+                  type="button"
+                  onClick={() => {
+                    stopSpeech()
+                    handleAnswer('completed')
+                  }}
+                  className="flex-1 py-4 rounded-2xl bg-[#6F8F7A] hover:bg-[#577361] text-[#FFFDF7] font-extrabold text-lg sm:text-xl shadow-md transition-all cursor-pointer flex items-center justify-center gap-2"
+                >
+                  <Check size={24} strokeWidth={3} />
+                  <span>I Did It!</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    stopSpeech()
+                    handleAnswer('skipped')
+                  }}
+                  className="py-4 px-6 rounded-2xl bg-[#FFFDF7] hover:bg-[#F7F4EC] text-[#6B7C73] font-bold text-base border-2 border-[#EBE6D8] transition-all cursor-pointer"
+                >
+                  Skip Task
+                </button>
+              </div>
             )}
           </section>
           )}
 
-          {/* Cognitive question card (Only shown when physical task is done/skipped) */}
-          {showCognitive && (
-            <section className="card-accessible" aria-labelledby="cognitive-label">
+          {/* Cognitive question card (Only shown on cognitive rounds) */}
+          {currentRound?.gesture === 'none' && showCognitive && (
+            <section className="card-accessible bg-[#FFFDF7] border-2 border-[#EBE6D8] rounded-3xl p-6 md:p-8 shadow-xs" aria-labelledby="cognitive-label">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-3 gap-2">
                 <p
                   id="cognitive-label"
-                  className="uppercase tracking-widest font-bold m-0"
-                  style={{ fontSize: 'var(--font-size-accessible-sm)', color: 'var(--color-accessible-amber)' }}
+                  className="uppercase tracking-widest font-extrabold m-0 text-xs sm:text-sm text-[#D9A441]"
                 >
-                  Now Answer
+                  🧠 Brain Activity
                 </p>
-                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800 uppercase tracking-wide border border-amber-200">
-                  Category: {currentRound.domain}
+                <span className="inline-flex items-center px-3.5 py-1 rounded-full text-xs font-bold bg-[#FFF8EC] text-[#D9A441] uppercase tracking-wide border border-[#FDE6BA]">
+                  Domain: {currentRound.domain}
                 </span>
               </div>
               <p
-                className="font-bold leading-snug"
-                style={{ fontSize: 'var(--font-size-accessible-xl)', color: 'var(--color-content-primary)' }}
+                className="font-extrabold leading-snug text-2xl sm:text-3xl text-[#29352F]"
               >
                 {currentRound.cognitiveQuestion}
               </p>
@@ -1355,35 +1297,67 @@ export default function GameScreen({ patientId, patientHistory, preferences, onC
             </div>
           )}
 
-          {/* Voice input indicator */}
-          {isListening && phase === 'answering' && (
+          {/* Voice input indicator & Tap to Speak */}
+          {currentRound?.gesture === 'none' && phase === 'answering' && (
             <div
               role="status"
               aria-live="polite"
-              className="flex flex-col gap-2 rounded-2xl px-5 py-4"
-              style={{ backgroundColor: '#FCE7F3', border: '2px solid #FBCFE8' }}
+              className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-2xl px-5 py-4 border-2 shadow-xs transition-all"
+              style={{
+                backgroundColor: isListening ? '#FDF2F8' : '#F8FAFC',
+                borderColor: isListening ? '#F472B6' : '#E2E8F0'
+              }}
             >
               <div className="flex items-center gap-3">
-                <span className="text-pink-600" aria-hidden="true" style={{ animation: 'pulse 1.5s ease-in-out infinite' }}>
-                  <Mic size={32} />
+                <span 
+                  className={`p-2 rounded-full ${isListening ? 'bg-pink-100 text-pink-600 animate-bounce' : 'bg-slate-100 text-slate-500'}`} 
+                  aria-hidden="true"
+                >
+                  <Mic size={24} />
                 </span>
-                <p className="font-semibold" style={{ fontSize: 'var(--font-size-accessible-base)', color: '#9D174D' }}>
-                  Listening for your answer... You can also tap a button.
-                </p>
+                <div>
+                  <p className="font-bold text-sm sm:text-base text-slate-800 dark:text-white">
+                    {isListening ? 'Microphone Active — Speak your answer aloud' : 'Voice detection paused'}
+                  </p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">
+                    {isListening ? 'You can also tap any option button below.' : 'Click the button on the right to turn on mic.'}
+                  </p>
+                </div>
               </div>
+
+              <div className="flex items-center gap-2 self-start sm:self-auto">
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (isListening) {
+                      stopListening()
+                    } else {
+                      startListening()
+                    }
+                  }}
+                  className={`px-4 py-2 rounded-full font-bold text-xs sm:text-sm transition cursor-pointer flex items-center gap-1.5 shadow-xs border ${
+                    isListening 
+                      ? 'bg-pink-100 text-pink-700 border-pink-300 hover:bg-pink-200' 
+                      : 'bg-[#4A6B82] text-white border-transparent hover:bg-[#3A556A]'
+                  }`}
+                >
+                  <Mic size={16} />
+                  <span>{isListening ? 'Mic Listening...' : '🎙️ Tap to Speak'}</span>
+                </button>
+              </div>
+
               {spokenText && (
                 <div 
-                  className="mt-2 p-3 rounded-xl italic font-medium"
-                  style={{ backgroundColor: 'rgba(255,255,255,0.6)', color: '#831843' }}
+                  className="w-full mt-2 p-2.5 rounded-xl font-medium text-xs sm:text-sm bg-white dark:bg-slate-900 border border-pink-200 text-pink-900 dark:text-pink-200 animate-in fade-in"
                 >
-                  " {spokenText} "
+                  🗣️ Heard: <strong>"{spokenText}"</strong>
                 </div>
               )}
             </div>
           )}
 
-          {/* Answer buttons */}
-          {(phase === 'answering' || phase === 'feedback') && currentRound.correctAnswer !== 'none' && (
+          {/* Answer buttons (Only on cognitive rounds) */}
+          {currentRound?.gesture === 'none' && (phase === 'answering' || phase === 'feedback') && currentRound.correctAnswer !== 'none' && (
             <section aria-labelledby="choices-label">
               <p
                 id="choices-label"
@@ -1393,18 +1367,39 @@ export default function GameScreen({ patientId, patientHistory, preferences, onC
                 Choose your answer:
               </p>
 
-              <div className="grid grid-cols-2 gap-2" role="group" aria-label="Answer choices">
+              <div className="grid grid-cols-2 gap-3" role="group" aria-label="Answer choices">
                 {currentRound.choices.map((choice) => {
-                  const isCorrectChoice  = choice === currentRound.correctAnswer
-                  const isSelected       = lastAnswer?.chosen === choice
+                  const isCorrectChoice  = choice.trim().toLowerCase() === currentRound.correctAnswer.trim().toLowerCase()
+                  const isSelected       = !!lastAnswer && (lastAnswer.chosen.trim().toLowerCase() === choice.trim().toLowerCase())
+                  const isWrongSelection = isSelected && !isCorrectChoice
                   const isGuideHighlight = gameMode === 'guide' && phase === 'answering' && guideHighlightActive && isCorrectChoice
 
-                  let bg        = isGuideHighlight ? '#7C3AED' : 'var(--color-accessible-blue)'
+                  let bg        = 'var(--color-accessible-blue)'
                   let textColor = '#ffffff'
+                  let border    = '3px solid transparent'
+                  let boxShadow = '0 1px 2px rgb(0 0 0 / 0.12)'
+                  let transform = 'none'
+
+                  if (isGuideHighlight) {
+                    bg = '#7C3AED'
+                    border = '3px solid #A78BFA'
+                    boxShadow = '0 0 0 4px #C4B5FD'
+                  }
+
                   if (phase === 'feedback') {
-                    if (isCorrectChoice)                               bg = 'var(--color-accessible-green)'
-                    else if (isSelected && !lastAnswer?.correct)       bg = 'var(--color-accessible-red)'
-                    else                                               bg = '#94A3B8'
+                    if (isCorrectChoice) {
+                      bg = '#16A34A' // High-contrast Emerald Green
+                      border = '3px solid #4ADE80'
+                      boxShadow = '0 0 0 4px #86EFAC, 0 4px 12px rgba(22, 163, 74, 0.4)'
+                      transform = 'scale(1.02)'
+                    } else if (isWrongSelection) {
+                      bg = '#DC2626' // High-contrast Rose Red
+                      border = '3px solid #F87171'
+                      boxShadow = '0 0 0 4px #FECACA, 0 4px 12px rgba(220, 38, 38, 0.4)'
+                    } else {
+                      bg = '#94A3B8'
+                      textColor = '#F1F5F9'
+                    }
                   }
 
                   return (
@@ -1422,23 +1417,24 @@ export default function GameScreen({ patientId, patientHistory, preferences, onC
                         fontWeight:      700,
                         backgroundColor: bg,
                         color:           textColor,
-                        border:          isGuideHighlight ? '3px solid #A78BFA' : '3px solid transparent',
+                        border:          border,
                         borderRadius:    '1rem',
                         cursor:          phase === 'feedback' ? 'default' : 'pointer',
                         display:         'flex',
                         alignItems:      'center',
                         justifyContent:  'center',
-                        padding:         '0.75rem',
-                        transition:      'background-color 200ms ease, transform 100ms ease',
-                        boxShadow:       isGuideHighlight ? '0 0 0 4px #C4B5FD' : '0 1px 2px rgb(0 0 0 / 0.12)',
-                        opacity:         phase === 'feedback' && !isCorrectChoice && !isSelected ? 0.55 : 1,
+                        padding:         '0.85rem 1rem',
+                        transform:       transform,
+                        transition:      'all 200ms ease',
+                        boxShadow:       boxShadow,
+                        opacity:         phase === 'feedback' && !isCorrectChoice && !isSelected ? 0.4 : 1,
                         animation:       isGuideHighlight ? 'guide-blink 2s ease-in-out infinite' : 'none',
                       }}
                     >
-                      {phase === 'feedback' && isCorrectChoice && <span aria-hidden="true" className="mr-2 flex items-center"><Check size={20} />&nbsp;</span>}
-                      {phase === 'feedback' && isSelected && !isCorrectChoice && <span aria-hidden="true" className="mr-2 flex items-center"><X size={20} />&nbsp;</span>}
+                      {phase === 'feedback' && isCorrectChoice && <span aria-hidden="true" className="mr-2 flex items-center font-bold text-white"><Check size={24} strokeWidth={3} />&nbsp;</span>}
+                      {phase === 'feedback' && isWrongSelection && <span aria-hidden="true" className="mr-2 flex items-center font-bold text-white"><X size={24} strokeWidth={3} />&nbsp;</span>}
                       {isGuideHighlight && phase === 'answering' && <span aria-hidden="true" style={{ marginRight: '0.4rem' }}><Lightbulb size={20} /></span>}
-                      {choice}
+                      <span>{choice}</span>
                     </button>
                   )
                 })}
@@ -1465,15 +1461,17 @@ export default function GameScreen({ patientId, patientHistory, preferences, onC
                   color:    lastAnswer.correct ? 'var(--color-accessible-green)' : 'var(--color-accessible-red)',
                 }}
               >
-                {lastAnswer.correct
-                  ? 'Correct! Great job!'
-                  : `Not quite — the answer was "${currentRound.correctAnswer}".`}
+                {currentRound?.gesture !== 'none'
+                  ? (lastAnswer.correct ? 'Great job! Physical task completed.' : 'Task skipped.')
+                  : lastAnswer.correct
+                    ? 'Correct! Great job!'
+                    : `Not quite — the answer was "${currentRound?.correctAnswer}".`}
               </p>
             </div>
           )}
 
-          {/* Camera unavailable fallback notice (only shown if denied AND active phase) */}
-          {cameraStatus === 'denied' && (
+          {/* Camera unavailable fallback notice (only shown if denied AND active physical round) */}
+          {cameraStatus === 'denied' && currentRound?.gesture !== 'none' && (
             <p
               role="alert"
               style={{
@@ -1487,7 +1485,7 @@ export default function GameScreen({ patientId, patientHistory, preferences, onC
               }}
             >
               <div className="flex items-center gap-2">
-                <Camera size={20} /> Camera unavailable — you can skip the physical tasks and just use the buttons.
+                <Camera size={20} /> Camera unavailable — you can tap "I Did It" or "Skip Task" above.
               </div>
             </p>
           )}
@@ -1495,13 +1493,14 @@ export default function GameScreen({ patientId, patientHistory, preferences, onC
       )}
 
       {/* ════════════════════════════════════════════════════════════════════
-          CAMERA FEED — always in the DOM, hidden via CSS during idle/complete.
+          CAMERA FEED — always in the DOM, hidden via CSS during idle/complete
+          or when on a pure cognitive question round.
           Using display:none (NOT conditional &&) preserves the refs so
           MediaPipe can keep running without restarting between phases.
           ════════════════════════════════════════════════════════════════════ */}
       <div
         aria-label="Webcam gesture tracking"
-        style={{ display: isActivePhase ? 'block' : 'none' }}
+        style={{ display: (isActivePhase && currentRound?.gesture !== 'none') ? 'block' : 'none' }}
       >
         {/* Loading overlay (shown while camera is still initialising) */}
         {cameraStatus === 'pending' && (
@@ -1627,10 +1626,10 @@ export default function GameScreen({ patientId, patientHistory, preferences, onC
             LIVE
           </div>
           
-          {/* Subtitles Overlay */}
+          {/* Subtitles Overlay - Compact non-intrusive pill */}
           {subtitle && (
-            <div className="fixed bottom-10 left-1/2 -translate-x-1/2 bg-slate-900/90 text-white px-8 py-4 rounded-3xl text-2xl md:text-3xl font-black shadow-[0_10px_40px_rgba(0,0,0,0.5)] z-[100] text-center max-w-[90vw] animate-in fade-in slide-in-from-bottom-8 border-4 border-slate-700">
-              {subtitle}
+            <div className="fixed bottom-4 left-1/2 -translate-x-1/2 bg-slate-900/85 backdrop-blur-md text-white px-5 py-2 rounded-full text-xs sm:text-sm font-semibold shadow-lg z-50 text-center max-w-[85vw] animate-in fade-in border border-slate-600/50 pointer-events-none">
+              🗣️ {subtitle}
             </div>
           )}
         </div>

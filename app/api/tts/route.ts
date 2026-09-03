@@ -1,10 +1,12 @@
 import { NextResponse } from 'next/server'
 
+export const dynamic = 'force-dynamic'
+
 export async function POST(req: Request) {
   try {
     const { text, voice = 'aura-asteria-en' } = await req.json().catch(() => ({}))
 
-    if (!text) {
+    if (!text || typeof text !== 'string' || !text.trim()) {
       return NextResponse.json({ error: 'Text is required' }, { status: 400 })
     }
 
@@ -13,31 +15,38 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'DEEPGRAM_API_KEY is not configured' }, { status: 500 })
     }
 
-    const response = await fetch(`https://api.deepgram.com/v1/speak?model=${voice}`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Token ${apiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ text }),
-    })
+    const controller = new AbortController()
+    const timeoutId = setTimeout(() => controller.abort(), 5000)
 
-    if (!response.ok) {
-      const errorText = await response.text()
-      throw new Error(`Deepgram API error: ${response.status} - ${errorText}`)
+    try {
+      const deepgramRes = await fetch(`https://api.deepgram.com/v1/speak?model=${voice}`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Token ${apiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ text: text.trim() }),
+        signal: controller.signal,
+      })
+      clearTimeout(timeoutId)
+
+      if (!deepgramRes.ok) {
+        const errorText = await deepgramRes.text()
+        throw new Error(`Deepgram API error: ${deepgramRes.status} - ${errorText}`)
+      }
+
+      // Pass the readable stream directly to the client for instant first-byte delivery
+      return new Response(deepgramRes.body, {
+        headers: {
+          'Content-Type': 'audio/mpeg',
+          'Cache-Control': 'public, max-age=3600, stale-while-revalidate=86400',
+        },
+      })
+    } finally {
+      clearTimeout(timeoutId)
     }
-
-    // Stream the audio back to the client
-    const audioBuffer = await response.arrayBuffer()
-    
-    return new NextResponse(audioBuffer, {
-      headers: {
-        'Content-Type': 'audio/mpeg',
-        'Cache-Control': 'no-cache',
-      },
-    })
   } catch (error: any) {
-    console.error('TTS generation failed:', error)
-    return NextResponse.json({ error: error.message || 'TTS generation failed' }, { status: 500 })
+    // Graceful fallback to client SpeechSynthesis without noise
+    return NextResponse.json({ error: error.message || 'TTS generation failed' }, { status: 502 })
   }
 }

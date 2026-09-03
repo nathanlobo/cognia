@@ -9,6 +9,19 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        // Soft earthy palette for Patient Dashboard
+        cognia: {
+          surface: '#F4F5F0',       // Main background color (warm off-white/sage)
+          sage: '#E5E8DE',          // Light sage for cards
+          sageDark: '#A3B19B',      // Darker sage for icons/borders
+          peach: '#F3D5B5',         // Warm peach for memory/activity
+          peachLight: '#FDECE1',    // Lighter peach background
+          blue: '#6B8E9B',          // Soft slate blue for buttons/active elements
+          blueLight: '#E3EDF2',     // Very light blue for secondary items
+          navy: '#3D4559',          // Dark navy for caregiver section and text
+          navyLight: '#5A637A',
+          cream: '#FCFBF8',         // White alternative for cards
+        },
         // High-contrast primary backgrounds and surfaces
         surface: {
           light: '#F8FAFC',   // Crisp, glare-free background

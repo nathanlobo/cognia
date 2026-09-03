@@ -26,7 +26,7 @@ export default function GlobalLoader({ children }: { children: React.ReactNode }
           <div className="relative w-32 h-32 p-2 flex items-center justify-center">
             <Image 
               src="/dementia-webapp-logo.png" 
-              alt="Loading Care Companion" 
+              alt="Loading Cognia" 
               fill 
               style={{ objectFit: 'contain' }} 
               sizes="128px"
@@ -34,7 +34,7 @@ export default function GlobalLoader({ children }: { children: React.ReactNode }
             />
           </div>
         </div>
-        <h2 className="mt-12 text-2xl font-black text-slate-700 dark:text-slate-200 animate-pulse tracking-tight">Loading Care Companion...</h2>
+        <h2 className="mt-12 text-2xl font-black text-slate-700 dark:text-slate-200 animate-pulse tracking-tight">Loading Cognia...</h2>
       </div>
     )
   }

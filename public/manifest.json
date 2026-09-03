@@ -1,7 +1,7 @@
 {
-  "name": "Care Companion",
-  "short_name": "CareCompanion",
-  "description": "Cognitive dual-task exercise platform for dementia patients",
+  "name": "Cognia",
+  "short_name": "Cognia",
+  "description": "A familiar daily cognitive companion",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",

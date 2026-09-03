@@ -10,7 +10,7 @@ export default function TermsPage() {
         <div>
           <h1 className="text-4xl font-extrabold text-blue-900 mb-4 tracking-tight">Terms and Conditions</h1>
           <p className="text-slate-600 text-lg font-medium leading-relaxed">
-            Please read these terms carefully before using Care Companion. 
+            Please read these terms carefully before using Cognia. 
             By using this application, you agree to these terms.
           </p>
         </div>
@@ -22,7 +22,7 @@ export default function TermsPage() {
           </h2>
           <div className="prose prose-slate max-w-none text-slate-600 font-medium space-y-4">
             <p>
-              <strong>Care Companion is a supportive cognitive exercise tool, not a diagnostic medical device.</strong>
+              <strong>Cognia is a supportive cognitive exercise tool, not a diagnostic medical device.</strong>
             </p>
             <p>
               The activities, metrics, and insights provided by this application are designed for general cognitive engagement and wellness. They are not intended to diagnose, treat, cure, or prevent any disease, including dementia or Alzheimer's disease.
@@ -40,7 +40,7 @@ export default function TermsPage() {
           </h2>
           <div className="prose prose-slate max-w-none text-slate-600 font-medium space-y-4">
             <p>
-              We prioritize the privacy and dignity of our users. Care Companion utilizes advanced computer vision (pose estimation) to verify physical gestures during exercises.
+              We prioritize the privacy and dignity of our users. Cognia utilizes advanced computer vision (pose estimation) to verify physical gestures during exercises.
             </p>
             <p>
               <strong>All video processing occurs entirely on your device.</strong>
@@ -58,7 +58,7 @@ export default function TermsPage() {
           </h2>
           <div className="prose prose-slate max-w-none text-slate-600 font-medium space-y-4">
             <p>
-              To provide a dynamic and personalized experience, Care Companion collects telemetry data regarding exercise performance (e.g., accuracy, reaction time, consistency).
+              To provide a dynamic and personalized experience, Cognia collects telemetry data regarding exercise performance (e.g., accuracy, reaction time, consistency).
             </p>
             <p>
               We also allow caregivers to optionally input personal preferences (such as favorite foods, hobbies, and routines). This data is securely stored and utilized by our AI generator to dynamically create personalized cognitive questions tailored specifically to the patient's lived experience.

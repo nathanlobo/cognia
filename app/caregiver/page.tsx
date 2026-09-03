@@ -6,17 +6,20 @@ import CaregiverDashboard from '@/components/CaregiverDashboard'
 import ConsentModal from '@/components/ConsentModal'
 import PatientProfileForm from '@/components/PatientProfileForm'
 import EditProfileModal from '@/components/EditProfileModal'
+import DeletePatientModal from '@/components/DeletePatientModal'
 import { supabase } from '@/lib/supabase'
 import { fetchPatientHistory } from '@/lib/db'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import Header from '@/components/Header'
+import { Trash2 } from 'lucide-react'
 
 export default function CaregiverPage() {
   const router = useRouter()
   const [caregiver, setCaregiver] = useState<{ id: string; full_name: string; email: string } | null>(null)
   
   const [patients, setPatients] = useState<any[]>([])
+  const [isLoadingPatients, setIsLoadingPatients] = useState(true)
   const [selectedPatientId, setSelectedPatientId] = useState<string | null>(null)
   const [sessions, setSessions] = useState<any[]>([])
   const [activeTab, setActiveTab] = useState<'info' | 'stats'>('info')
@@ -31,6 +34,17 @@ export default function CaregiverPage() {
   
   // Profile Editing State
   const [editingProfile, setEditingProfile] = useState<{ id: string; full_name: string; email: string; role: string } | null>(null)
+  
+  // Patient Deletion State
+  const [deletingPatient, setDeletingPatient] = useState<{ id: string; full_name: string; email: string } | null>(null)
+
+  function handlePatientDeleted(deletedId: string) {
+    setPatients(prev => prev.filter(p => p.id !== deletedId))
+    if (selectedPatientId === deletedId) {
+      setSelectedPatientId(null)
+    }
+    setDeletingPatient(null)
+  }
   
   function handleProfileSave(updated: any) {
     if (updated.id === caregiver?.id) {
@@ -58,46 +72,64 @@ export default function CaregiverPage() {
   const [showConsentModal, setShowConsentModal] = useState(false)
 
   useEffect(() => {
-    const saved = localStorage.getItem('care_companion_caregiver')
-    if (saved) {
-      try {
-        setCaregiver(JSON.parse(saved))
-      } catch (e) {}
+    function loadCaregiver() {
+      const saved = localStorage.getItem('care_companion_caregiver')
+      if (saved) {
+        try {
+          setCaregiver(JSON.parse(saved))
+        } catch (e) {}
+      }
     }
+    loadCaregiver()
+    window.addEventListener('care_companion_auth_change', loadCaregiver)
+
     const consent = localStorage.getItem('care_companion_consent')
     if (consent === 'true') {
       setConsentSigned(true)
     }
+
+    return () => window.removeEventListener('care_companion_auth_change', loadCaregiver)
   }, [])
 
   const fetchPatients = useCallback(async () => {
     if (!caregiver) return
-    const { data, error } = await supabase
-      .from('patient_caregiver_relations')
-      .select('last_switched_at, patient:profiles!patient_caregiver_relations_patient_id_fkey(id, full_name, email)')
-      .eq('caregiver_id', caregiver.id)
-      .order('last_switched_at', { ascending: false, nullsFirst: false })
+    setIsLoadingPatients(true)
+    try {
+      const { data, error } = await supabase
+        .from('patient_caregiver_relations')
+        .select('last_switched_at, patient:profiles!patient_caregiver_relations_patient_id_fkey(id, full_name, email)')
+        .eq('caregiver_id', caregiver.id)
+        .order('last_switched_at', { ascending: false, nullsFirst: false })
 
-    if (error) {
-      console.error(error)
-      return
-    }
-
-    if (data) {
-      let recentLocalId = null;
-      if (typeof window !== 'undefined') {
-        recentLocalId = localStorage.getItem('care_companion_recent_patient_id');
+      if (error) {
+        console.error(error)
+        setPatients([])
+        return
       }
 
-      const mapped = data.map((d: any) => d.patient)
-      
-      mapped.sort((a: any, b: any) => {
-        if (a.id === recentLocalId) return -1;
-        if (b.id === recentLocalId) return 1;
-        return 0; // Keep the DB sorting order (last_switched_at desc) for the rest
-      })
+      if (data) {
+        let recentLocalId = null;
+        if (typeof window !== 'undefined') {
+          recentLocalId = localStorage.getItem('care_companion_recent_patient_id');
+        }
 
-      setPatients(mapped)
+        const mapped = data.map((d: any) => d.patient).filter(Boolean)
+        
+        mapped.sort((a: any, b: any) => {
+          if (a.id === recentLocalId) return -1;
+          if (b.id === recentLocalId) return 1;
+          return 0; // Keep the DB sorting order (last_switched_at desc) for the rest
+        })
+
+        setPatients(mapped)
+      } else {
+        setPatients([])
+      }
+    } catch (e) {
+      console.error(e)
+      setPatients([])
+    } finally {
+      setIsLoadingPatients(false)
     }
   }, [caregiver])
 
@@ -166,10 +198,11 @@ export default function CaregiverPage() {
   }
 
   function handleAddPatientClick() {
+    setSelectedPatientId(null)
     if (!consentSigned) {
       setShowConsentModal(true)
     } else {
-      setIsAdding(!isAdding)
+      setIsAdding(true)
     }
   }
 
@@ -274,6 +307,14 @@ export default function CaregiverPage() {
           onSave={handleProfileSave}
         />
       )}
+      {deletingPatient && (
+        <DeletePatientModal
+          patient={deletingPatient}
+          caregiverId={caregiver.id}
+          onClose={() => setDeletingPatient(null)}
+          onDeleted={handlePatientDeleted}
+        />
+      )}
       <Header 
         userName={caregiver.full_name}
         userEmail={caregiver.email}
@@ -281,7 +322,9 @@ export default function CaregiverPage() {
         onLogout={handleLogout}
         showSwitchToPatient={true}
         patients={patients}
+        isLoadingPatients={isLoadingPatients}
         onSwitchToPatient={handleSwitchToPatient}
+        onOpenAddPatient={handleAddPatientClick}
       />
 
       <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 py-8 md:py-12 flex-1 flex flex-col">
@@ -356,16 +399,30 @@ export default function CaregiverPage() {
           ) : (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: '1rem' }}>
               {patients.map(p => (
-                <button
+                <div
                   key={p.id}
                   onClick={() => setSelectedPatientId(p.id)}
-                  className="card-accessible"
-                  style={{ textAlign: 'left', cursor: 'pointer', border: '3px solid #E2E8F0', backgroundColor: '#fff' }}
+                  className="card-accessible relative group transition-all hover:border-blue-400"
+                  style={{ textAlign: 'left', cursor: 'pointer', border: '3px solid #E2E8F0', backgroundColor: '#fff', padding: '1.25rem' }}
                 >
-                  <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>👤</div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                    <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>👤</div>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        setDeletingPatient(p)
+                      }}
+                      className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all"
+                      title="Delete Patient"
+                      aria-label={`Delete ${p.full_name}`}
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
                   <div style={{ fontWeight: 700, fontSize: '1.125rem' }}>{p.full_name}</div>
                   <div style={{ fontSize: '0.85rem', color: 'var(--color-content-muted)' }}>{p.email}</div>
-                </button>
+                </div>
               ))}
             </div>
           )}
@@ -381,15 +438,28 @@ export default function CaregiverPage() {
             </button>
             
             {selectedPatientId && (
-              <button
-                onClick={() => {
-                  const p = patients.find(p => p.id === selectedPatientId)
-                  if (p) setEditingProfile({ ...p, role: 'patient' })
-                }}
-                style={{ padding: '0.5rem 1rem', backgroundColor: '#F1F5F9', color: '#475569', borderRadius: '0.5rem', border: '1px solid #CBD5E1', fontWeight: 700, cursor: 'pointer' }}
-              >
-                Edit Patient
-              </button>
+              <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+                <button
+                  onClick={() => {
+                    const p = patients.find(p => p.id === selectedPatientId)
+                    if (p) setEditingProfile({ ...p, role: 'patient' })
+                  }}
+                  style={{ padding: '0.5rem 1rem', backgroundColor: '#F1F5F9', color: '#475569', borderRadius: '0.5rem', border: '1px solid #CBD5E1', fontWeight: 700, cursor: 'pointer' }}
+                >
+                  Edit Patient
+                </button>
+                <button
+                  onClick={() => {
+                    const p = patients.find(p => p.id === selectedPatientId)
+                    if (p) setDeletingPatient(p)
+                  }}
+                  style={{ padding: '0.5rem 1rem', backgroundColor: '#FEE2E2', color: '#DC2626', borderRadius: '0.5rem', border: '1px solid #FECACA', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.35rem' }}
+                  title="Delete Patient"
+                >
+                  <Trash2 className="w-4 h-4" />
+                  Delete Patient
+                </button>
+              </div>
             )}
           </div>
           

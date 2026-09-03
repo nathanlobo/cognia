@@ -1,0 +1,5260 @@
+{
+  "directed": false,
+  "multigraph": false,
+  "graph": {
+    "hyperedges": [
+      {
+        "id": "clinical_foundation_flow",
+        "label": "Clinical Neuroplasticity Foundation",
+        "nodes": [
+          "readme_dual_task_exergaming",
+          "readme_bdnf_neuroplasticity",
+          "readme_person_centered_care"
+        ],
+        "relation": "form",
+        "confidence": "EXTRACTED",
+        "confidence_score": 1.0,
+        "source_file": "README.md"
+      }
+    ]
+  },
+  "nodes": [
+    {
+      "label": "eslint.config.mjs",
+      "file_type": "code",
+      "source_file": "eslint.config.mjs",
+      "source_location": "L1",
+      "id": "eslint_config_mjs",
+      "community": 15,
+      "norm_label": "eslint.config.mjs"
+    },
+    {
+      "label": "eslintConfig",
+      "file_type": "code",
+      "source_file": "eslint.config.mjs",
+      "source_location": "L5",
+      "id": "dementia_eslint_config_eslintconfig",
+      "community": 15,
+      "norm_label": "eslintconfig"
+    },
+    {
+      "label": "next.config.ts",
+      "file_type": "code",
+      "source_file": "next.config.ts",
+      "source_location": "L1",
+      "id": "next_config_ts",
+      "community": 16,
+      "norm_label": "next.config.ts"
+    },
+    {
+      "label": "nextConfig",
+      "file_type": "code",
+      "source_file": "next.config.ts",
+      "source_location": "L3",
+      "id": "dementia_next_config_nextconfig",
+      "community": 16,
+      "norm_label": "nextconfig"
+    },
+    {
+      "label": "package.json",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L1",
+      "id": "package_json",
+      "community": 5,
+      "norm_label": "package.json"
+    },
+    {
+      "label": "name",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L2",
+      "id": "dementia_package_name",
+      "community": 5,
+      "norm_label": "name"
+    },
+    {
+      "label": "version",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L3",
+      "id": "dementia_package_version",
+      "community": 5,
+      "norm_label": "version"
+    },
+    {
+      "label": "private",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L4",
+      "id": "dementia_package_private",
+      "community": 5,
+      "norm_label": "private"
+    },
+    {
+      "label": "scripts",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L5",
+      "id": "dementia_package_scripts",
+      "community": 5,
+      "norm_label": "scripts"
+    },
+    {
+      "label": "dev",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L6",
+      "id": "dementia_package_scripts_dev",
+      "community": 5,
+      "norm_label": "dev"
+    },
+    {
+      "label": "build",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L7",
+      "id": "dementia_package_scripts_build",
+      "community": 5,
+      "norm_label": "build"
+    },
+    {
+      "label": "start",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L8",
+      "id": "dementia_package_scripts_start",
+      "community": 5,
+      "norm_label": "start"
+    },
+    {
+      "label": "lint",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L9",
+      "id": "dementia_package_scripts_lint",
+      "community": 5,
+      "norm_label": "lint"
+    },
+    {
+      "label": "dependencies",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L11",
+      "id": "dementia_package_dependencies",
+      "community": 4,
+      "norm_label": "dependencies"
+    },
+    {
+      "label": "@ai-sdk/google",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L12",
+      "id": "dementia_package_dependencies_ai_sdk_google",
+      "community": 4,
+      "norm_label": "@ai-sdk/google"
+    },
+    {
+      "label": "@ai-sdk/openai",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L13",
+      "id": "dementia_package_dependencies_ai_sdk_openai",
+      "community": 4,
+      "norm_label": "@ai-sdk/openai"
+    },
+    {
+      "label": "@heroicons/react",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L14",
+      "id": "dementia_package_dependencies_heroicons_react",
+      "community": 4,
+      "norm_label": "@heroicons/react"
+    },
+    {
+      "label": "@mediapipe/camera_utils",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L15",
+      "id": "dementia_package_dependencies_mediapipe_camera_utils",
+      "community": 4,
+      "norm_label": "@mediapipe/camera_utils"
+    },
+    {
+      "label": "@mediapipe/drawing_utils",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L16",
+      "id": "dementia_package_dependencies_mediapipe_drawing_utils",
+      "community": 4,
+      "norm_label": "@mediapipe/drawing_utils"
+    },
+    {
+      "label": "@mediapipe/pose",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L17",
+      "id": "dementia_package_dependencies_mediapipe_pose",
+      "community": 4,
+      "norm_label": "@mediapipe/pose"
+    },
+    {
+      "label": "@supabase/supabase-js",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L18",
+      "id": "dementia_package_dependencies_supabase_supabase_js",
+      "community": 4,
+      "norm_label": "@supabase/supabase-js"
+    },
+    {
+      "label": "ai",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L19",
+      "id": "dementia_package_dependencies_ai",
+      "community": 4,
+      "norm_label": "ai"
+    },
+    {
+      "label": "jspdf",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L20",
+      "id": "dementia_package_dependencies_jspdf",
+      "community": 4,
+      "norm_label": "jspdf"
+    },
+    {
+      "label": "jspdf-autotable",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L21",
+      "id": "dementia_package_dependencies_jspdf_autotable",
+      "community": 4,
+      "norm_label": "jspdf-autotable"
+    },
+    {
+      "label": "lucide-react",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L22",
+      "id": "dementia_package_dependencies_lucide_react",
+      "community": 4,
+      "norm_label": "lucide-react"
+    },
+    {
+      "label": "next",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L23",
+      "id": "dementia_package_dependencies_next",
+      "community": 4,
+      "norm_label": "next"
+    },
+    {
+      "label": "next-themes",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L24",
+      "id": "dementia_package_dependencies_next_themes",
+      "community": 4,
+      "norm_label": "next-themes"
+    },
+    {
+      "label": "react",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L25",
+      "id": "dementia_package_dependencies_react",
+      "community": 4,
+      "norm_label": "react"
+    },
+    {
+      "label": "react-dom",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L26",
+      "id": "dementia_package_dependencies_react_dom",
+      "community": 4,
+      "norm_label": "react-dom"
+    },
+    {
+      "label": "recharts",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L27",
+      "id": "dementia_package_dependencies_recharts",
+      "community": 4,
+      "norm_label": "recharts"
+    },
+    {
+      "label": "zod",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L28",
+      "id": "dementia_package_dependencies_zod",
+      "community": 4,
+      "norm_label": "zod"
+    },
+    {
+      "label": "devDependencies",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L30",
+      "id": "dementia_package_devdependencies",
+      "community": 5,
+      "norm_label": "devdependencies"
+    },
+    {
+      "label": "@tailwindcss/postcss",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L31",
+      "id": "dementia_package_devdependencies_tailwindcss_postcss",
+      "community": 5,
+      "norm_label": "@tailwindcss/postcss"
+    },
+    {
+      "label": "@types/node",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L32",
+      "id": "dementia_package_devdependencies_types_node",
+      "community": 5,
+      "norm_label": "@types/node"
+    },
+    {
+      "label": "@types/react",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L33",
+      "id": "dementia_package_devdependencies_types_react",
+      "community": 5,
+      "norm_label": "@types/react"
+    },
+    {
+      "label": "@types/react-dom",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L34",
+      "id": "dementia_package_devdependencies_types_react_dom",
+      "community": 5,
+      "norm_label": "@types/react-dom"
+    },
+    {
+      "label": "eslint",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L35",
+      "id": "dementia_package_devdependencies_eslint",
+      "community": 5,
+      "norm_label": "eslint"
+    },
+    {
+      "label": "eslint-config-next",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L36",
+      "id": "dementia_package_devdependencies_eslint_config_next",
+      "community": 5,
+      "norm_label": "eslint-config-next"
+    },
+    {
+      "label": "tailwindcss",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L37",
+      "id": "dementia_package_devdependencies_tailwindcss",
+      "community": 5,
+      "norm_label": "tailwindcss"
+    },
+    {
+      "label": "typescript",
+      "file_type": "code",
+      "source_file": "package.json",
+      "source_location": "L38",
+      "id": "dementia_package_devdependencies_typescript",
+      "community": 5,
+      "norm_label": "typescript"
+    },
+    {
+      "label": "postcss.config.mjs",
+      "file_type": "code",
+      "source_file": "postcss.config.mjs",
+      "source_location": "L1",
+      "id": "postcss_config_mjs",
+      "community": 17,
+      "norm_label": "postcss.config.mjs"
+    },
+    {
+      "label": "config",
+      "file_type": "code",
+      "source_file": "postcss.config.mjs",
+      "source_location": "L1",
+      "id": "dementia_postcss_config_config",
+      "community": 17,
+      "norm_label": "config"
+    },
+    {
+      "label": "tailwind.config.js",
+      "file_type": "code",
+      "source_file": "tailwind.config.js",
+      "source_location": "L1",
+      "id": "tailwind_config_js",
+      "community": 20,
+      "norm_label": "tailwind.config.js"
+    },
+    {
+      "label": "tsconfig.json",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L1",
+      "id": "tsconfig_json",
+      "community": 3,
+      "norm_label": "tsconfig.json"
+    },
+    {
+      "label": "compilerOptions",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L2",
+      "id": "dementia_tsconfig_compileroptions",
+      "community": 3,
+      "norm_label": "compileroptions"
+    },
+    {
+      "label": "target",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L3",
+      "id": "dementia_tsconfig_compileroptions_target",
+      "community": 3,
+      "norm_label": "target"
+    },
+    {
+      "label": "lib",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L4",
+      "id": "dementia_tsconfig_compileroptions_lib",
+      "community": 3,
+      "norm_label": "lib"
+    },
+    {
+      "label": "allowJs",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L5",
+      "id": "dementia_tsconfig_compileroptions_allowjs",
+      "community": 3,
+      "norm_label": "allowjs"
+    },
+    {
+      "label": "skipLibCheck",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L6",
+      "id": "dementia_tsconfig_compileroptions_skiplibcheck",
+      "community": 3,
+      "norm_label": "skiplibcheck"
+    },
+    {
+      "label": "strict",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L7",
+      "id": "dementia_tsconfig_compileroptions_strict",
+      "community": 3,
+      "norm_label": "strict"
+    },
+    {
+      "label": "noEmit",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L8",
+      "id": "dementia_tsconfig_compileroptions_noemit",
+      "community": 3,
+      "norm_label": "noemit"
+    },
+    {
+      "label": "esModuleInterop",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L9",
+      "id": "dementia_tsconfig_compileroptions_esmoduleinterop",
+      "community": 3,
+      "norm_label": "esmoduleinterop"
+    },
+    {
+      "label": "module",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L10",
+      "id": "dementia_tsconfig_compileroptions_module",
+      "community": 3,
+      "norm_label": "module"
+    },
+    {
+      "label": "moduleResolution",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L11",
+      "id": "dementia_tsconfig_compileroptions_moduleresolution",
+      "community": 3,
+      "norm_label": "moduleresolution"
+    },
+    {
+      "label": "resolveJsonModule",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L12",
+      "id": "dementia_tsconfig_compileroptions_resolvejsonmodule",
+      "community": 3,
+      "norm_label": "resolvejsonmodule"
+    },
+    {
+      "label": "isolatedModules",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L13",
+      "id": "dementia_tsconfig_compileroptions_isolatedmodules",
+      "community": 3,
+      "norm_label": "isolatedmodules"
+    },
+    {
+      "label": "jsx",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L14",
+      "id": "dementia_tsconfig_compileroptions_jsx",
+      "community": 3,
+      "norm_label": "jsx"
+    },
+    {
+      "label": "incremental",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L15",
+      "id": "dementia_tsconfig_compileroptions_incremental",
+      "community": 3,
+      "norm_label": "incremental"
+    },
+    {
+      "label": "plugins",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L16",
+      "id": "dementia_tsconfig_compileroptions_plugins",
+      "community": 3,
+      "norm_label": "plugins"
+    },
+    {
+      "label": "paths",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L21",
+      "id": "dementia_tsconfig_compileroptions_paths",
+      "community": 3,
+      "norm_label": "paths"
+    },
+    {
+      "label": "@/*",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L22",
+      "id": "dementia_tsconfig_paths",
+      "community": 3,
+      "norm_label": "@/*"
+    },
+    {
+      "label": "include",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L25",
+      "id": "dementia_tsconfig_include",
+      "community": 3,
+      "norm_label": "include"
+    },
+    {
+      "label": "exclude",
+      "file_type": "code",
+      "source_file": "tsconfig.json",
+      "source_location": "L33",
+      "id": "dementia_tsconfig_exclude",
+      "community": 3,
+      "norm_label": "exclude"
+    },
+    {
+      "label": "layout.tsx",
+      "file_type": "code",
+      "source_file": "app/layout.tsx",
+      "source_location": "L1",
+      "id": "app_layout_tsx",
+      "community": 9,
+      "norm_label": "layout.tsx"
+    },
+    {
+      "label": "lexend",
+      "file_type": "code",
+      "source_file": "app/layout.tsx",
+      "source_location": "L6",
+      "id": "app_layout_lexend",
+      "community": 9,
+      "norm_label": "lexend"
+    },
+    {
+      "label": "viewport",
+      "file_type": "code",
+      "source_file": "app/layout.tsx",
+      "source_location": "L13",
+      "id": "app_layout_viewport",
+      "community": 9,
+      "norm_label": "viewport"
+    },
+    {
+      "label": "metadata",
+      "file_type": "code",
+      "source_file": "app/layout.tsx",
+      "source_location": "L21",
+      "id": "app_layout_metadata",
+      "community": 9,
+      "norm_label": "metadata"
+    },
+    {
+      "label": "RootLayout()",
+      "file_type": "code",
+      "source_file": "app/layout.tsx",
+      "source_location": "L40",
+      "id": "app_layout_rootlayout",
+      "community": 9,
+      "norm_label": "rootlayout()"
+    },
+    {
+      "label": "page.tsx",
+      "file_type": "code",
+      "source_file": "app/page.tsx",
+      "source_location": "L1",
+      "id": "app_page_tsx",
+      "community": 14,
+      "norm_label": "page.tsx"
+    },
+    {
+      "label": "Home()",
+      "file_type": "code",
+      "source_file": "app/page.tsx",
+      "source_location": "L4",
+      "id": "app_page_home",
+      "community": 14,
+      "norm_label": "home()"
+    },
+    {
+      "label": "route.ts",
+      "file_type": "code",
+      "source_file": "app/api/generate-insights/route.ts",
+      "source_location": "L1",
+      "id": "app_api_generate_insights_route_ts",
+      "community": 11,
+      "norm_label": "route.ts"
+    },
+    {
+      "label": "groq",
+      "file_type": "code",
+      "source_file": "app/api/generate-insights/route.ts",
+      "source_location": "L6",
+      "id": "generate_insights_route_groq",
+      "community": 11,
+      "norm_label": "groq"
+    },
+    {
+      "label": "InsightSchema",
+      "file_type": "code",
+      "source_file": "app/api/generate-insights/route.ts",
+      "source_location": "L11",
+      "id": "generate_insights_route_insightschema",
+      "community": 11,
+      "norm_label": "insightschema"
+    },
+    {
+      "label": "GenerationSchema",
+      "file_type": "code",
+      "source_file": "app/api/generate-insights/route.ts",
+      "source_location": "L16",
+      "id": "generate_insights_route_generationschema",
+      "community": 11,
+      "norm_label": "generationschema"
+    },
+    {
+      "label": "POST()",
+      "file_type": "code",
+      "source_file": "app/api/generate-insights/route.ts",
+      "source_location": "L20",
+      "id": "generate_insights_route_post",
+      "community": 11,
+      "norm_label": "post()"
+    },
+    {
+      "label": "route.ts",
+      "file_type": "code",
+      "source_file": "app/api/generate-levels/route.ts",
+      "source_location": "L1",
+      "id": "app_api_generate_levels_route_ts",
+      "community": 7,
+      "norm_label": "route.ts"
+    },
+    {
+      "label": "groq",
+      "file_type": "code",
+      "source_file": "app/api/generate-levels/route.ts",
+      "source_location": "L9",
+      "id": "generate_levels_route_groq",
+      "community": 7,
+      "norm_label": "groq"
+    },
+    {
+      "label": "FALLBACK_ROUNDS",
+      "file_type": "code",
+      "source_file": "app/api/generate-levels/route.ts",
+      "source_location": "L15",
+      "id": "generate_levels_route_fallback_rounds",
+      "community": 7,
+      "norm_label": "fallback_rounds"
+    },
+    {
+      "label": "DOMAINS",
+      "file_type": "code",
+      "source_file": "app/api/generate-levels/route.ts",
+      "source_location": "L38",
+      "id": "generate_levels_route_domains",
+      "community": 7,
+      "norm_label": "domains"
+    },
+    {
+      "label": "GESTURES",
+      "file_type": "code",
+      "source_file": "app/api/generate-levels/route.ts",
+      "source_location": "L48",
+      "id": "generate_levels_route_gestures",
+      "community": 7,
+      "norm_label": "gestures"
+    },
+    {
+      "label": "RoundSchema",
+      "file_type": "code",
+      "source_file": "app/api/generate-levels/route.ts",
+      "source_location": "L55",
+      "id": "generate_levels_route_roundschema",
+      "community": 7,
+      "norm_label": "roundschema"
+    },
+    {
+      "label": "GenerationSchema",
+      "file_type": "code",
+      "source_file": "app/api/generate-levels/route.ts",
+      "source_location": "L66",
+      "id": "generate_levels_route_generationschema",
+      "community": 7,
+      "norm_label": "generationschema"
+    },
+    {
+      "label": "DifficultyProfile",
+      "file_type": "code",
+      "source_file": "app/api/generate-levels/route.ts",
+      "source_location": "L70",
+      "id": "generate_levels_route_difficultyprofile",
+      "community": 7,
+      "norm_label": "difficultyprofile"
+    },
+    {
+      "label": "determineDifficultyProfile()",
+      "file_type": "code",
+      "source_file": "app/api/generate-levels/route.ts",
+      "source_location": "L76",
+      "id": "generate_levels_route_determinedifficultyprofile",
+      "community": 7,
+      "norm_label": "determinedifficultyprofile()"
+    },
+    {
+      "label": "POST()",
+      "file_type": "code",
+      "source_file": "app/api/generate-levels/route.ts",
+      "source_location": "L96",
+      "id": "generate_levels_route_post",
+      "community": 7,
+      "norm_label": "post()"
+    },
+    {
+      "label": "route.ts",
+      "file_type": "code",
+      "source_file": "app/api/replenish-bank/route.ts",
+      "source_location": "L1",
+      "id": "app_api_replenish_bank_route_ts",
+      "community": 0,
+      "norm_label": "route.ts"
+    },
+    {
+      "label": "groq",
+      "file_type": "code",
+      "source_file": "app/api/replenish-bank/route.ts",
+      "source_location": "L5",
+      "id": "replenish_bank_route_groq",
+      "community": 0,
+      "norm_label": "groq"
+    },
+    {
+      "label": "RoundSchema",
+      "file_type": "code",
+      "source_file": "app/api/replenish-bank/route.ts",
+      "source_location": "L14",
+      "id": "replenish_bank_route_roundschema",
+      "community": 0,
+      "norm_label": "roundschema"
+    },
+    {
+      "label": "GenerationSchema",
+      "file_type": "code",
+      "source_file": "app/api/replenish-bank/route.ts",
+      "source_location": "L24",
+      "id": "replenish_bank_route_generationschema",
+      "community": 0,
+      "norm_label": "generationschema"
+    },
+    {
+      "label": "POST()",
+      "file_type": "code",
+      "source_file": "app/api/replenish-bank/route.ts",
+      "source_location": "L28",
+      "id": "replenish_bank_route_post",
+      "community": 0,
+      "norm_label": "post()"
+    },
+    {
+      "label": "route.ts",
+      "file_type": "code",
+      "source_file": "app/api/transcribe/route.ts",
+      "source_location": "L1",
+      "id": "app_api_transcribe_route_ts",
+      "community": 19,
+      "norm_label": "route.ts"
+    },
+    {
+      "label": "POST()",
+      "file_type": "code",
+      "source_file": "app/api/transcribe/route.ts",
+      "source_location": "L3",
+      "id": "transcribe_route_post",
+      "community": 19,
+      "norm_label": "post()"
+    },
+    {
+      "label": "route.ts",
+      "file_type": "code",
+      "source_file": "app/api/tts/route.ts",
+      "source_location": "L1",
+      "id": "app_api_tts_route_ts",
+      "community": 13,
+      "norm_label": "route.ts"
+    },
+    {
+      "label": "POST()",
+      "file_type": "code",
+      "source_file": "app/api/tts/route.ts",
+      "source_location": "L5",
+      "id": "tts_route_post",
+      "community": 13,
+      "norm_label": "post()"
+    },
+    {
+      "label": "page.tsx",
+      "file_type": "code",
+      "source_file": "app/caregiver/page.tsx",
+      "source_location": "L1",
+      "id": "app_caregiver_page_tsx",
+      "community": 0,
+      "norm_label": "page.tsx"
+    },
+    {
+      "label": "CaregiverPage()",
+      "file_type": "code",
+      "source_file": "app/caregiver/page.tsx",
+      "source_location": "L17",
+      "id": "caregiver_page_caregiverpage",
+      "community": 0,
+      "norm_label": "caregiverpage()"
+    },
+    {
+      "label": "page.tsx",
+      "file_type": "code",
+      "source_file": "app/patient/page.tsx",
+      "source_location": "L1",
+      "id": "app_patient_page_tsx",
+      "community": 2,
+      "norm_label": "page.tsx"
+    },
+    {
+      "label": "FlowState",
+      "file_type": "code",
+      "source_file": "app/patient/page.tsx",
+      "source_location": "L17",
+      "id": "patient_page_flowstate",
+      "community": 2,
+      "norm_label": "flowstate"
+    },
+    {
+      "label": "hashToScreen",
+      "file_type": "code",
+      "source_file": "app/patient/page.tsx",
+      "source_location": "L19",
+      "id": "patient_page_hashtoscreen",
+      "community": 2,
+      "norm_label": "hashtoscreen"
+    },
+    {
+      "label": "screenToHash",
+      "file_type": "code",
+      "source_file": "app/patient/page.tsx",
+      "source_location": "L42",
+      "id": "patient_page_screentohash",
+      "community": 2,
+      "norm_label": "screentohash"
+    },
+    {
+      "label": "PatientPage()",
+      "file_type": "code",
+      "source_file": "app/patient/page.tsx",
+      "source_location": "L53",
+      "id": "patient_page_patientpage",
+      "community": 2,
+      "norm_label": "patientpage()"
+    },
+    {
+      "label": "page.tsx",
+      "file_type": "code",
+      "source_file": "app/terms/page.tsx",
+      "source_location": "L1",
+      "id": "app_terms_page_tsx",
+      "community": 8,
+      "norm_label": "page.tsx"
+    },
+    {
+      "label": "TermsPage()",
+      "file_type": "code",
+      "source_file": "app/terms/page.tsx",
+      "source_location": "L4",
+      "id": "terms_page_termspage",
+      "community": 8,
+      "norm_label": "termspage()"
+    },
+    {
+      "label": "AutoLogin.tsx",
+      "file_type": "code",
+      "source_file": "components/AutoLogin.tsx",
+      "source_location": "L1",
+      "id": "components_autologin_tsx",
+      "community": 0,
+      "norm_label": "autologin.tsx"
+    },
+    {
+      "label": "AutoLogin()",
+      "file_type": "code",
+      "source_file": "components/AutoLogin.tsx",
+      "source_location": "L6",
+      "id": "components_autologin_autologin",
+      "community": 0,
+      "norm_label": "autologin()"
+    },
+    {
+      "label": "CaregiverDashboard.tsx",
+      "file_type": "code",
+      "source_file": "components/CaregiverDashboard.tsx",
+      "source_location": "L1",
+      "id": "components_caregiverdashboard_tsx",
+      "community": 6,
+      "norm_label": "caregiverdashboard.tsx"
+    },
+    {
+      "label": "GameSession",
+      "file_type": "code",
+      "source_file": "components/CaregiverDashboard.tsx",
+      "source_location": "L13",
+      "id": "components_caregiverdashboard_gamesession",
+      "community": 6,
+      "norm_label": "gamesession"
+    },
+    {
+      "label": "formatDate()",
+      "file_type": "code",
+      "source_file": "components/CaregiverDashboard.tsx",
+      "source_location": "L30",
+      "id": "components_caregiverdashboard_formatdate",
+      "community": 6,
+      "norm_label": "formatdate()"
+    },
+    {
+      "label": "pct()",
+      "file_type": "code",
+      "source_file": "components/CaregiverDashboard.tsx",
+      "source_location": "L36",
+      "id": "components_caregiverdashboard_pct",
+      "community": 6,
+      "norm_label": "pct()"
+    },
+    {
+      "label": "avg()",
+      "file_type": "code",
+      "source_file": "components/CaregiverDashboard.tsx",
+      "source_location": "L40",
+      "id": "components_caregiverdashboard_avg",
+      "community": 6,
+      "norm_label": "avg()"
+    },
+    {
+      "label": "MetricCardProps",
+      "file_type": "code",
+      "source_file": "components/CaregiverDashboard.tsx",
+      "source_location": "L48",
+      "id": "components_caregiverdashboard_metriccardprops",
+      "community": 6,
+      "norm_label": "metriccardprops"
+    },
+    {
+      "label": "MetricCard()",
+      "file_type": "code",
+      "source_file": "components/CaregiverDashboard.tsx",
+      "source_location": "L58",
+      "id": "components_caregiverdashboard_metriccard",
+      "community": 6,
+      "norm_label": "metriccard()"
+    },
+    {
+      "label": "TrendChartProps",
+      "file_type": "code",
+      "source_file": "components/CaregiverDashboard.tsx",
+      "source_location": "L121",
+      "id": "components_caregiverdashboard_trendchartprops",
+      "community": 6,
+      "norm_label": "trendchartprops"
+    },
+    {
+      "label": "TrendChart()",
+      "file_type": "code",
+      "source_file": "components/CaregiverDashboard.tsx",
+      "source_location": "L125",
+      "id": "components_caregiverdashboard_trendchart",
+      "community": 6,
+      "norm_label": "trendchart()"
+    },
+    {
+      "label": "InsightBadgeProps",
+      "file_type": "code",
+      "source_file": "components/CaregiverDashboard.tsx",
+      "source_location": "L238",
+      "id": "components_caregiverdashboard_insightbadgeprops",
+      "community": 6,
+      "norm_label": "insightbadgeprops"
+    },
+    {
+      "label": "InsightBadge()",
+      "file_type": "code",
+      "source_file": "components/CaregiverDashboard.tsx",
+      "source_location": "L240",
+      "id": "components_caregiverdashboard_insightbadge",
+      "community": 6,
+      "norm_label": "insightbadge()"
+    },
+    {
+      "label": "CaregiverDashboardProps",
+      "file_type": "code",
+      "source_file": "components/CaregiverDashboard.tsx",
+      "source_location": "L266",
+      "id": "components_caregiverdashboard_caregiverdashboardprops",
+      "community": 6,
+      "norm_label": "caregiverdashboardprops"
+    },
+    {
+      "label": "CaregiverDashboard()",
+      "file_type": "code",
+      "source_file": "components/CaregiverDashboard.tsx",
+      "source_location": "L274",
+      "id": "components_caregiverdashboard_caregiverdashboard",
+      "community": 6,
+      "norm_label": "caregiverdashboard()"
+    },
+    {
+      "label": "ConsentModal.tsx",
+      "file_type": "code",
+      "source_file": "components/ConsentModal.tsx",
+      "source_location": "L1",
+      "id": "components_consentmodal_tsx",
+      "community": 0,
+      "norm_label": "consentmodal.tsx"
+    },
+    {
+      "label": "ConsentModalProps",
+      "file_type": "code",
+      "source_file": "components/ConsentModal.tsx",
+      "source_location": "L6",
+      "id": "components_consentmodal_consentmodalprops",
+      "community": 0,
+      "norm_label": "consentmodalprops"
+    },
+    {
+      "label": "ConsentModal()",
+      "file_type": "code",
+      "source_file": "components/ConsentModal.tsx",
+      "source_location": "L11",
+      "id": "components_consentmodal_consentmodal",
+      "community": 0,
+      "norm_label": "consentmodal()"
+    },
+    {
+      "label": "DailySessionScreen.tsx",
+      "file_type": "code",
+      "source_file": "components/DailySessionScreen.tsx",
+      "source_location": "L1",
+      "id": "components_dailysessionscreen_tsx",
+      "community": 1,
+      "norm_label": "dailysessionscreen.tsx"
+    },
+    {
+      "label": "Step",
+      "file_type": "code",
+      "source_file": "components/DailySessionScreen.tsx",
+      "source_location": "L10",
+      "id": "components_dailysessionscreen_step",
+      "community": 1,
+      "norm_label": "step"
+    },
+    {
+      "label": "DailySessionScreenProps",
+      "file_type": "code",
+      "source_file": "components/DailySessionScreen.tsx",
+      "source_location": "L12",
+      "id": "components_dailysessionscreen_dailysessionscreenprops",
+      "community": 1,
+      "norm_label": "dailysessionscreenprops"
+    },
+    {
+      "label": "listenForVoice()",
+      "file_type": "code",
+      "source_file": "components/DailySessionScreen.tsx",
+      "source_location": "L21",
+      "id": "components_dailysessionscreen_listenforvoice",
+      "community": 1,
+      "norm_label": "listenforvoice()"
+    },
+    {
+      "label": "DailySessionScreen()",
+      "file_type": "code",
+      "source_file": "components/DailySessionScreen.tsx",
+      "source_location": "L57",
+      "id": "components_dailysessionscreen_dailysessionscreen",
+      "community": 1,
+      "norm_label": "dailysessionscreen()"
+    },
+    {
+      "label": "DeletePatientModal.tsx",
+      "file_type": "code",
+      "source_file": "components/DeletePatientModal.tsx",
+      "source_location": "L1",
+      "id": "components_deletepatientmodal_tsx",
+      "community": 0,
+      "norm_label": "deletepatientmodal.tsx"
+    },
+    {
+      "label": "Patient",
+      "file_type": "code",
+      "source_file": "components/DeletePatientModal.tsx",
+      "source_location": "L7",
+      "id": "components_deletepatientmodal_patient",
+      "community": 0,
+      "norm_label": "patient"
+    },
+    {
+      "label": "DeletePatientModalProps",
+      "file_type": "code",
+      "source_file": "components/DeletePatientModal.tsx",
+      "source_location": "L13",
+      "id": "components_deletepatientmodal_deletepatientmodalprops",
+      "community": 0,
+      "norm_label": "deletepatientmodalprops"
+    },
+    {
+      "label": "DeletePatientModal()",
+      "file_type": "code",
+      "source_file": "components/DeletePatientModal.tsx",
+      "source_location": "L20",
+      "id": "components_deletepatientmodal_deletepatientmodal",
+      "community": 0,
+      "norm_label": "deletepatientmodal()"
+    },
+    {
+      "label": "EditProfileModal.tsx",
+      "file_type": "code",
+      "source_file": "components/EditProfileModal.tsx",
+      "source_location": "L1",
+      "id": "components_editprofilemodal_tsx",
+      "community": 0,
+      "norm_label": "editprofilemodal.tsx"
+    },
+    {
+      "label": "Profile",
+      "file_type": "code",
+      "source_file": "components/EditProfileModal.tsx",
+      "source_location": "L6",
+      "id": "components_editprofilemodal_profile",
+      "community": 0,
+      "norm_label": "profile"
+    },
+    {
+      "label": "EditProfileModalProps",
+      "file_type": "code",
+      "source_file": "components/EditProfileModal.tsx",
+      "source_location": "L13",
+      "id": "components_editprofilemodal_editprofilemodalprops",
+      "community": 0,
+      "norm_label": "editprofilemodalprops"
+    },
+    {
+      "label": "EditProfileModal()",
+      "file_type": "code",
+      "source_file": "components/EditProfileModal.tsx",
+      "source_location": "L19",
+      "id": "components_editprofilemodal_editprofilemodal",
+      "community": 0,
+      "norm_label": "editprofilemodal()"
+    },
+    {
+      "label": "GameScreen.tsx",
+      "file_type": "code",
+      "source_file": "components/GameScreen.tsx",
+      "source_location": "L1",
+      "id": "components_gamescreen_tsx",
+      "community": 1,
+      "norm_label": "gamescreen.tsx"
+    },
+    {
+      "label": "Phase",
+      "file_type": "code",
+      "source_file": "components/GameScreen.tsx",
+      "source_location": "L12",
+      "id": "components_gamescreen_phase",
+      "community": 1,
+      "norm_label": "phase"
+    },
+    {
+      "label": "GestureType",
+      "file_type": "code",
+      "source_file": "components/GameScreen.tsx",
+      "source_location": "L23",
+      "id": "components_gamescreen_gesturetype",
+      "community": 1,
+      "norm_label": "gesturetype"
+    },
+    {
+      "label": "CameraStatus",
+      "file_type": "code",
+      "source_file": "components/GameScreen.tsx",
+      "source_location": "L25",
+      "id": "components_gamescreen_camerastatus",
+      "community": 1,
+      "norm_label": "camerastatus"
+    },
+    {
+      "label": "Round",
+      "file_type": "code",
+      "source_file": "components/GameScreen.tsx",
+      "source_location": "L27",
+      "id": "components_gamescreen_round",
+      "community": 1,
+      "norm_label": "round"
+    },
+    {
+      "label": "SessionResult",
+      "file_type": "code",
+      "source_file": "components/GameScreen.tsx",
+      "source_location": "L41",
+      "id": "components_gamescreen_sessionresult",
+      "community": 6,
+      "norm_label": "sessionresult"
+    },
+    {
+      "label": "ROUNDS",
+      "file_type": "code",
+      "source_file": "components/GameScreen.tsx",
+      "source_location": "L61",
+      "id": "components_gamescreen_rounds",
+      "community": 1,
+      "norm_label": "rounds"
+    },
+    {
+      "label": "LM",
+      "file_type": "code",
+      "source_file": "components/GameScreen.tsx",
+      "source_location": "L133",
+      "id": "components_gamescreen_lm",
+      "community": 1,
+      "norm_label": "lm"
+    },
+    {
+      "label": "Landmark",
+      "file_type": "code",
+      "source_file": "components/GameScreen.tsx",
+      "source_location": "L156",
+      "id": "components_gamescreen_landmark",
+      "community": 1,
+      "norm_label": "landmark"
+    },
+    {
+      "label": "isGestureActive()",
+      "file_type": "code",
+      "source_file": "components/GameScreen.tsx",
+      "source_location": "L158",
+      "id": "components_gamescreen_isgestureactive",
+      "community": 1,
+      "norm_label": "isgestureactive()"
+    },
+    {
+      "label": "GESTURE_LABELS",
+      "file_type": "code",
+      "source_file": "components/GameScreen.tsx",
+      "source_location": "L251",
+      "id": "components_gamescreen_gesture_labels",
+      "community": 1,
+      "norm_label": "gesture_labels"
+    },
+    {
+      "label": "GESTURE_PROMPTS",
+      "file_type": "code",
+      "source_file": "components/GameScreen.tsx",
+      "source_location": "L259",
+      "id": "components_gamescreen_gesture_prompts",
+      "community": 1,
+      "norm_label": "gesture_prompts"
+    },
+    {
+      "label": "GameScreenProps",
+      "file_type": "code",
+      "source_file": "components/GameScreen.tsx",
+      "source_location": "L271",
+      "id": "components_gamescreen_gamescreenprops",
+      "community": 1,
+      "norm_label": "gamescreenprops"
+    },
+    {
+      "label": "GameScreen()",
+      "file_type": "code",
+      "source_file": "components/GameScreen.tsx",
+      "source_location": "L281",
+      "id": "components_gamescreen_gamescreen",
+      "community": 1,
+      "norm_label": "gamescreen()"
+    },
+    {
+      "label": "GlobalLoader.tsx",
+      "file_type": "code",
+      "source_file": "components/GlobalLoader.tsx",
+      "source_location": "L1",
+      "id": "components_globalloader_tsx",
+      "community": 9,
+      "norm_label": "globalloader.tsx"
+    },
+    {
+      "label": "GlobalLoader()",
+      "file_type": "code",
+      "source_file": "components/GlobalLoader.tsx",
+      "source_location": "L6",
+      "id": "components_globalloader_globalloader",
+      "community": 9,
+      "norm_label": "globalloader()"
+    },
+    {
+      "label": "Header.tsx",
+      "file_type": "code",
+      "source_file": "components/Header.tsx",
+      "source_location": "L1",
+      "id": "components_header_tsx",
+      "community": 8,
+      "norm_label": "header.tsx"
+    },
+    {
+      "label": "HeaderProps",
+      "file_type": "code",
+      "source_file": "components/Header.tsx",
+      "source_location": "L8",
+      "id": "components_header_headerprops",
+      "community": 8,
+      "norm_label": "headerprops"
+    },
+    {
+      "label": "Header()",
+      "file_type": "code",
+      "source_file": "components/Header.tsx",
+      "source_location": "L21",
+      "id": "components_header_header",
+      "community": 8,
+      "norm_label": "header()"
+    },
+    {
+      "label": "LoginScreen.tsx",
+      "file_type": "code",
+      "source_file": "components/LoginScreen.tsx",
+      "source_location": "L1",
+      "id": "components_loginscreen_tsx",
+      "community": 0,
+      "norm_label": "loginscreen.tsx"
+    },
+    {
+      "label": "LoginScreenProps",
+      "file_type": "code",
+      "source_file": "components/LoginScreen.tsx",
+      "source_location": "L7",
+      "id": "components_loginscreen_loginscreenprops",
+      "community": 0,
+      "norm_label": "loginscreenprops"
+    },
+    {
+      "label": "LoginScreen()",
+      "file_type": "code",
+      "source_file": "components/LoginScreen.tsx",
+      "source_location": "L12",
+      "id": "components_loginscreen_loginscreen",
+      "community": 0,
+      "norm_label": "loginscreen()"
+    },
+    {
+      "label": "NoPatientModal.tsx",
+      "file_type": "code",
+      "source_file": "components/NoPatientModal.tsx",
+      "source_location": "L1",
+      "id": "components_nopatientmodal_tsx",
+      "community": 8,
+      "norm_label": "nopatientmodal.tsx"
+    },
+    {
+      "label": "NoPatientModalProps",
+      "file_type": "code",
+      "source_file": "components/NoPatientModal.tsx",
+      "source_location": "L6",
+      "id": "components_nopatientmodal_nopatientmodalprops",
+      "community": 8,
+      "norm_label": "nopatientmodalprops"
+    },
+    {
+      "label": "NoPatientModal()",
+      "file_type": "code",
+      "source_file": "components/NoPatientModal.tsx",
+      "source_location": "L12",
+      "id": "components_nopatientmodal_nopatientmodal",
+      "community": 8,
+      "norm_label": "nopatientmodal()"
+    },
+    {
+      "label": "PatientCheckInScreen.tsx",
+      "file_type": "code",
+      "source_file": "components/PatientCheckInScreen.tsx",
+      "source_location": "L1",
+      "id": "components_patientcheckinscreen_tsx",
+      "community": 2,
+      "norm_label": "patientcheckinscreen.tsx"
+    },
+    {
+      "label": "PatientCheckInScreen()",
+      "file_type": "code",
+      "source_file": "components/PatientCheckInScreen.tsx",
+      "source_location": "L3",
+      "id": "components_patientcheckinscreen_patientcheckinscreen",
+      "community": 2,
+      "norm_label": "patientcheckinscreen()"
+    },
+    {
+      "label": "PatientDiaryScreen.tsx",
+      "file_type": "code",
+      "source_file": "components/PatientDiaryScreen.tsx",
+      "source_location": "L1",
+      "id": "components_patientdiaryscreen_tsx",
+      "community": 2,
+      "norm_label": "patientdiaryscreen.tsx"
+    },
+    {
+      "label": "DiaryProps",
+      "file_type": "code",
+      "source_file": "components/PatientDiaryScreen.tsx",
+      "source_location": "L3",
+      "id": "components_patientdiaryscreen_diaryprops",
+      "community": 2,
+      "norm_label": "diaryprops"
+    },
+    {
+      "label": "PatientDiaryScreen()",
+      "file_type": "code",
+      "source_file": "components/PatientDiaryScreen.tsx",
+      "source_location": "L9",
+      "id": "components_patientdiaryscreen_patientdiaryscreen",
+      "community": 2,
+      "norm_label": "patientdiaryscreen()"
+    },
+    {
+      "label": "PatientHomeOverviewScreen.tsx",
+      "file_type": "code",
+      "source_file": "components/PatientHomeOverviewScreen.tsx",
+      "source_location": "L1",
+      "id": "components_patienthomeoverviewscreen_tsx",
+      "community": 2,
+      "norm_label": "patienthomeoverviewscreen.tsx"
+    },
+    {
+      "label": "OverviewProps",
+      "file_type": "code",
+      "source_file": "components/PatientHomeOverviewScreen.tsx",
+      "source_location": "L3",
+      "id": "components_patienthomeoverviewscreen_overviewprops",
+      "community": 2,
+      "norm_label": "overviewprops"
+    },
+    {
+      "label": "PatientHomeOverviewScreen()",
+      "file_type": "code",
+      "source_file": "components/PatientHomeOverviewScreen.tsx",
+      "source_location": "L15",
+      "id": "components_patienthomeoverviewscreen_patienthomeoverviewscreen",
+      "community": 2,
+      "norm_label": "patienthomeoverviewscreen()"
+    },
+    {
+      "label": "PatientMemoriesScreen.tsx",
+      "file_type": "code",
+      "source_file": "components/PatientMemoriesScreen.tsx",
+      "source_location": "L1",
+      "id": "components_patientmemoriesscreen_tsx",
+      "community": 1,
+      "norm_label": "patientmemoriesscreen.tsx"
+    },
+    {
+      "label": "MemoriesProps",
+      "file_type": "code",
+      "source_file": "components/PatientMemoriesScreen.tsx",
+      "source_location": "L4",
+      "id": "components_patientmemoriesscreen_memoriesprops",
+      "community": 1,
+      "norm_label": "memoriesprops"
+    },
+    {
+      "label": "MemoryCategory",
+      "file_type": "code",
+      "source_file": "components/PatientMemoriesScreen.tsx",
+      "source_location": "L10",
+      "id": "components_patientmemoriesscreen_memorycategory",
+      "community": 1,
+      "norm_label": "memorycategory"
+    },
+    {
+      "label": "PatientMemoriesScreen()",
+      "file_type": "code",
+      "source_file": "components/PatientMemoriesScreen.tsx",
+      "source_location": "L12",
+      "id": "components_patientmemoriesscreen_patientmemoriesscreen",
+      "community": 1,
+      "norm_label": "patientmemoriesscreen()"
+    },
+    {
+      "label": "PatientProfileForm.tsx",
+      "file_type": "code",
+      "source_file": "components/PatientProfileForm.tsx",
+      "source_location": "L1",
+      "id": "components_patientprofileform_tsx",
+      "community": 0,
+      "norm_label": "patientprofileform.tsx"
+    },
+    {
+      "label": "PatientProfileFormProps",
+      "file_type": "code",
+      "source_file": "components/PatientProfileForm.tsx",
+      "source_location": "L6",
+      "id": "components_patientprofileform_patientprofileformprops",
+      "community": 0,
+      "norm_label": "patientprofileformprops"
+    },
+    {
+      "label": "PatientProfileForm()",
+      "file_type": "code",
+      "source_file": "components/PatientProfileForm.tsx",
+      "source_location": "L11",
+      "id": "components_patientprofileform_patientprofileform",
+      "community": 0,
+      "norm_label": "patientprofileform()"
+    },
+    {
+      "label": "PatientWelcomeScreen.tsx",
+      "file_type": "code",
+      "source_file": "components/PatientWelcomeScreen.tsx",
+      "source_location": "L1",
+      "id": "components_patientwelcomescreen_tsx",
+      "community": 2,
+      "norm_label": "patientwelcomescreen.tsx"
+    },
+    {
+      "label": "WelcomeProps",
+      "file_type": "code",
+      "source_file": "components/PatientWelcomeScreen.tsx",
+      "source_location": "L4",
+      "id": "components_patientwelcomescreen_welcomeprops",
+      "community": 2,
+      "norm_label": "welcomeprops"
+    },
+    {
+      "label": "PatientWelcomeScreen()",
+      "file_type": "code",
+      "source_file": "components/PatientWelcomeScreen.tsx",
+      "source_location": "L10",
+      "id": "components_patientwelcomescreen_patientwelcomescreen",
+      "community": 2,
+      "norm_label": "patientwelcomescreen()"
+    },
+    {
+      "label": "StreakBanner.tsx",
+      "file_type": "code",
+      "source_file": "components/StreakBanner.tsx",
+      "source_location": "L1",
+      "id": "components_streakbanner_tsx",
+      "community": 2,
+      "norm_label": "streakbanner.tsx"
+    },
+    {
+      "label": "StreakBannerProps",
+      "file_type": "code",
+      "source_file": "components/StreakBanner.tsx",
+      "source_location": "L7",
+      "id": "components_streakbanner_streakbannerprops",
+      "community": 2,
+      "norm_label": "streakbannerprops"
+    },
+    {
+      "label": "StreakBanner()",
+      "file_type": "code",
+      "source_file": "components/StreakBanner.tsx",
+      "source_location": "L11",
+      "id": "components_streakbanner_streakbanner",
+      "community": 2,
+      "norm_label": "streakbanner()"
+    },
+    {
+      "label": "ThemeProvider.tsx",
+      "file_type": "code",
+      "source_file": "components/ThemeProvider.tsx",
+      "source_location": "L1",
+      "id": "components_themeprovider_tsx",
+      "community": 9,
+      "norm_label": "themeprovider.tsx"
+    },
+    {
+      "label": "ThemeProvider()",
+      "file_type": "code",
+      "source_file": "components/ThemeProvider.tsx",
+      "source_location": "L6",
+      "id": "components_themeprovider_themeprovider",
+      "community": 9,
+      "norm_label": "themeprovider()"
+    },
+    {
+      "label": "ThemeToggle.tsx",
+      "file_type": "code",
+      "source_file": "components/ThemeToggle.tsx",
+      "source_location": "L1",
+      "id": "components_themetoggle_tsx",
+      "community": 8,
+      "norm_label": "themetoggle.tsx"
+    },
+    {
+      "label": "ThemeToggle()",
+      "file_type": "code",
+      "source_file": "components/ThemeToggle.tsx",
+      "source_location": "L7",
+      "id": "components_themetoggle_themetoggle",
+      "community": 8,
+      "norm_label": "themetoggle()"
+    },
+    {
+      "label": "db.ts",
+      "file_type": "code",
+      "source_file": "lib/db.ts",
+      "source_location": "L1",
+      "id": "lib_db_ts",
+      "community": 0,
+      "norm_label": "db.ts"
+    },
+    {
+      "label": "saveGameSession()",
+      "file_type": "code",
+      "source_file": "lib/db.ts",
+      "source_location": "L4",
+      "id": "lib_db_savegamesession",
+      "community": 1,
+      "norm_label": "savegamesession()"
+    },
+    {
+      "label": "fetchPatientHistory()",
+      "file_type": "code",
+      "source_file": "lib/db.ts",
+      "source_location": "L58",
+      "id": "lib_db_fetchpatienthistory",
+      "community": 0,
+      "norm_label": "fetchpatienthistory()"
+    },
+    {
+      "label": "fetchPatientStreak()",
+      "file_type": "code",
+      "source_file": "lib/db.ts",
+      "source_location": "L91",
+      "id": "lib_db_fetchpatientstreak",
+      "community": 2,
+      "norm_label": "fetchpatientstreak()"
+    },
+    {
+      "label": "updatePatientStreak()",
+      "file_type": "code",
+      "source_file": "lib/db.ts",
+      "source_location": "L102",
+      "id": "lib_db_updatepatientstreak",
+      "community": 0,
+      "norm_label": "updatepatientstreak()"
+    },
+    {
+      "label": "fetchPatientPreferences()",
+      "file_type": "code",
+      "source_file": "lib/db.ts",
+      "source_location": "L176",
+      "id": "lib_db_fetchpatientpreferences",
+      "community": 2,
+      "norm_label": "fetchpatientpreferences()"
+    },
+    {
+      "label": "savePatientPreferences()",
+      "file_type": "code",
+      "source_file": "lib/db.ts",
+      "source_location": "L187",
+      "id": "lib_db_savepatientpreferences",
+      "community": 0,
+      "norm_label": "savepatientpreferences()"
+    },
+    {
+      "label": "stt.ts",
+      "file_type": "code",
+      "source_file": "lib/stt.ts",
+      "source_location": "L1",
+      "id": "lib_stt_ts",
+      "community": 1,
+      "norm_label": "stt.ts"
+    },
+    {
+      "label": "STTOptions",
+      "file_type": "code",
+      "source_file": "lib/stt.ts",
+      "source_location": "L6",
+      "id": "lib_stt_sttoptions",
+      "community": 1,
+      "norm_label": "sttoptions"
+    },
+    {
+      "label": "isWebSpeechSupported()",
+      "file_type": "code",
+      "source_file": "lib/stt.ts",
+      "source_location": "L22",
+      "id": "lib_stt_iswebspeechsupported",
+      "community": 1,
+      "norm_label": "iswebspeechsupported()"
+    },
+    {
+      "label": "stopSTT()",
+      "file_type": "code",
+      "source_file": "lib/stt.ts",
+      "source_location": "L30",
+      "id": "lib_stt_stopstt",
+      "community": 1,
+      "norm_label": "stopstt()"
+    },
+    {
+      "label": "startSTT()",
+      "file_type": "code",
+      "source_file": "lib/stt.ts",
+      "source_location": "L59",
+      "id": "lib_stt_startstt",
+      "community": 1,
+      "norm_label": "startstt()"
+    },
+    {
+      "label": "startWhisperRecorder()",
+      "file_type": "code",
+      "source_file": "lib/stt.ts",
+      "source_location": "L155",
+      "id": "lib_stt_startwhisperrecorder",
+      "community": 1,
+      "norm_label": "startwhisperrecorder()"
+    },
+    {
+      "label": "resolveSpokenChoice()",
+      "file_type": "code",
+      "source_file": "lib/stt.ts",
+      "source_location": "L227",
+      "id": "lib_stt_resolvespokenchoice",
+      "community": 1,
+      "norm_label": "resolvespokenchoice()"
+    },
+    {
+      "label": "supabase.ts",
+      "file_type": "code",
+      "source_file": "lib/supabase.ts",
+      "source_location": "L1",
+      "id": "lib_supabase_ts",
+      "community": 0,
+      "norm_label": "supabase.ts"
+    },
+    {
+      "label": "supabase",
+      "file_type": "code",
+      "source_file": "lib/supabase.ts",
+      "source_location": "L11",
+      "id": "lib_supabase_supabase",
+      "community": 0,
+      "norm_label": "supabase"
+    },
+    {
+      "label": "tts.ts",
+      "file_type": "code",
+      "source_file": "lib/tts.ts",
+      "source_location": "L1",
+      "id": "lib_tts_ts",
+      "community": 1,
+      "norm_label": "tts.ts"
+    },
+    {
+      "label": "speakListeners",
+      "file_type": "code",
+      "source_file": "lib/tts.ts",
+      "source_location": "L8",
+      "id": "lib_tts_speaklisteners",
+      "community": 1,
+      "norm_label": "speaklisteners"
+    },
+    {
+      "label": "audioBlobCache",
+      "file_type": "code",
+      "source_file": "lib/tts.ts",
+      "source_location": "L12",
+      "id": "lib_tts_audioblobcache",
+      "community": 1,
+      "norm_label": "audioblobcache"
+    },
+    {
+      "label": "pendingPrefetches",
+      "file_type": "code",
+      "source_file": "lib/tts.ts",
+      "source_location": "L13",
+      "id": "lib_tts_pendingprefetches",
+      "community": 1,
+      "norm_label": "pendingprefetches"
+    },
+    {
+      "label": "getTTSEnabled()",
+      "file_type": "code",
+      "source_file": "lib/tts.ts",
+      "source_location": "L17",
+      "id": "lib_tts_getttsenabled",
+      "community": 1,
+      "norm_label": "getttsenabled()"
+    },
+    {
+      "label": "setTTSEnabled()",
+      "file_type": "code",
+      "source_file": "lib/tts.ts",
+      "source_location": "L25",
+      "id": "lib_tts_setttsenabled",
+      "community": 1,
+      "norm_label": "setttsenabled()"
+    },
+    {
+      "label": "registerSpeakListener()",
+      "file_type": "code",
+      "source_file": "lib/tts.ts",
+      "source_location": "L36",
+      "id": "lib_tts_registerspeaklistener",
+      "community": 1,
+      "norm_label": "registerspeaklistener()"
+    },
+    {
+      "label": "stopSpeech()",
+      "file_type": "code",
+      "source_file": "lib/tts.ts",
+      "source_location": "L43",
+      "id": "lib_tts_stopspeech",
+      "community": 1,
+      "norm_label": "stopspeech()"
+    },
+    {
+      "label": "prefetchTTS()",
+      "file_type": "code",
+      "source_file": "lib/tts.ts",
+      "source_location": "L77",
+      "id": "lib_tts_prefetchtts",
+      "community": 1,
+      "norm_label": "prefetchtts()"
+    },
+    {
+      "label": "preloadCommonPhrases()",
+      "file_type": "code",
+      "source_file": "lib/tts.ts",
+      "source_location": "L109",
+      "id": "lib_tts_preloadcommonphrases",
+      "community": 1,
+      "norm_label": "preloadcommonphrases()"
+    },
+    {
+      "label": "speak()",
+      "file_type": "code",
+      "source_file": "lib/tts.ts",
+      "source_location": "L124",
+      "id": "lib_tts_speak",
+      "community": 1,
+      "norm_label": "speak()"
+    },
+    {
+      "label": "fallbackToSpeechSynthesis()",
+      "file_type": "code",
+      "source_file": "lib/tts.ts",
+      "source_location": "L217",
+      "id": "lib_tts_fallbacktospeechsynthesis",
+      "community": 1,
+      "norm_label": "fallbacktospeechsynthesis()"
+    },
+    {
+      "label": "manifest.json",
+      "file_type": "code",
+      "source_file": "public/manifest.json",
+      "source_location": "L1",
+      "id": "public_manifest_json",
+      "community": 10,
+      "norm_label": "manifest.json"
+    },
+    {
+      "label": "name",
+      "file_type": "code",
+      "source_file": "public/manifest.json",
+      "source_location": "L2",
+      "id": "public_manifest_name",
+      "community": 10,
+      "norm_label": "name"
+    },
+    {
+      "label": "short_name",
+      "file_type": "code",
+      "source_file": "public/manifest.json",
+      "source_location": "L3",
+      "id": "public_manifest_short_name",
+      "community": 10,
+      "norm_label": "short_name"
+    },
+    {
+      "label": "description",
+      "file_type": "code",
+      "source_file": "public/manifest.json",
+      "source_location": "L4",
+      "id": "public_manifest_description",
+      "community": 10,
+      "norm_label": "description"
+    },
+    {
+      "label": "start_url",
+      "file_type": "code",
+      "source_file": "public/manifest.json",
+      "source_location": "L5",
+      "id": "public_manifest_start_url",
+      "community": 10,
+      "norm_label": "start_url"
+    },
+    {
+      "label": "display",
+      "file_type": "code",
+      "source_file": "public/manifest.json",
+      "source_location": "L6",
+      "id": "public_manifest_display",
+      "community": 10,
+      "norm_label": "display"
+    },
+    {
+      "label": "background_color",
+      "file_type": "code",
+      "source_file": "public/manifest.json",
+      "source_location": "L7",
+      "id": "public_manifest_background_color",
+      "community": 10,
+      "norm_label": "background_color"
+    },
+    {
+      "label": "theme_color",
+      "file_type": "code",
+      "source_file": "public/manifest.json",
+      "source_location": "L8",
+      "id": "public_manifest_theme_color",
+      "community": 10,
+      "norm_label": "theme_color"
+    },
+    {
+      "label": "icons",
+      "file_type": "code",
+      "source_file": "public/manifest.json",
+      "source_location": "L9",
+      "id": "public_manifest_icons",
+      "community": 10,
+      "norm_label": "icons"
+    },
+    {
+      "label": "AGENTS.md",
+      "file_type": "document",
+      "source_file": "AGENTS.md",
+      "source_location": "L1",
+      "id": "agents_md",
+      "community": 23,
+      "norm_label": "agents.md"
+    },
+    {
+      "label": "This is NOT the Next.js you know",
+      "file_type": "document",
+      "source_file": "AGENTS.md",
+      "source_location": "L3",
+      "id": "dementia_agents_this_is_not_the_next_js_you_know",
+      "community": 23,
+      "norm_label": "this is not the next.js you know"
+    },
+    {
+      "label": "CLAUDE.md",
+      "file_type": "document",
+      "source_file": "CLAUDE.md",
+      "source_location": "L1",
+      "id": "claude_md",
+      "community": 26,
+      "norm_label": "claude.md"
+    },
+    {
+      "label": "README.md",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L1",
+      "id": "readme_md",
+      "community": 22,
+      "norm_label": "readme.md"
+    },
+    {
+      "label": "Supabase Configuration",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L156",
+      "id": "dementia_readme_supabase_configuration",
+      "community": 22,
+      "norm_label": "supabase configuration"
+    },
+    {
+      "label": "AI LLM Provider Configuration",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L161",
+      "id": "dementia_readme_ai_llm_provider_configuration",
+      "community": 22,
+      "norm_label": "ai llm provider configuration"
+    },
+    {
+      "label": "Application Settings",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L165",
+      "id": "dementia_readme_application_settings",
+      "community": 22,
+      "norm_label": "application settings"
+    },
+    {
+      "label": "graphify.md",
+      "file_type": "document",
+      "source_file": ".agents/rules/graphify.md",
+      "source_location": "L1",
+      "id": "agents_rules_graphify_md",
+      "community": 24,
+      "norm_label": "graphify.md"
+    },
+    {
+      "label": "graphify",
+      "file_type": "document",
+      "source_file": ".agents/rules/graphify.md",
+      "source_location": "L6",
+      "id": "rules_graphify_graphify",
+      "community": 24,
+      "norm_label": "graphify"
+    },
+    {
+      "label": "graphify.md",
+      "file_type": "document",
+      "source_file": ".agents/workflows/graphify.md",
+      "source_location": "L1",
+      "id": "agents_workflows_graphify_md",
+      "community": 25,
+      "norm_label": "graphify.md"
+    },
+    {
+      "label": "Workflow: graphify",
+      "file_type": "document",
+      "source_file": ".agents/workflows/graphify.md",
+      "source_location": "L6",
+      "id": "workflows_graphify_workflow_graphify",
+      "community": 25,
+      "norm_label": "workflow: graphify"
+    },
+    {
+      "label": "recordAndTranscribe()",
+      "file_type": "code",
+      "source_file": "components/DailySessionScreen.tsx",
+      "source_location": "L20",
+      "community": 1,
+      "norm_label": "recordandtranscribe()",
+      "id": "components_dailysessionscreen_recordandtranscribe"
+    },
+    {
+      "label": "Dual-Task Exergaming",
+      "file_type": "rationale",
+      "source_file": "README.md",
+      "source_location": "README.md:19",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "community": 12,
+      "norm_label": "dual-task exergaming",
+      "id": "readme_dual_task_exergaming"
+    },
+    {
+      "label": "Tom Kitwood's Person-Centered Care",
+      "file_type": "rationale",
+      "source_file": "README.md",
+      "source_location": "README.md:48",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "community": 18,
+      "norm_label": "tom kitwood's person-centered care",
+      "id": "readme_person_centered_care"
+    },
+    {
+      "label": "BDNF & Synaptogenesis",
+      "file_type": "rationale",
+      "source_file": "README.md",
+      "source_location": "README.md:47",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "community": 12,
+      "norm_label": "bdnf & synaptogenesis",
+      "id": "readme_bdnf_neuroplasticity"
+    },
+    {
+      "label": "Zero-Video-Retention (ZVR)",
+      "file_type": "rationale",
+      "source_file": "README.md",
+      "source_location": "README.md:108",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "community": 21,
+      "norm_label": "zero-video-retention (zvr)",
+      "id": "readme_zero_video_retention"
+    },
+    {
+      "label": "6-Step Daily Session Flow",
+      "file_type": "rationale",
+      "source_file": "README.md",
+      "source_location": "README.md:58",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "community": 12,
+      "norm_label": "6-step daily session flow",
+      "id": "readme_six_step_session_flow"
+    },
+    {
+      "label": "Anti-Repetition Prompt Engine",
+      "file_type": "rationale",
+      "source_file": "README.md",
+      "source_location": "README.md:23",
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "community": 18,
+      "norm_label": "anti-repetition prompt engine",
+      "id": "readme_anti_repetition_engine"
+    }
+  ],
+  "links": [
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "eslint.config.mjs",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "eslint_config_mjs",
+      "target": "dementia_eslint_config_eslintconfig"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "next.config.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "next_config_ts",
+      "target": "dementia_next_config_nextconfig"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "package_json",
+      "target": "dementia_package_dependencies"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L30",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "package_json",
+      "target": "dementia_package_devdependencies"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L2",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "package_json",
+      "target": "dementia_package_name"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "package_json",
+      "target": "dementia_package_private"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "package_json",
+      "target": "dementia_package_scripts"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "package_json",
+      "target": "dementia_package_version"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "dementia_package_scripts",
+      "target": "dementia_package_scripts_build"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "dementia_package_scripts",
+      "target": "dementia_package_scripts_dev"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "dementia_package_scripts",
+      "target": "dementia_package_scripts_lint"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L8",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "dementia_package_scripts",
+      "target": "dementia_package_scripts_start"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L19",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "dementia_package_dependencies",
+      "target": "dementia_package_dependencies_ai"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L12",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "dementia_package_dependencies",
+      "target": "dementia_package_dependencies_ai_sdk_google"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L13",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "dementia_package_dependencies",
+      "target": "dementia_package_dependencies_ai_sdk_openai"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L14",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "dementia_package_dependencies",
+      "target": "dementia_package_dependencies_heroicons_react"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L20",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "dementia_package_dependencies",
+      "target": "dementia_package_dependencies_jspdf"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L21",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "dementia_package_dependencies",
+      "target": "dementia_package_dependencies_jspdf_autotable"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L22",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "dementia_package_dependencies",
+      "target": "dementia_package_dependencies_lucide_react"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L15",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "dementia_package_dependencies",
+      "target": "dementia_package_dependencies_mediapipe_camera_utils"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L16",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "dementia_package_dependencies",
+      "target": "dementia_package_dependencies_mediapipe_drawing_utils"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L17",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "dementia_package_dependencies",
+      "target": "dementia_package_dependencies_mediapipe_pose"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L23",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "dementia_package_dependencies",
+      "target": "dementia_package_dependencies_next"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L24",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "dementia_package_dependencies",
+      "target": "dementia_package_dependencies_next_themes"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L25",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "dementia_package_dependencies",
+      "target": "dementia_package_dependencies_react"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L26",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "dementia_package_dependencies",
+      "target": "dementia_package_dependencies_react_dom"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L27",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "dementia_package_dependencies",
+      "target": "dementia_package_dependencies_recharts"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L18",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "dementia_package_dependencies",
+      "target": "dementia_package_dependencies_supabase_supabase_js"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L28",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "dementia_package_dependencies",
+      "target": "dementia_package_dependencies_zod"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L35",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "dementia_package_devdependencies",
+      "target": "dementia_package_devdependencies_eslint"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L36",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "dementia_package_devdependencies",
+      "target": "dementia_package_devdependencies_eslint_config_next"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L37",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "dementia_package_devdependencies",
+      "target": "dementia_package_devdependencies_tailwindcss"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L31",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "dementia_package_devdependencies",
+      "target": "dementia_package_devdependencies_tailwindcss_postcss"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L32",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "dementia_package_devdependencies",
+      "target": "dementia_package_devdependencies_types_node"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L33",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "dementia_package_devdependencies",
+      "target": "dementia_package_devdependencies_types_react"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L34",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "dementia_package_devdependencies",
+      "target": "dementia_package_devdependencies_types_react_dom"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "package.json",
+      "source_location": "L38",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "dementia_package_devdependencies",
+      "target": "dementia_package_devdependencies_typescript"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "postcss.config.mjs",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "postcss_config_mjs",
+      "target": "dementia_postcss_config_config"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L2",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "tsconfig_json",
+      "target": "dementia_tsconfig_compileroptions"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L33",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "tsconfig_json",
+      "target": "dementia_tsconfig_exclude"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L25",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "tsconfig_json",
+      "target": "dementia_tsconfig_include"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "dementia_tsconfig_compileroptions",
+      "target": "dementia_tsconfig_compileroptions_allowjs"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "dementia_tsconfig_compileroptions",
+      "target": "dementia_tsconfig_compileroptions_esmoduleinterop"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L15",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "dementia_tsconfig_compileroptions",
+      "target": "dementia_tsconfig_compileroptions_incremental"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L13",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "dementia_tsconfig_compileroptions",
+      "target": "dementia_tsconfig_compileroptions_isolatedmodules"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L14",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "dementia_tsconfig_compileroptions",
+      "target": "dementia_tsconfig_compileroptions_jsx"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "dementia_tsconfig_compileroptions",
+      "target": "dementia_tsconfig_compileroptions_lib"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L10",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "dementia_tsconfig_compileroptions",
+      "target": "dementia_tsconfig_compileroptions_module"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "dementia_tsconfig_compileroptions",
+      "target": "dementia_tsconfig_compileroptions_moduleresolution"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L8",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "dementia_tsconfig_compileroptions",
+      "target": "dementia_tsconfig_compileroptions_noemit"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L21",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "dementia_tsconfig_compileroptions",
+      "target": "dementia_tsconfig_compileroptions_paths"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L16",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "dementia_tsconfig_compileroptions",
+      "target": "dementia_tsconfig_compileroptions_plugins"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L12",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "dementia_tsconfig_compileroptions",
+      "target": "dementia_tsconfig_compileroptions_resolvejsonmodule"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "dementia_tsconfig_compileroptions",
+      "target": "dementia_tsconfig_compileroptions_skiplibcheck"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "dementia_tsconfig_compileroptions",
+      "target": "dementia_tsconfig_compileroptions_strict"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "dementia_tsconfig_compileroptions",
+      "target": "dementia_tsconfig_compileroptions_target"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tsconfig.json",
+      "source_location": "L22",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "dementia_tsconfig_compileroptions_paths",
+      "target": "dementia_tsconfig_paths"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/layout.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_layout_tsx",
+      "target": "app_layout_lexend"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/layout.tsx",
+      "source_location": "L21",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_layout_tsx",
+      "target": "app_layout_metadata"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/layout.tsx",
+      "source_location": "L40",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_layout_tsx",
+      "target": "app_layout_rootlayout"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/layout.tsx",
+      "source_location": "L13",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_layout_tsx",
+      "target": "app_layout_viewport"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/layout.tsx",
+      "source_location": "L37",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_layout_tsx",
+      "target": "components_autologin_tsx"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/layout.tsx",
+      "source_location": "L36",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_layout_tsx",
+      "target": "components_globalloader_tsx"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/layout.tsx",
+      "source_location": "L38",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_layout_tsx",
+      "target": "components_themeprovider_themeprovider"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/layout.tsx",
+      "source_location": "L38",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_layout_tsx",
+      "target": "components_themeprovider_tsx"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/page.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_page_tsx",
+      "target": "app_page_home"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/api/generate-insights/route.ts",
+      "source_location": "L16",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_api_generate_insights_route_ts",
+      "target": "generate_insights_route_generationschema"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/api/generate-insights/route.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_api_generate_insights_route_ts",
+      "target": "generate_insights_route_groq"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/api/generate-insights/route.ts",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_api_generate_insights_route_ts",
+      "target": "generate_insights_route_insightschema"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/api/generate-insights/route.ts",
+      "source_location": "L20",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_api_generate_insights_route_ts",
+      "target": "generate_insights_route_post"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/api/generate-insights/route.ts",
+      "source_location": "L47",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "generate_insights_route_post",
+      "target": "generate_insights_route_groq"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/api/generate-levels/route.ts",
+      "source_location": "L78",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_api_generate_levels_route_ts",
+      "target": "generate_levels_route_determinedifficultyprofile"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/api/generate-levels/route.ts",
+      "source_location": "L72",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_api_generate_levels_route_ts",
+      "target": "generate_levels_route_difficultyprofile"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/api/generate-levels/route.ts",
+      "source_location": "L38",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_api_generate_levels_route_ts",
+      "target": "generate_levels_route_domains"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/api/generate-levels/route.ts",
+      "source_location": "L15",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_api_generate_levels_route_ts",
+      "target": "generate_levels_route_fallback_rounds"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/api/generate-levels/route.ts",
+      "source_location": "L68",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_api_generate_levels_route_ts",
+      "target": "generate_levels_route_generationschema"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/api/generate-levels/route.ts",
+      "source_location": "L48",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_api_generate_levels_route_ts",
+      "target": "generate_levels_route_gestures"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/api/generate-levels/route.ts",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_api_generate_levels_route_ts",
+      "target": "generate_levels_route_groq"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/api/generate-levels/route.ts",
+      "source_location": "L98",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_api_generate_levels_route_ts",
+      "target": "generate_levels_route_post"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/api/generate-levels/route.ts",
+      "source_location": "L57",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_api_generate_levels_route_ts",
+      "target": "generate_levels_route_roundschema"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/api/generate-levels/route.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_api_generate_levels_route_ts",
+      "target": "lib_supabase_supabase"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/api/generate-levels/route.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_api_generate_levels_route_ts",
+      "target": "lib_supabase_ts"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/api/generate-levels/route.ts",
+      "source_location": "L181",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "generate_levels_route_post",
+      "target": "generate_levels_route_groq"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/api/generate-levels/route.ts",
+      "source_location": "L103",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "generate_levels_route_post",
+      "target": "generate_levels_route_determinedifficultyprofile"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/api/replenish-bank/route.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_api_replenish_bank_route_ts",
+      "target": "lib_supabase_supabase"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/api/replenish-bank/route.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_api_replenish_bank_route_ts",
+      "target": "lib_supabase_ts"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/api/replenish-bank/route.ts",
+      "source_location": "L24",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_api_replenish_bank_route_ts",
+      "target": "replenish_bank_route_generationschema"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/api/replenish-bank/route.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_api_replenish_bank_route_ts",
+      "target": "replenish_bank_route_groq"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/api/replenish-bank/route.ts",
+      "source_location": "L28",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_api_replenish_bank_route_ts",
+      "target": "replenish_bank_route_post"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/api/replenish-bank/route.ts",
+      "source_location": "L14",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_api_replenish_bank_route_ts",
+      "target": "replenish_bank_route_roundschema"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "app/api/replenish-bank/route.ts",
+      "source_location": "L56",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "replenish_bank_route_post",
+      "target": "replenish_bank_route_groq"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/api/transcribe/route.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_api_transcribe_route_ts",
+      "target": "transcribe_route_post"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/api/tts/route.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_api_tts_route_ts",
+      "target": "tts_route_post"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/caregiver/page.tsx",
+      "source_location": "L17",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_caregiver_page_tsx",
+      "target": "caregiver_page_caregiverpage"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/caregiver/page.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_caregiver_page_tsx",
+      "target": "components_caregiverdashboard_tsx"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/caregiver/page.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_caregiver_page_tsx",
+      "target": "components_consentmodal_tsx"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/caregiver/page.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_caregiver_page_tsx",
+      "target": "components_deletepatientmodal_tsx"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/caregiver/page.tsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_caregiver_page_tsx",
+      "target": "components_editprofilemodal_tsx"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/caregiver/page.tsx",
+      "source_location": "L14",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_caregiver_page_tsx",
+      "target": "components_header_tsx"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/caregiver/page.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_caregiver_page_tsx",
+      "target": "components_loginscreen_tsx"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/caregiver/page.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_caregiver_page_tsx",
+      "target": "components_patientprofileform_tsx"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/caregiver/page.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_caregiver_page_tsx",
+      "target": "lib_db_fetchpatienthistory"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/caregiver/page.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_caregiver_page_tsx",
+      "target": "lib_db_ts"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/caregiver/page.tsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_caregiver_page_tsx",
+      "target": "lib_supabase_supabase"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/caregiver/page.tsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_caregiver_page_tsx",
+      "target": "lib_supabase_ts"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/patient/page.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_patient_page_tsx",
+      "target": "components_dailysessionscreen_tsx"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/patient/page.tsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_patient_page_tsx",
+      "target": "components_header_tsx"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/patient/page.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_patient_page_tsx",
+      "target": "components_loginscreen_tsx"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/patient/page.tsx",
+      "source_location": "L12",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_patient_page_tsx",
+      "target": "components_patientcheckinscreen_tsx"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/patient/page.tsx",
+      "source_location": "L13",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_patient_page_tsx",
+      "target": "components_patientdiaryscreen_tsx"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/patient/page.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_patient_page_tsx",
+      "target": "components_patienthomeoverviewscreen_tsx"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/patient/page.tsx",
+      "source_location": "L14",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_patient_page_tsx",
+      "target": "components_patientmemoriesscreen_tsx"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/patient/page.tsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_patient_page_tsx",
+      "target": "components_patientwelcomescreen_tsx"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/patient/page.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_patient_page_tsx",
+      "target": "components_streakbanner_tsx"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/patient/page.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_patient_page_tsx",
+      "target": "lib_db_fetchpatienthistory"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/patient/page.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_patient_page_tsx",
+      "target": "lib_db_fetchpatientpreferences"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/patient/page.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_patient_page_tsx",
+      "target": "lib_db_ts"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/patient/page.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_patient_page_tsx",
+      "target": "lib_tts_getttsenabled"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/patient/page.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_patient_page_tsx",
+      "target": "lib_tts_setttsenabled"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/patient/page.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_patient_page_tsx",
+      "target": "lib_tts_ts"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/patient/page.tsx",
+      "source_location": "L16",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_patient_page_tsx",
+      "target": "patient_page_flowstate"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/patient/page.tsx",
+      "source_location": "L18",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_patient_page_tsx",
+      "target": "patient_page_hashtoscreen"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/patient/page.tsx",
+      "source_location": "L48",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_patient_page_tsx",
+      "target": "patient_page_patientpage"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/patient/page.tsx",
+      "source_location": "L37",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_patient_page_tsx",
+      "target": "patient_page_screentohash"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "app/terms/page.tsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_terms_page_tsx",
+      "target": "components_header_tsx"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "app/terms/page.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "app_terms_page_tsx",
+      "target": "terms_page_termspage"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/AutoLogin.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_autologin_tsx",
+      "target": "components_autologin_autologin"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/AutoLogin.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_autologin_tsx",
+      "target": "lib_supabase_supabase"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/AutoLogin.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_autologin_tsx",
+      "target": "lib_supabase_ts"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/CaregiverDashboard.tsx",
+      "source_location": "L40",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_caregiverdashboard_tsx",
+      "target": "components_caregiverdashboard_avg"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/CaregiverDashboard.tsx",
+      "source_location": "L274",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_caregiverdashboard_tsx",
+      "target": "components_caregiverdashboard_caregiverdashboard"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/CaregiverDashboard.tsx",
+      "source_location": "L266",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_caregiverdashboard_tsx",
+      "target": "components_caregiverdashboard_caregiverdashboardprops"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/CaregiverDashboard.tsx",
+      "source_location": "L30",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_caregiverdashboard_tsx",
+      "target": "components_caregiverdashboard_formatdate"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/CaregiverDashboard.tsx",
+      "source_location": "L13",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_caregiverdashboard_tsx",
+      "target": "components_caregiverdashboard_gamesession"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/CaregiverDashboard.tsx",
+      "source_location": "L240",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_caregiverdashboard_tsx",
+      "target": "components_caregiverdashboard_insightbadge"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/CaregiverDashboard.tsx",
+      "source_location": "L238",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_caregiverdashboard_tsx",
+      "target": "components_caregiverdashboard_insightbadgeprops"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/CaregiverDashboard.tsx",
+      "source_location": "L58",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_caregiverdashboard_tsx",
+      "target": "components_caregiverdashboard_metriccard"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/CaregiverDashboard.tsx",
+      "source_location": "L48",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_caregiverdashboard_tsx",
+      "target": "components_caregiverdashboard_metriccardprops"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/CaregiverDashboard.tsx",
+      "source_location": "L36",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_caregiverdashboard_tsx",
+      "target": "components_caregiverdashboard_pct"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/CaregiverDashboard.tsx",
+      "source_location": "L125",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_caregiverdashboard_tsx",
+      "target": "components_caregiverdashboard_trendchart"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/CaregiverDashboard.tsx",
+      "source_location": "L121",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_caregiverdashboard_tsx",
+      "target": "components_caregiverdashboard_trendchartprops"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/CaregiverDashboard.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_caregiverdashboard_tsx",
+      "target": "components_gamescreen_sessionresult"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/CaregiverDashboard.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_caregiverdashboard_tsx",
+      "target": "components_gamescreen_tsx"
+    },
+    {
+      "relation": "references",
+      "context": "field",
+      "confidence": "EXTRACTED",
+      "source_file": "components/CaregiverDashboard.tsx",
+      "source_location": "L17",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_caregiverdashboard_gamesession",
+      "target": "components_gamescreen_sessionresult"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "components/CaregiverDashboard.tsx",
+      "source_location": "L494",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_caregiverdashboard_caregiverdashboard",
+      "target": "components_caregiverdashboard_formatdate"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/ConsentModal.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_consentmodal_tsx",
+      "target": "components_consentmodal_consentmodal"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/ConsentModal.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_consentmodal_tsx",
+      "target": "components_consentmodal_consentmodalprops"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/DailySessionScreen.tsx",
+      "source_location": "L51",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_dailysessionscreen_tsx",
+      "target": "components_dailysessionscreen_dailysessionscreen"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/DailySessionScreen.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_dailysessionscreen_tsx",
+      "target": "components_dailysessionscreen_dailysessionscreenprops"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/DailySessionScreen.tsx",
+      "source_location": "L21",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_dailysessionscreen_tsx",
+      "target": "components_dailysessionscreen_listenforvoice"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/DailySessionScreen.tsx",
+      "source_location": "L20",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_dailysessionscreen_tsx",
+      "target": "components_dailysessionscreen_recordandtranscribe"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/DailySessionScreen.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_dailysessionscreen_tsx",
+      "target": "components_dailysessionscreen_step"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/DailySessionScreen.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_dailysessionscreen_tsx",
+      "target": "components_gamescreen_sessionresult"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/DailySessionScreen.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_dailysessionscreen_tsx",
+      "target": "components_gamescreen_tsx"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/DailySessionScreen.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_dailysessionscreen_tsx",
+      "target": "lib_db_savegamesession"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/DailySessionScreen.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_dailysessionscreen_tsx",
+      "target": "lib_db_ts"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/DailySessionScreen.tsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_dailysessionscreen_tsx",
+      "target": "lib_stt_startstt"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/DailySessionScreen.tsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_dailysessionscreen_tsx",
+      "target": "lib_stt_stopstt"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/DailySessionScreen.tsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_dailysessionscreen_tsx",
+      "target": "lib_stt_ts"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/DailySessionScreen.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_dailysessionscreen_tsx",
+      "target": "lib_tts_getttsenabled"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/DailySessionScreen.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_dailysessionscreen_tsx",
+      "target": "lib_tts_prefetchtts"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/DailySessionScreen.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_dailysessionscreen_tsx",
+      "target": "lib_tts_preloadcommonphrases"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/DailySessionScreen.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_dailysessionscreen_tsx",
+      "target": "lib_tts_registerspeaklistener"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/DailySessionScreen.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_dailysessionscreen_tsx",
+      "target": "lib_tts_setttsenabled"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/DailySessionScreen.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_dailysessionscreen_tsx",
+      "target": "lib_tts_speak"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/DailySessionScreen.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_dailysessionscreen_tsx",
+      "target": "lib_tts_stopspeech"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/DailySessionScreen.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_dailysessionscreen_tsx",
+      "target": "lib_tts_ts"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "components/DailySessionScreen.tsx",
+      "source_location": "L33",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_dailysessionscreen_listenforvoice",
+      "target": "lib_stt_startstt"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "components/DailySessionScreen.tsx",
+      "source_location": "L28",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_dailysessionscreen_listenforvoice",
+      "target": "lib_stt_stopstt"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/DeletePatientModal.tsx",
+      "source_location": "L20",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_deletepatientmodal_tsx",
+      "target": "components_deletepatientmodal_deletepatientmodal"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/DeletePatientModal.tsx",
+      "source_location": "L13",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_deletepatientmodal_tsx",
+      "target": "components_deletepatientmodal_deletepatientmodalprops"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/DeletePatientModal.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_deletepatientmodal_tsx",
+      "target": "components_deletepatientmodal_patient"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/DeletePatientModal.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_deletepatientmodal_tsx",
+      "target": "lib_supabase_supabase"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/DeletePatientModal.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_deletepatientmodal_tsx",
+      "target": "lib_supabase_ts"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/EditProfileModal.tsx",
+      "source_location": "L19",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_editprofilemodal_tsx",
+      "target": "components_editprofilemodal_editprofilemodal"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/EditProfileModal.tsx",
+      "source_location": "L13",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_editprofilemodal_tsx",
+      "target": "components_editprofilemodal_editprofilemodalprops"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/EditProfileModal.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_editprofilemodal_tsx",
+      "target": "components_editprofilemodal_profile"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/EditProfileModal.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_editprofilemodal_tsx",
+      "target": "lib_supabase_supabase"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/EditProfileModal.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_editprofilemodal_tsx",
+      "target": "lib_supabase_ts"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/GameScreen.tsx",
+      "source_location": "L24",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_gamescreen_tsx",
+      "target": "components_gamescreen_camerastatus"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/GameScreen.tsx",
+      "source_location": "L281",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_gamescreen_tsx",
+      "target": "components_gamescreen_gamescreen"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/GameScreen.tsx",
+      "source_location": "L271",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_gamescreen_tsx",
+      "target": "components_gamescreen_gamescreenprops"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/GameScreen.tsx",
+      "source_location": "L243",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_gamescreen_tsx",
+      "target": "components_gamescreen_gesture_labels"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/GameScreen.tsx",
+      "source_location": "L255",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_gamescreen_tsx",
+      "target": "components_gamescreen_gesture_prompts"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/GameScreen.tsx",
+      "source_location": "L22",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_gamescreen_tsx",
+      "target": "components_gamescreen_gesturetype"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/GameScreen.tsx",
+      "source_location": "L147",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_gamescreen_tsx",
+      "target": "components_gamescreen_isgestureactive"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/GameScreen.tsx",
+      "source_location": "L145",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_gamescreen_tsx",
+      "target": "components_gamescreen_landmark"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/GameScreen.tsx",
+      "source_location": "L128",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_gamescreen_tsx",
+      "target": "components_gamescreen_lm"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/GameScreen.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_gamescreen_tsx",
+      "target": "components_gamescreen_phase"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/GameScreen.tsx",
+      "source_location": "L26",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_gamescreen_tsx",
+      "target": "components_gamescreen_round"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/GameScreen.tsx",
+      "source_location": "L56",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_gamescreen_tsx",
+      "target": "components_gamescreen_rounds"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/GameScreen.tsx",
+      "source_location": "L39",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_gamescreen_tsx",
+      "target": "components_gamescreen_sessionresult"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/GameScreen.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_gamescreen_tsx",
+      "target": "lib_stt_resolvespokenchoice"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/GameScreen.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_gamescreen_tsx",
+      "target": "lib_stt_startstt"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/GameScreen.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_gamescreen_tsx",
+      "target": "lib_stt_stopstt"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/GameScreen.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_gamescreen_tsx",
+      "target": "lib_stt_ts"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/GameScreen.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_gamescreen_tsx",
+      "target": "lib_tts_getttsenabled"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/GameScreen.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_gamescreen_tsx",
+      "target": "lib_tts_prefetchtts"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/GameScreen.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_gamescreen_tsx",
+      "target": "lib_tts_preloadcommonphrases"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/GameScreen.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_gamescreen_tsx",
+      "target": "lib_tts_registerspeaklistener"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/GameScreen.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_gamescreen_tsx",
+      "target": "lib_tts_setttsenabled"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/GameScreen.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_gamescreen_tsx",
+      "target": "lib_tts_speak"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/GameScreen.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_gamescreen_tsx",
+      "target": "lib_tts_stopspeech"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/GameScreen.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_gamescreen_tsx",
+      "target": "lib_tts_ts"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/db.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_db_ts",
+      "target": "components_gamescreen_tsx"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/db.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_db_ts",
+      "target": "components_gamescreen_sessionresult"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/GlobalLoader.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_globalloader_tsx",
+      "target": "components_globalloader_globalloader"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/Header.tsx",
+      "source_location": "L21",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_header_tsx",
+      "target": "components_header_header"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/Header.tsx",
+      "source_location": "L8",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_header_tsx",
+      "target": "components_header_headerprops"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/Header.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_header_tsx",
+      "target": "components_nopatientmodal_tsx"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/Header.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_header_tsx",
+      "target": "components_themetoggle_themetoggle"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/Header.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_header_tsx",
+      "target": "components_themetoggle_tsx"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/LoginScreen.tsx",
+      "source_location": "L12",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_loginscreen_tsx",
+      "target": "components_loginscreen_loginscreen"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/LoginScreen.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_loginscreen_tsx",
+      "target": "components_loginscreen_loginscreenprops"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/LoginScreen.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_loginscreen_tsx",
+      "target": "lib_supabase_supabase"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/LoginScreen.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_loginscreen_tsx",
+      "target": "lib_supabase_ts"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/NoPatientModal.tsx",
+      "source_location": "L12",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_nopatientmodal_tsx",
+      "target": "components_nopatientmodal_nopatientmodal"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/NoPatientModal.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_nopatientmodal_tsx",
+      "target": "components_nopatientmodal_nopatientmodalprops"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/PatientCheckInScreen.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_patientcheckinscreen_tsx",
+      "target": "components_patientcheckinscreen_patientcheckinscreen"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/PatientDiaryScreen.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_patientdiaryscreen_tsx",
+      "target": "components_patientdiaryscreen_diaryprops"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/PatientDiaryScreen.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_patientdiaryscreen_tsx",
+      "target": "components_patientdiaryscreen_patientdiaryscreen"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/PatientHomeOverviewScreen.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_patienthomeoverviewscreen_tsx",
+      "target": "components_patienthomeoverviewscreen_overviewprops"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/PatientHomeOverviewScreen.tsx",
+      "source_location": "L15",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_patienthomeoverviewscreen_tsx",
+      "target": "components_patienthomeoverviewscreen_patienthomeoverviewscreen"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/PatientMemoriesScreen.tsx",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_patientmemoriesscreen_tsx",
+      "target": "components_patientmemoriesscreen_memoriesprops"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/PatientMemoriesScreen.tsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_patientmemoriesscreen_tsx",
+      "target": "components_patientmemoriesscreen_memorycategory"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/PatientMemoriesScreen.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_patientmemoriesscreen_tsx",
+      "target": "components_patientmemoriesscreen_patientmemoriesscreen"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/PatientMemoriesScreen.tsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_patientmemoriesscreen_tsx",
+      "target": "lib_tts_speak"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/PatientMemoriesScreen.tsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_patientmemoriesscreen_tsx",
+      "target": "lib_tts_stopspeech"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/PatientMemoriesScreen.tsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_patientmemoriesscreen_tsx",
+      "target": "lib_tts_ts"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/PatientProfileForm.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_patientprofileform_tsx",
+      "target": "components_patientprofileform_patientprofileform"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/PatientProfileForm.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_patientprofileform_tsx",
+      "target": "components_patientprofileform_patientprofileformprops"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/PatientProfileForm.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_patientprofileform_tsx",
+      "target": "lib_supabase_supabase"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/PatientProfileForm.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_patientprofileform_tsx",
+      "target": "lib_supabase_ts"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/PatientWelcomeScreen.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_patientwelcomescreen_tsx",
+      "target": "components_patientwelcomescreen_patientwelcomescreen"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/PatientWelcomeScreen.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_patientwelcomescreen_tsx",
+      "target": "components_patientwelcomescreen_welcomeprops"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/PatientWelcomeScreen.tsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_patientwelcomescreen_tsx",
+      "target": "lib_db_fetchpatientstreak"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/PatientWelcomeScreen.tsx",
+      "source_location": "L2",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_patientwelcomescreen_tsx",
+      "target": "lib_db_ts"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/StreakBanner.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_streakbanner_tsx",
+      "target": "components_streakbanner_streakbanner"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/StreakBanner.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_streakbanner_tsx",
+      "target": "components_streakbanner_streakbannerprops"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/StreakBanner.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_streakbanner_tsx",
+      "target": "lib_db_fetchpatientstreak"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "components/StreakBanner.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_streakbanner_tsx",
+      "target": "lib_db_ts"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/ThemeProvider.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_themeprovider_tsx",
+      "target": "components_themeprovider_themeprovider"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "components/ThemeToggle.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "components_themetoggle_tsx",
+      "target": "components_themetoggle_themetoggle"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/db.ts",
+      "source_location": "L58",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_db_ts",
+      "target": "lib_db_fetchpatienthistory"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/db.ts",
+      "source_location": "L176",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_db_ts",
+      "target": "lib_db_fetchpatientpreferences"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/db.ts",
+      "source_location": "L91",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_db_ts",
+      "target": "lib_db_fetchpatientstreak"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/db.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_db_ts",
+      "target": "lib_db_savegamesession"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/db.ts",
+      "source_location": "L187",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_db_ts",
+      "target": "lib_db_savepatientpreferences"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/db.ts",
+      "source_location": "L102",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_db_ts",
+      "target": "lib_db_updatepatientstreak"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/db.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_db_ts",
+      "target": "lib_supabase_supabase"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/db.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_db_ts",
+      "target": "lib_supabase_ts"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/stt.ts",
+      "source_location": "L22",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_stt_ts",
+      "target": "lib_stt_iswebspeechsupported"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/stt.ts",
+      "source_location": "L224",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_stt_ts",
+      "target": "lib_stt_resolvespokenchoice"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/stt.ts",
+      "source_location": "L59",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_stt_ts",
+      "target": "lib_stt_startstt"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/stt.ts",
+      "source_location": "L152",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_stt_ts",
+      "target": "lib_stt_startwhisperrecorder"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/stt.ts",
+      "source_location": "L30",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_stt_ts",
+      "target": "lib_stt_stopstt"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/stt.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_stt_ts",
+      "target": "lib_stt_sttoptions"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/stt.ts",
+      "source_location": "L66",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_stt_startstt",
+      "target": "lib_stt_iswebspeechsupported"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/stt.ts",
+      "source_location": "L60",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_stt_startstt",
+      "target": "lib_stt_stopstt"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/stt.ts",
+      "source_location": "L145",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_stt_startstt",
+      "target": "lib_stt_startwhisperrecorder"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/supabase.ts",
+      "source_location": "L11",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_supabase_ts",
+      "target": "lib_supabase_supabase"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/tts.ts",
+      "source_location": "L12",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_tts_ts",
+      "target": "lib_tts_audioblobcache"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/tts.ts",
+      "source_location": "L177",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_tts_ts",
+      "target": "lib_tts_fallbacktospeechsynthesis"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/tts.ts",
+      "source_location": "L17",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_tts_ts",
+      "target": "lib_tts_getttsenabled"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/tts.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_tts_ts",
+      "target": "lib_tts_pendingprefetches"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/tts.ts",
+      "source_location": "L54",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_tts_ts",
+      "target": "lib_tts_prefetchtts"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/tts.ts",
+      "source_location": "L81",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_tts_ts",
+      "target": "lib_tts_preloadcommonphrases"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/tts.ts",
+      "source_location": "L15",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_tts_ts",
+      "target": "lib_tts_registerspeaklistener"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/tts.ts",
+      "source_location": "L25",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_tts_ts",
+      "target": "lib_tts_setttsenabled"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/tts.ts",
+      "source_location": "L96",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_tts_ts",
+      "target": "lib_tts_speak"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/tts.ts",
+      "source_location": "L8",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_tts_ts",
+      "target": "lib_tts_speaklisteners"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/tts.ts",
+      "source_location": "L22",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_tts_ts",
+      "target": "lib_tts_stopspeech"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/tts.ts",
+      "source_location": "L78",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_tts_prefetchtts",
+      "target": "lib_tts_getttsenabled"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/tts.ts",
+      "source_location": "L131",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_tts_speak",
+      "target": "lib_tts_getttsenabled"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/tts.ts",
+      "source_location": "L32",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_tts_setttsenabled",
+      "target": "lib_tts_stopspeech"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/tts.ts",
+      "source_location": "L103",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_tts_speak",
+      "target": "lib_tts_stopspeech"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "lib/tts.ts",
+      "source_location": "L193",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "lib_tts_fallbacktospeechsynthesis",
+      "target": "lib_tts_speak"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "public/manifest.json",
+      "source_location": "L7",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "public_manifest_json",
+      "target": "public_manifest_background_color"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "public/manifest.json",
+      "source_location": "L4",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "public_manifest_json",
+      "target": "public_manifest_description"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "public/manifest.json",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "public_manifest_json",
+      "target": "public_manifest_display"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "public/manifest.json",
+      "source_location": "L9",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "public_manifest_json",
+      "target": "public_manifest_icons"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "public/manifest.json",
+      "source_location": "L2",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "public_manifest_json",
+      "target": "public_manifest_name"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "public/manifest.json",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "public_manifest_json",
+      "target": "public_manifest_short_name"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "public/manifest.json",
+      "source_location": "L5",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "public_manifest_json",
+      "target": "public_manifest_start_url"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "public/manifest.json",
+      "source_location": "L8",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "public_manifest_json",
+      "target": "public_manifest_theme_color"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "AGENTS.md",
+      "source_location": "L3",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "agents_md",
+      "target": "dementia_agents_this_is_not_the_next_js_you_know"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L161",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "readme_md",
+      "target": "dementia_readme_ai_llm_provider_configuration"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L165",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "readme_md",
+      "target": "dementia_readme_application_settings"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L156",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "readme_md",
+      "target": "dementia_readme_supabase_configuration"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".agents/rules/graphify.md",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "agents_rules_graphify_md",
+      "target": "rules_graphify_graphify"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".agents/workflows/graphify.md",
+      "source_location": "L6",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "agents_workflows_graphify_md",
+      "target": "workflows_graphify_workflow_graphify"
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": "README.md:37-47",
+      "weight": 1.0,
+      "source": "readme_dual_task_exergaming",
+      "target": "readme_bdnf_neuroplasticity"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md",
+      "source_location": "README.md:64",
+      "weight": 1.0,
+      "source": "readme_six_step_session_flow",
+      "target": "readme_dual_task_exergaming"
+    },
+    {
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "README.md",
+      "source_location": "README.md:22-23",
+      "weight": 0.85,
+      "source": "readme_person_centered_care",
+      "target": "readme_anti_repetition_engine"
+    }
+  ],
+  "hyperedges": [
+    {
+      "id": "clinical_foundation_flow",
+      "label": "Clinical Neuroplasticity Foundation",
+      "nodes": [
+        "readme_dual_task_exergaming",
+        "readme_bdnf_neuroplasticity",
+        "readme_person_centered_care"
+      ],
+      "relation": "form",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md"
+    }
+  ],
+  "built_at_commit": "0f995b26c9449a791d97614dfbc803cb4f81d379"
+}

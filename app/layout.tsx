@@ -19,14 +19,14 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: 'Care Companion | Gentle Cognitive Support',
+  title: 'Cognia | Gentle Cognitive Support',
   description: 'An accessible, calming interactive companion for cognitive wellness and memory support.',
   manifest: '/manifest.json',
-  applicationName: 'Care Companion',
+  applicationName: 'Cognia',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
-    title: 'Care Companion',
+    title: 'Cognia',
   },
   formatDetection: {
     telephone: true,
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
 };
 
 import GlobalLoader from '@/components/GlobalLoader';
-
+import AutoLogin from '@/components/AutoLogin';
 import { ThemeProvider } from '@/components/ThemeProvider';
 
 export default function RootLayout({
@@ -46,6 +46,7 @@ export default function RootLayout({
     <html lang="en" className={lexend.variable} suppressHydrationWarning>
       <body className="font-sans min-h-screen flex flex-col bg-surface-light text-content-primary selection:bg-accessible-blue selection:text-white transition-colors duration-300">
         <ThemeProvider attribute="class" defaultTheme="light">
+          <AutoLogin />
           <GlobalLoader>
             {/* Accessible skip link for keyboard & screen reader accessibility */}
             <a

@@ -11,14 +11,14 @@ const groq = createOpenAI({
   apiKey: process.env.GROQ_API_KEY,
 })
 
-// Comprehensive fallback rounds
+// Short, clear fallback rounds with proper options
 const FALLBACK_ROUNDS = [
   {
     domain: 'Episodic Memory',
     physical_instruction: 'Raise your LEFT hand',
-    cognitive_question: 'Which season comes right after winter?',
+    cognitive_question: 'Which season comes after winter?',
     correct_answer: 'Spring',
-    choices: ['Summer', 'Spring', 'Autumn', 'Fall'],
+    choices: ['Spring', 'Summer', 'Autumn', 'Winter'],
     gesture: 'left-raise',
     difficulty: 'easy',
     level: 1,
@@ -26,32 +26,33 @@ const FALLBACK_ROUNDS = [
   {
     domain: 'Language',
     physical_instruction: 'Raise your RIGHT hand',
-    cognitive_question: "What is the opposite of 'Warm'?",
+    cognitive_question: "What is the opposite of 'Hot'?",
     correct_answer: 'Cold',
-    choices: ['Hot', 'Cold', 'Cool', 'Freezing'],
+    choices: ['Cold', 'Warm', 'Sunny', 'Bright'],
     gesture: 'right-raise',
     difficulty: 'easy',
     level: 1,
-  }
-]
-
-const DOMAINS = [
-  'Episodic Memory',
-  'Language',
-  'Orientation',
-  'Visuospatial',
-  'Attention',
-  'Working Memory',
-  'Executive Function'
-]
-
-const GESTURES = [
-  { gesture: 'left-raise', instruction: 'Raise your LEFT hand' },
-  { gesture: 'right-raise', instruction: 'Raise your RIGHT hand' },
-  { gesture: 'both-raise', instruction: 'Raise BOTH hands' },
-  { gesture: 'shoulder-touch', instruction: 'Touch BOTH shoulders with opposite hands' },
-  { gesture: 'head-tilt-left', instruction: 'Tilt your head to the LEFT' },
-  { gesture: 'head-tilt-right', instruction: 'Tilt your head to the RIGHT' }
+  },
+  {
+    domain: 'Visuospatial',
+    physical_instruction: 'Raise BOTH hands',
+    cognitive_question: 'Which object is shaped like a circle?',
+    correct_answer: 'Coin',
+    choices: ['Coin', 'Book', 'Box', 'Door'],
+    gesture: 'both-raise',
+    difficulty: 'easy',
+    level: 1,
+  },
+  {
+    domain: 'Orientation',
+    physical_instruction: 'Touch both hands to your ears',
+    cognitive_question: 'What meal is eaten in the morning?',
+    correct_answer: 'Breakfast',
+    choices: ['Breakfast', 'Lunch', 'Dinner', 'Snack'],
+    gesture: 'ear-cover',
+    difficulty: 'easy',
+    level: 1,
+  },
 ]
 
 const RoundSchema = z.object({
@@ -60,7 +61,7 @@ const RoundSchema = z.object({
   cognitiveQuestion: z.string(),
   correctAnswer: z.string(),
   choices: z.array(z.string()).length(4),
-  gesture: z.enum(['left-raise', 'right-raise', 'both-raise', 'shoulder-touch', 'head-tilt-left', 'head-tilt-right', 'nose-touch', 'ear-cover', 'none']),
+  gesture: z.enum(['left-raise', 'right-raise', 'both-raise', 'ear-cover', 'none']),
   difficulty: z.enum(['easy', 'medium', 'hard']),
   level: z.number().int().min(1).max(3)
 })
@@ -98,7 +99,7 @@ function determineDifficultyProfile(history: any[]): DifficultyProfile {
 export async function POST(req: Request) {
   try {
     const body = await req.json().catch(() => ({}))
-    const { history, patientId, recentQuestions = [], randomSeed, forcedTopic } = body
+    const { history, patientId, recentQuestions = [], randomSeed } = body
 
     const profile = determineDifficultyProfile(history)
 
@@ -109,7 +110,6 @@ export async function POST(req: Request) {
       if (data?.preferences) preferences = data.preferences
     }
 
-    // Inject mock personal details if they don't exist to ensure Category 26 always works
     if (!preferences.address) {
       preferences = {
         ...preferences,
@@ -120,7 +120,7 @@ export async function POST(req: Request) {
           { relation: "Son", name: "David" },
           { relation: "Grandson", name: "Leo" }
         ],
-        favorite_drink: "Assam Tea",
+        favorite_drink: "Tea",
         favorite_activity: "Gardening"
       }
     }
@@ -132,69 +132,101 @@ export async function POST(req: Request) {
       : '[]'
 
     const prompt = `
-      You are an empathetic, warm, and conversational AI Caregiver playing a daily brain game with a dementia patient.
-      Generate a set of exactly 7 cognitive dual-task rounds.
+      You are an expert game designer creating cognitive exercises for seniors with mild cognitive impairment.
+      Generate exactly 7 dual-task rounds.
       Target difficulty: ${profile.difficulty.toUpperCase()} (Level ${profile.userLevel}).
-      Current Time: ${new Date().toISOString()}
-      Random Seed (to ensure anti-repetition): ${randomSeed || new Date().getTime()}
-      Forced Contextual Topic: ${forcedTopic || 'Daily Life'}
+      Random Seed: ${randomSeed || Date.now()}
       
-      CRITICAL PERSONALIZATION DATA:
+      PATIENT PERSONALIZATION:
       ${prefsString}
 
-      Requirements:
-      1. EXACTLY 7 rounds. Randomize the order of the categories below so they never appear in the same sequence.
-      2. ANTI-REPETITION & TONE: DO NOT REPEAT exact phrases. Use highly varied, conversational phrasing for the 'cognitiveQuestion'. 
-         CRITICAL INSTRUCTION: You must NOT generate questions that are similar to the following recently asked questions: 
-         ${recentQuestionsStr}
-         Generate entirely new scenarios, different everyday objects, and new conversational framing centered around the Forced Contextual Topic: "${forcedTopic || 'Daily Life'}".
-         - BAD: "What is your daughter's name?"
-         - GOOD: "I was looking at some photos earlier. Could you remind me what your daughter's name is?"
-         - BAD: "Which of these is a tool?"
-         - GOOD: "I'm trying to fix a loose screw on the chair. Which of these should I use?"
-      3. REQUIRED CATEGORIES (mix them among the 7 rounds):
-         - Object Matching (Visuospatial/Executive): Ask about everyday objects related to their preferences. Physical gesture MUST BE: 'nose-touch'.
-         - Personal Information Recall (Episodic Memory): Ask about their address, phone number, or family members using the personalization data. Physical gesture MUST BE: 'ear-cover'.
-         - Fill the remaining 5 rounds with diverse domains (Language, Orientation, Attention, Working Memory, etc.).
-      4. Gestures and Exact Instructions to use (distribute evenly):
-         - left-raise (Raise your LEFT hand)
-         - right-raise (Raise your RIGHT hand)
-         - both-raise (Raise BOTH hands)
-         - shoulder-touch (Touch BOTH shoulders with opposite hands)
-         - head-tilt-left (Tilt your head to the LEFT)
-         - head-tilt-right (Tilt your head to the RIGHT)
-         - nose-touch (Touch your nose)
-         - ear-cover (Cover your ears)
-      5. The 'choices' array MUST have exactly 4 items, one of which MUST be the exact 'correctAnswer'.
-      6. For Personal Information Recall, the 1 correct answer MUST be the exact real data provided above, and the 3 distractors must be plausible but incorrect (e.g. fake names, fake streets).
+      CRITICAL RULES FOR QUESTIONS:
+      1. KEEP QUESTIONS SHORT, DIRECT, AND STRAIGHT TO THE POINT (MAXIMUM 5 TO 7 WORDS).
+      2. ABSOLUTELY NO NARRATIVE STORIES, FLUFF, OR PREAMBLES.
+         - Good: "What is your daughter's name?"
+         - Good: "Which tool turns a screw?"
+         - Good: "What meal is eaten in the morning?"
+         - Good: "Which season comes after winter?"
+         - Good: "What is the opposite of 'Hot'?"
+         - Good: "Which object is shaped like a circle?"
+         - Good: "What color is a ripe banana?"
+      
+      CRITICAL RULES FOR OPTIONS / CHOICES:
+      1. Every choice in "choices" MUST be short (1 to 2 words max).
+      2. All 4 choices MUST be from the EXACT same semantic category as the correct answer.
+         - If asking for a season, choices must be 4 distinct seasons: ["Spring", "Summer", "Autumn", "Winter"].
+         - If asking for a meal, choices must be 4 distinct meals: ["Breakfast", "Lunch", "Dinner", "Snack"].
+         - If asking for an opposite of 'Hot', choices must be 4 temperature words: ["Cold", "Warm", "Cool", "Sunny"].
+         - If asking for a daughter's name, choices must be 4 female names: ["Sarah", "Emily", "Laura", "Anna"].
+         - If asking for a shape/circle, choices must be 4 everyday objects: ["Coin", "Book", "Box", "Door"].
+      3. Exactly one choice in "choices" MUST match "correctAnswer" character-for-character.
+      4. Never give nonsensical, duplicate, or unrelated choices.
+
+      REQUIRED DOMAINS TO MIX:
+      - Object Recognition (Visuospatial) -> Gesture: 'both-raise'
+      - Personal Memory (Episodic) -> Gesture: 'ear-cover'
+      - Language / Opposites -> Gesture: 'left-raise'
+      - Orientation / Time / Season -> Gesture: 'right-raise'
+      - Attention / Simple Numbers -> Gesture: 'both-raise'
+
+      GESTURES & PHYSICAL INSTRUCTIONS (strictly limited to these 4 only):
+      - 'left-raise' -> "Raise your LEFT hand"
+      - 'right-raise' -> "Raise your RIGHT hand"
+      - 'both-raise' -> "Raise BOTH hands"
+      - 'ear-cover' -> "Touch both hands to your ears"
+
+      Do NOT repeat these recent questions: ${recentQuestionsStr}
     `
 
     let finalLevels: any[] = []
     let isPersonalized = false
 
-    try {
-      if (!process.env.GROQ_API_KEY) {
-        throw new Error('No Groq API key')
+    const candidateModels = ['llama-3.1-8b-instant', 'qwen/qwen3.8-27b', 'gemma2-9b-it', 'llama-3.3-70b-versatile']
+
+    if (process.env.GROQ_API_KEY) {
+      for (const modelName of candidateModels) {
+        try {
+          const result = await generateObject({
+            model: groq(modelName),
+            schema: GenerationSchema,
+            prompt: prompt,
+            temperature: 0.5,
+          })
+          if (result.object?.rounds && result.object.rounds.length > 0) {
+            // Sanitize choices and ensure correctAnswer exists in choices
+            finalLevels = result.object.rounds.map((r, i) => {
+              let choices = Array.isArray(r.choices) ? r.choices.slice(0, 4) : []
+              if (!choices.includes(r.correctAnswer)) {
+                if (choices.length >= 4) {
+                  choices[0] = r.correctAnswer
+                } else {
+                  choices.push(r.correctAnswer)
+                }
+              }
+              // Fill up to 4 if less
+              while (choices.length < 4) {
+                choices.push(`Option ${choices.length + 1}`)
+              }
+
+              return {
+                ...r,
+                choices,
+                id: i + 1,
+              }
+            })
+
+            if (prefsString !== '{}') {
+              isPersonalized = true
+            }
+            break
+          }
+        } catch (llmError: any) {
+          console.warn(`[generate-levels] Model ${modelName} failed:`, llmError.message)
+        }
       }
-      
-      const { object } = await generateObject({
-        model: groq('qwen/qwen3.8-27b'),
-        schema: GenerationSchema,
-        prompt: prompt,
-        temperature: 0.8,
-      })
-      
-      // Ensure we add IDs and properly map fields
-      finalLevels = object.rounds.map((r, i) => ({
-        ...r,
-        id: i + 1
-      }))
-      
-      if (prefsString !== '{}') {
-        isPersonalized = true
-      }
-    } catch (llmError: any) {
-      console.warn('LLM Generation failed! EXACT ERROR:', llmError.message, llmError.stack)
+    }
+
+    if (finalLevels.length === 0) {
       // Fallback
       finalLevels = FALLBACK_ROUNDS.map((q: any, index: number) => ({
         id: index + 1,
@@ -207,16 +239,6 @@ export async function POST(req: Request) {
         difficulty: q.difficulty,
         level: q.level,
       }))
-      
-      return NextResponse.json({
-        levels: finalLevels,
-        userLevel: profile.userLevel,
-        profileName: profile.profileName,
-        difficulty: profile.difficulty,
-        sessionCount: history?.length || 0,
-        isPersonalized: false,
-        warning: `LLM Generation failed: ${llmError.message}`
-      })
     }
 
     return NextResponse.json({

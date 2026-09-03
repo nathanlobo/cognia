@@ -2,53 +2,70 @@
 
 @custom-variant dark (&:is(.dark *));
 /* ─────────────────────────────────────────────────────────────────────────────
-   Tailwind v4 theme: all custom design tokens are defined here.
-   They auto-generate utility classes (e.g. bg-surface-light, text-content-primary).
+   Tailwind v4 theme: Cognia Cognitive Wellness Color Palette & Design Tokens
+   - Sage Green (#6F8F7A): Actions / navigation
+   - Warm Ivory (#F7F4EC): Background
+   - Soft Cream (#FFFDF7): Cards & surfaces
+   - Warm Amber (#D9A441): Memories / rewards / streaks
+   - Deep Green-Charcoal (#29352F): Text & headings
+   - Muted Terracotta (#C96B5C): Alerts / soft notices
 ───────────────────────────────────────────────────────────────────────────── */
 @theme {
   /* Surfaces */
-  --color-surface-light:    #F8FAFC;
-  --color-surface-card:     #FFFFFF;
-  --color-surface-dark:     #0F172A;
-  --color-surface-dark-card:#1E293B;
+  --color-surface-light:    #F7F4EC;
+  --color-surface-card:     #FFFDF7;
+  --color-surface-dark:     #1E2722;
+  --color-surface-dark-card:#29352F;
 
   /* Content (text) */
-  --color-content-primary:  #0F172A;
-  --color-content-secondary:#334155;
-  --color-content-inverse:  #FFFFFF;
-  --color-content-muted:    #475569;
+  --color-content-primary:  #29352F;
+  --color-content-secondary:#47554E;
+  --color-content-inverse:  #FFFDF7;
+  --color-content-muted:    #6B7C73;
+
+  /* Brand Design Tokens */
+  --color-cognia-surface:     #F7F4EC;
+  --color-cognia-cream:       #FFFDF7;
+  --color-cognia-sage:        #6F8F7A;
+  --color-cognia-sage-dark:   #577361;
+  --color-cognia-sage-light:  #E8EFEA;
+  --color-cognia-amber:       #D9A441;
+  --color-cognia-amber-light: #FDF4E2;
+  --color-cognia-charcoal:    #29352F;
+  --color-cognia-terracotta:  #C96B5C;
+  --color-cognia-terracotta-light: #F9ECE9;
 
   /* Accessible action colours */
-  --color-accessible-blue:       #1D4ED8;
-  --color-accessible-blue-hover: #1E40AF;
-  --color-accessible-green:      #15803D;
-  --color-accessible-green-hover:#166534;
-  --color-accessible-amber:      #B45309;
-  --color-accessible-red:        #B91C1C;
-  --color-accessible-focus-ring: #2563EB;
+  --color-accessible-blue:       #6F8F7A;
+  --color-accessible-blue-hover: #577361;
+  --color-accessible-green:      #4E8765;
+  --color-accessible-green-hover:#3D6D51;
+  --color-accessible-amber:      #D9A441;
+  --color-accessible-red:        #C96B5C;
+  --color-accessible-focus-ring: #6F8F7A;
 
-  /* Senior-friendly font scale - COMPACT */
-  --font-size-accessible-sm:   0.875rem;
-  --font-size-accessible-base: 1rem;
-  --font-size-accessible-lg:   1.125rem;
-  --font-size-accessible-xl:   1.25rem;
-  --font-size-accessible-2xl:  1.5rem;
-  --font-size-accessible-3xl:  1.875rem;
+  /* Senior-friendly font scale */
+  --font-size-accessible-sm:   0.9375rem;
+  --font-size-accessible-base: 1.125rem;
+  --font-size-accessible-lg:   1.25rem;
+  --font-size-accessible-xl:   1.375rem;
+  --font-size-accessible-2xl:  1.625rem;
+  --font-size-accessible-3xl:  2rem;
 
-  --line-height-accessible-sm:   1.25rem;
-  --line-height-accessible-base: 1.5rem;
-  --line-height-accessible-lg:   1.75rem;
-  --line-height-accessible-xl:   1.75rem;
-  --line-height-accessible-2xl:  2rem;
-  --line-height-accessible-3xl:  1.2;
+  --line-height-accessible-sm:   1.35rem;
+  --line-height-accessible-base: 1.65rem;
+  --line-height-accessible-lg:   1.85rem;
+  --line-height-accessible-xl:   1.95rem;
+  --line-height-accessible-2xl:  2.25rem;
+  --line-height-accessible-3xl:  1.25;
 
-  /* Min sizes for touch targets - COMPACT */
-  --min-height-touch:    44px;
-  --min-height-touch-lg: 48px;
-  --min-width-touch:     44px;
-  --min-width-touch-lg:  48px;
+  /* Touch Targets (Senior Optimized: min 52px) */
+  --min-height-touch:    52px;
+  --min-height-touch-lg: 56px;
+  --min-width-touch:     52px;
+  --min-width-touch-lg:  56px;
 
-  /* Border widths */
+  /* Borders */
   --border-width-3: 2px;
   --border-width-4: 2px;
 }
@@ -58,23 +75,23 @@
 ───────────────────────────────────────────────────────────────────────────── */
 .dark {
   /* Surfaces */
-  --color-surface-light:    #0F172A;
-  --color-surface-card:     #1E293B;
+  --color-surface-light:    #1A231F;
+  --color-surface-card:     #232E28;
 
   /* Content (text) */
-  --color-content-primary:  #F8FAFC;
-  --color-content-secondary:#CBD5E1;
-  --color-content-inverse:  #0F172A;
-  --color-content-muted:    #94A3B8;
+  --color-content-primary:  #F7F4EC;
+  --color-content-secondary:#D5DED8;
+  --color-content-inverse:  #1A231F;
+  --color-content-muted:    #A3B3AA;
 
-  /* Accessible action colours (Adjusted for dark contrast) */
-  --color-accessible-blue:       #3B82F6;
-  --color-accessible-blue-hover: #60A5FA;
-  --color-accessible-green:      #22C55E;
-  --color-accessible-green-hover:#4ADE80;
-  --color-accessible-amber:      #D97706;
-  --color-accessible-red:        #EF4444;
-  --color-accessible-focus-ring: #60A5FA;
+  /* Accessible action colours */
+  --color-accessible-blue:       #8BAFA0;
+  --color-accessible-blue-hover: #A5C4B7;
+  --color-accessible-green:      #6CB388;
+  --color-accessible-green-hover:#85C69E;
+  --color-accessible-amber:      #E4B55C;
+  --color-accessible-red:        #DB8072;
+  --color-accessible-focus-ring: #8BAFA0;
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
@@ -109,26 +126,26 @@
     outline-offset: 4px;
   }
 
-  /* Minimum touch targets + mobile-safe interaction on all interactive elements */
+  /* Minimum touch targets + mobile-safe interaction */
   button,
   a,
   input,
   select {
-    min-height: 48px;
-    touch-action: manipulation;          /* Kills 300ms iOS tap delay */
-    -webkit-tap-highlight-color: transparent; /* Stops iOS swallowing touches via the gray flash */
-    user-select: none;                   /* Prevents long-press text-selection eating the tap */
+    min-height: 52px;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
     -webkit-user-select: none;
   }
 
   ::selection {
-    background-color: #2563EB;
-    color: #FFFFFF;
+    background-color: #6F8F7A;
+    color: #FFFDF7;
   }
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
-   Kill all animations for users who prefer reduced motion
+   Reduced Motion
 ───────────────────────────────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -149,21 +166,23 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
+    gap: 0.75rem;
     min-height: var(--min-height-touch);
-    padding: 0.75rem 1.5rem;
-    background-color: var(--color-accessible-blue);
-    color: #ffffff;
+    padding: 0.875rem 1.75rem;
+    background-color: #6F8F7A;
+    color: #FFFDF7;
     font-size: var(--font-size-accessible-base);
     font-weight: 700;
-    border-radius: 0.75rem;
+    border-radius: 1.25rem;
     border: 2px solid transparent;
-    box-shadow: 0 2px 4px rgb(0 0 0 / 0.1);
-    transition: background-color 150ms ease, transform 100ms ease;
+    box-shadow: 0 4px 12px rgba(111, 143, 122, 0.25);
+    transition: all 180ms ease;
     cursor: pointer;
   }
   .btn-accessible-primary:hover {
-    background-color: var(--color-accessible-blue-hover);
+    background-color: #577361;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(111, 143, 122, 0.35);
   }
   .btn-accessible-primary:active {
     transform: scale(0.98);
@@ -173,41 +192,40 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
+    gap: 0.75rem;
     min-height: var(--min-height-touch);
-    padding: 0.75rem 1.5rem;
-    background-color: #ffffff;
-    color: var(--color-content-primary);
+    padding: 0.875rem 1.75rem;
+    background-color: #FFFDF7;
+    color: #29352F;
     font-size: var(--font-size-accessible-base);
     font-weight: 700;
-    border-radius: 0.75rem;
-    border: 2px solid #cbd5e1;
-    box-shadow: 0 1px 2px rgb(0 0 0 / 0.05);
-    transition: background-color 150ms ease;
+    border-radius: 1.25rem;
+    border: 2px solid #E3DEC3;
+    box-shadow: 0 2px 6px rgba(41, 53, 47, 0.05);
+    transition: all 180ms ease;
     cursor: pointer;
   }
   .btn-accessible-secondary:hover {
-    background-color: #f1f5f9;
+    background-color: #F7F4EC;
+    border-color: #6F8F7A;
   }
 
   .card-accessible {
     background-color: var(--color-surface-card);
-    border: 2px solid #cbd5e1;
-    border-radius: 1rem;
-    padding: 1rem;
-    box-shadow: 0 1px 2px rgb(0 0 0 / 0.05);
+    border: 2px solid #EBE6D8;
+    border-radius: 1.5rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 20px rgba(41, 53, 47, 0.04);
   }
 }
 
-/* ── Guide Mode: slow, gentle blink for hints ───────────────────────────────
-   2-second ease-in-out cycle — calming for elderly users, never jarring.
-─────────────────────────────────────────────────────────────────────────── */
+/* ── Guide Mode: gentle warm pulse ─────────────────────────────────────────── */
 @keyframes guide-blink {
-  0%, 100% { opacity: 1;    box-shadow: 0 0 0 4px #C4B5FD; }
-  50%       { opacity: 0.45; box-shadow: 0 0 0 0px #C4B5FD; }
+  0%, 100% { opacity: 1;    box-shadow: 0 0 0 4px #D9A441; }
+  50%       { opacity: 0.6;  box-shadow: 0 0 0 0px #D9A441; }
 }
 
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
+@keyframes breathe-circle {
+  0%, 100% { transform: scale(0.85); opacity: 0.8; }
+  50% { transform: scale(1.15); opacity: 1; }
 }

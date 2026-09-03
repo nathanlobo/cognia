@@ -19,10 +19,10 @@ Designed specifically to address accessibility gaps in regional demographics—i
 * **Dual-Task Exergaming:** Simultaneously engages physical motor execution (seated exercises) and cognitive recall to stimulate neuroplasticity and BDNF production.
 * **Deterministic 6-Step Session Loop:** A structured Next.js state machine that eliminates navigation friction and prevents patient disorientation.
 * **100% On-Device Pose Tracking:** Utilizes MediaPipe WebAssembly (WASM) to process video frames frame-by-frame inside local browser RAM—video data never touches a server.
-* **Dynamic AI Prompt Generation:** Uses contextual LLM seeding (OpenAI / Groq) infused with caregiver-provided patient history, NER regional culture, and daily routines.
+* **Dynamic AI Prompt Generation:** Uses Groq-hosted LLMs with contextual seeding, caregiver-provided patient preferences, and recent-question history to generate seven-round sessions.
 * **Anti-Repetition Engine:** Implements dynamic seed routing and anti-caching headers (`Cache-Control: no-store`) to ensure non-repetitive, fresh interactions every session.
-* **Multimodal Voice Interface:** Powered by the browser-native Web Speech API (STT/TTS) for accessible, hands-free interaction for patients with visual or motor impairments.
-* **Caregiver & Clinician Dashboard:** Real-time longitudinal telemetry tracking accuracy trends, reaction times, and self-reported mood indexes over 12-week cycles.
+* **Multimodal Voice Interface:** Uses browser Web Speech recognition first, Groq Whisper as an STT fallback, and Deepgram streaming TTS with browser speech fallback.
+* **Caregiver Dashboard:** Tracks session accuracy, reaction times, consistency, mood check-ins, streaks, AI-generated insights, and downloadable PDF reports.
 
 ---
 
@@ -88,15 +88,15 @@ Synaptogenesis & Neuroplasticity
 ┌───────────────────┐    ┌─────────────────┐    ┌───────────────────┐
 │  PATIENT DEVICE   │    │ SUPABASE ENGINE │    │ DYNAMIC AI ENGINE │
 │ ───────────────── │    │ ─────────────── │    │ ───────────────── │
-│ • Web Speech API  │<==>│ • PostgreSQL DB │<==>│ • OpenAI / Groq   │
+│ • Web Speech API  │<==>│ • PostgreSQL DB │<==>│ • Groq LLM        │
 │ • MediaPipe WASM  │    │ • RLS Security  │    │ • Anti-Cache Seed │
 │ • Local Processing│    │ • Profiling     │    │ • NER Context     │
 └───────────────────┘    └────────┬────────┘    └───────────────────┘
 │
 ▼
 ┌───────────────────────────────┐
-│  CLINICIAN / DASHBOARD PORTAL │
-│ (Longitudinal Data Analytics) │
+│     CAREGIVER DASHBOARD       │
+│ (Progress & PDF Reports)       │
 └───────────────────────────────┘
 
 ```
@@ -105,10 +105,10 @@ Synaptogenesis & Neuroplasticity
 
 ## 🛡 Privacy & Security Architecture
 
-* **Zero-Video-Retention (ZVR):** Webcams process landmark coordinates locally. Video streams are purged immediately from RAM frame-by-frame. No video files or images are ever stored or uploaded.
-* **Data Minimization:** Only scalar, anonymized performance indicators (accuracy percentage, reaction speed in milliseconds, session timestamp, mood index) are stored in the database.
+* **Client-Side Pose Processing:** MediaPipe processes camera frames in the browser. The application sends landmark-derived session results rather than video files to the server.
+* **Data Minimization:** Session results store performance indicators such as accuracy, reaction time, timestamp, mood, and round results; caregiver profile preferences are stored for personalization.
 * **Row Level Security (RLS):** Patient records in PostgreSQL are isolated per caregiver/institution using cryptographic user-ID authentication policies.
-* **Regulatory Alignment:** Designed in compliance with India's **Digital Personal Data Protection (DPDP) Act** and medical disclaimers as a non-diagnostic cognitive therapeutic companion.
+* **Non-Diagnostic Positioning:** COGNIA is presented as a cognitive wellness companion and does not replace professional medical assessment or care.
 
 ---
 
@@ -119,10 +119,19 @@ Synaptogenesis & Neuroplasticity
 | **Frontend Framework** | Next.js (React) | Application architecture & state machine management |
 | **Styling & UI** | Tailwind CSS / Lucide | High-contrast, accessible UI design |
 | **Computer Vision** | MediaPipe Pose (WASM) | Client-side 33-landmark 3D skeletal tracking |
-| **Voice Processing** | Web Speech API | Browser-native Speech-to-Text & Text-to-Speech |
-| **AI Generator** | OpenAI API / Groq | Dynamic, context-injected prompt generation |
-| **Database & Auth** | Supabase (PostgreSQL) | Secure cloud telemetry storage & Row Level Security |
+| **Voice Processing** | Web Speech API, Groq Whisper, Deepgram | Speech recognition with a server fallback and streaming text-to-speech |
+| **AI Generator** | Groq via AI SDK | Dynamic, context-injected prompt generation |
+| **Database** | Supabase (PostgreSQL) | Profiles, relationships, question bank, session results, preferences, and streaks |
 | **Deployment** | Vercel | Edge rendering and zero-latency routing |
+
+### Application Routes
+
+* `/` — Landing and role selection.
+* `/patient` — Patient login, daily session, check-in, memories, activities, routine, and profile views.
+* `/caregiver` — Caregiver login, patient management, progress dashboard, insights, and PDF export.
+* `/terms` — Terms, privacy, and consent information.
+
+The server-side API routes are `/api/generate-levels`, `/api/generate-insights`, `/api/replenish-bank`, `/api/transcribe`, and `/api/tts`.
 
 ---
 
@@ -138,8 +147,8 @@ Synaptogenesis & Neuroplasticity
 
 1. **Clone the repository:**
    ```bash
-   git clone [https://github.com/your-username/cognia-sih2026.git](https://github.com/your-username/cognia-sih2026.git)
-   cd cognia-sih2026
+   git clone https://github.com/nathanlobo/Cognia.git
+   cd Cognia
 
 ```
 
@@ -154,16 +163,15 @@ npm install
 Create a `.env.local` file in the root directory:
 ```env
 # Supabase Configuration
-NEXT_PUBLIC_SUPABASE_URL=[https://your-supabase-project.supabase.co](https://your-supabase-project.supabase.co)
+NEXT_PUBLIC_SUPABASE_URL=https://your-supabase-project.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
-SUPABASE_SERVICE_ROLE_KEY=your-supabase-service-role-key
 
-# AI LLM Provider Configuration
-OPENAI_API_KEY=your-openai-api-key
+# AI and Voice Provider Configuration
 GROQ_API_KEY=your-groq-api-key
+DEEPGRAM_API_KEY=your-deepgram-api-key
 
-# Application Settings
-NEXT_PUBLIC_APP_URL=http://localhost:3000
+# Optional development-only demo seeding and automatic login
+NEXT_PUBLIC_ENABLE_AUTO_LOGIN=false
 
 ```
 
@@ -185,10 +193,12 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 COGNIA operates a hybrid model focused on scalable enterprise deployment:
 
 * **B2C Caregiver Subscription:** Direct access for individual families to run daily routines at home.
-* **B2B Institutional Licensing:** Enterprise tier for **Memory Care Clinics, Rehabilitation Centers, and Neurology Departments**, providing:
+* **B2B Institutional Licensing:** A planned enterprise tier for **Memory Care Clinics, Rehabilitation Centers, and Neurology Departments**, potentially providing:
 * Multi-patient centralized management portals.
 * Longitudinal progression telemetry and automated PDF clinical trend exports.
 * Custom API integrations with Electronic Health Record (EHR) systems.
+
+The current implementation includes caregiver patient management, longitudinal session telemetry, and PDF reports. EHR integrations and subscription billing are not implemented yet.
 
 
 
@@ -206,6 +216,9 @@ COGNIA operates a hybrid model focused on scalable enterprise deployment:
 
 This project is developed for evaluation under the **Smart India Hackathon 2026**. All rights reserved.
 
-```
+---
 
-```
+## Contributors
+
+* [**Nathan Lobo**](https://github.com/nathanlobo)
+* [**Joshua Fernandes**](https://github.com/JoshuaFernandes-code)

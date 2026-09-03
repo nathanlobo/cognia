@@ -17,7 +17,7 @@ const RoundSchema = z.object({
   cognitiveQuestion: z.string(),
   correctAnswer: z.string(),
   choices: z.array(z.string()),
-  gesture: z.enum(['left-raise', 'right-raise', 'both-raise', 'shoulder-touch', 'head-tilt-left', 'head-tilt-right', 'none']),
+  gesture: z.enum(['left-raise', 'right-raise', 'both-raise', 'ear-cover', 'none']),
   difficulty: z.enum(['easy', 'medium', 'hard']),
 })
 
@@ -33,33 +33,52 @@ export async function POST(req: Request) {
     const batchSize = Math.min(body.count || 6, 8)
 
     const prompt = `
-You are an expert clinical neurologist and game designer for dementia cognitive dual-task therapy.
-Your task is to generate ${batchSize} distinct, high-quality dual-task exercise questions for a cognitive exergame.
+You are an expert game designer creating cognitive questions for seniors.
+Generate ${batchSize} distinct exercise questions.
 Target Difficulty: '${targetDifficulty}' (Level ${targetLevelNumber})
 
-Difficulty Guidelines:
-- Level 1 (Easy): High familiarity, straightforward associations, simple everyday orientation (e.g. days of week, basic colors, primary food meals, opposite words).
-- Level 2 (Medium): Moderate working memory, sequencing 3 items, basic single-digit mental arithmetic, pattern completion.
-- Level 3 (Hard): Higher cognitive load, multi-step deduction, subtle semantic distinctions, alternating attention puzzles.
-
-Rules:
-1. "gesture" must be one of: 'left-raise', 'right-raise', 'both-raise', 'shoulder-touch', 'head-tilt-left', 'head-tilt-right', 'none'.
-2. "physicalInstruction" must clearly match the gesture (e.g. 'Raise your LEFT hand', 'Tilt your head to the RIGHT').
-3. "cognitiveQuestion" must be accessible, engaging, and specifically calibrated to '${targetDifficulty}' (Level ${targetLevelNumber}) cognitive load.
-4. "correctAnswer" must match exactly one of the 4 strings in "choices".
-5. "choices" must contain exactly 4 distinct answer choices.
-6. "difficulty" must be '${targetDifficulty}'.
-7. "domain" should cover key neurological cognitive domains (e.g., 'Episodic Memory', 'Working Memory', 'Attention', 'Executive Function', 'Language', 'Visuospatial', 'Orientation').
+CRITICAL QUESTION RULES:
+1. Every "cognitiveQuestion" MUST be short, direct, and straight to the point (under 8 words).
+2. NO filler words, narrative stories, or conversational preamble.
+   - Good: "Which season comes after winter?"
+   - Good: "What is the opposite of 'Hot'?"
+   - Good: "Which animal barks?"
+   - Good: "What meal is eaten in the morning?"
+   - Good: "Which object is shaped like a circle?"
+3. "gesture" must STRICTLY be one of:
+   - 'left-raise' (Raise your LEFT hand)
+   - 'right-raise' (Raise your RIGHT hand)
+   - 'both-raise' (Raise BOTH hands)
+   - 'ear-cover' (Touch both hands to your ears)
+   - 'none'
+4. "choices" must contain exactly 4 distinct answer choices, one matching "correctAnswer" exactly.
+5. "domain" should cover: 'Episodic Memory', 'Working Memory', 'Attention', 'Executive Function', 'Language', 'Visuospatial', 'Orientation'.
 `
 
-    const { object } = await generateObject({
-      model: groq('llama-3.1-8b-instant'),
-      schema: GenerationSchema,
-      prompt: prompt,
-    })
+    const candidateModels = ['llama-3.1-8b-instant', 'qwen/qwen3.8-27b', 'gemma2-9b-it', 'llama-3.3-70b-versatile']
+    let object: any = null
 
-    if (object.levels && object.levels.length > 0) {
-      const inserts = object.levels.map((q) => ({
+    if (process.env.GROQ_API_KEY) {
+      for (const modelName of candidateModels) {
+        try {
+          const result = await generateObject({
+            model: groq(modelName),
+            schema: GenerationSchema,
+            prompt: prompt,
+            temperature: 0.6,
+          })
+          if (result.object?.levels && result.object.levels.length > 0) {
+            object = result.object
+            break
+          }
+        } catch (llmErr: any) {
+          // Try next model
+        }
+      }
+    }
+
+    if (object?.levels && object.levels.length > 0) {
+      const inserts = object.levels.map((q: any) => ({
         domain: q.domain,
         physical_instruction: q.physicalInstruction,
         cognitive_question: q.cognitiveQuestion,
@@ -74,16 +93,16 @@ Rules:
         .from('question_bank')
         .upsert(inserts, { onConflict: 'cognitive_question', ignoreDuplicates: true })
 
-      if (insertError) {
-        console.error('[replenish-bank] Error inserting into DB:', insertError)
-      } else {
-        console.log(`[replenish-bank] Saved ${inserts.length} questions for Level ${targetLevelNumber} (${targetDifficulty}).`)
+      if (insertError && insertError.code !== 'PGRST205') {
+        console.warn('[replenish-bank] DB insert note:', insertError.message || insertError)
       }
+
+      return NextResponse.json({ success: true, count: object.levels.length, level: targetLevelNumber })
     }
 
-    return NextResponse.json({ success: true, count: object.levels.length, level: targetLevelNumber })
+    return NextResponse.json({ success: false, message: 'Skipped background replenishment' })
   } catch (error: any) {
-    console.error('[replenish-bank] Background generation failed:', error)
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    console.warn('[replenish-bank] Background generation error handled:', error?.message)
+    return NextResponse.json({ success: false, error: error.message }, { status: 200 })
   }
 }

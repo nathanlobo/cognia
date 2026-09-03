@@ -35,7 +35,7 @@ export default function ConsentModal({ onAccept, onDecline }: ConsentModalProps)
           <div className="space-y-4">
             <h3 className="font-bold text-lg text-slate-900">1. Medical Disclaimer</h3>
             <p className="text-sm">
-              Care Companion is a supportive tool designed for cognitive engagement. It is <strong>not a diagnostic medical device</strong> and should not replace professional medical advice, diagnosis, or treatment.
+              Cognia is a supportive tool designed for cognitive engagement. It is <strong>not a diagnostic medical device</strong> and should not replace professional medical advice, diagnosis, or treatment.
             </p>
             
             <h3 className="font-bold text-lg text-slate-900 mt-6">2. Privacy & Video Processing</h3>

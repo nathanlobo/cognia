@@ -399,7 +399,7 @@ export default function CaregiverDashboard({ liveSessions = [] }: CaregiverDashb
       // Header
       doc.setFontSize(22)
       doc.setTextColor(30, 64, 175) // blue-800
-      doc.text('Care Companion Clinical Report', 14, 22)
+      doc.text('Cognia Clinical Report', 14, 22)
       
       doc.setFontSize(10)
       doc.setTextColor(100)
