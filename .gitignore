@@ -68,3 +68,12 @@ Desktop.ini
 # TypeScript
 *.tsbuildinfo
 next-env.d.ts
+
+# Graphify Local Cache & Machine Metadata (keep graph.json, GRAPH_REPORT.md, graph.html)
+graphify-out/.graphify_*
+graphify-out/.cache/
+graphify-out/cache/
+graphify-out/cost.json
+graphify-out/manifest.json
+graphify-out/.manifest.json
+graphify-out/.needs_update
