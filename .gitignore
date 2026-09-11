@@ -77,3 +77,5 @@ graphify-out/cost.json
 graphify-out/manifest.json
 graphify-out/.manifest.json
 graphify-out/.needs_update
+graphify-out/20*
+

@@ -155,7 +155,7 @@ export default function Header({
               </Link>
             )}
 
-            {onLogout && (!userEmail || !userEmail.includes('@test.com')) && (
+            {onLogout && (
               <button 
                 onClick={onLogout}
                 title="Log Out"

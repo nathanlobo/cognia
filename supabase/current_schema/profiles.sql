@@ -8,6 +8,7 @@ create table public.profiles (
   longest_streak integer null default 0,
   last_session_date date null,
   preferences jsonb null default '{}'::jsonb,
+  password_hash text null,
   constraint profiles_pkey primary key (id),
   constraint profiles_email_role_key unique (email, role),
   constraint profiles_role_check check (

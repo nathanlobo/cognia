@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import LoginScreen from '@/components/LoginScreen'
+import { useRouter } from 'next/navigation'
 import DailySessionScreen from '@/components/DailySessionScreen'
 import { fetchPatientHistory, fetchPatientPreferences } from '@/lib/db'
 import Header from '@/components/Header'
@@ -45,20 +45,29 @@ export default function PatientPage() {
     return () => window.removeEventListener('tts_toggle_changed', handleTtsChange)
   }, [])
 
+  const router = useRouter()
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true)
+
   useEffect(() => {
     function loadPatient() {
       const saved = localStorage.getItem('care_companion_patient')
       if (saved) {
         try {
           const parsed = JSON.parse(saved)
-          setPatient(parsed)
+          if (parsed && parsed.id) {
+            setPatient(parsed)
+            setIsCheckingAuth(false)
+            return
+          }
         } catch (e) {}
       }
+      setIsCheckingAuth(false)
+      router.replace('/')
     }
     loadPatient()
     window.addEventListener('care_companion_auth_change', loadPatient)
     return () => window.removeEventListener('care_companion_auth_change', loadPatient)
-  }, [])
+  }, [router])
 
   useEffect(() => {
     function refreshData() {
@@ -76,11 +85,6 @@ export default function PatientPage() {
     return () => window.removeEventListener('patient_preferences_updated', refreshData)
   }, [patient])
 
-  function handleLogin(profile: { id: string; full_name: string; email: string }) {
-    setPatient(profile)
-    localStorage.setItem('care_companion_patient', JSON.stringify(profile))
-  }
-
   function handleLogout() {
     setPatient(null)
     setSessions([])
@@ -88,6 +92,7 @@ export default function PatientPage() {
     setActiveTab('today')
     setCurrentMood('')
     localStorage.removeItem('care_companion_patient')
+    router.replace('/')
   }
 
   function handleTabSelect(tab: TabType) {
@@ -95,10 +100,11 @@ export default function PatientPage() {
     setCurrentFlow(tab)
   }
 
-  if (!patient) {
+  if (isCheckingAuth || !patient) {
     return (
-      <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 py-8 md:py-12 flex-1 flex flex-col">
-        <LoginScreen role="patient" onLogin={handleLogin} />
+      <div className="min-h-screen bg-[#F7F4EC] flex flex-col items-center justify-center p-6 text-center">
+        <div className="w-10 h-10 border-4 border-[#2D7A5D] border-t-transparent rounded-full animate-spin mb-4" />
+        <p className="text-stone-600 font-medium text-sm">Redirecting to sign in...</p>
       </div>
     )
   }

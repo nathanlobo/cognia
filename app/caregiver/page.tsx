@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import LoginScreen from '@/components/LoginScreen'
 import CaregiverDashboard from '@/components/CaregiverDashboard'
 import ConsentModal from '@/components/ConsentModal'
 import PatientProfileForm from '@/components/PatientProfileForm'
@@ -12,11 +11,12 @@ import { fetchPatientHistory } from '@/lib/db'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import Header from '@/components/Header'
-import { Trash2 } from 'lucide-react'
+import { Trash2, Ticket, Copy, Check } from 'lucide-react'
 
 export default function CaregiverPage() {
   const router = useRouter()
   const [caregiver, setCaregiver] = useState<{ id: string; full_name: string; email: string } | null>(null)
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true)
   
   const [patients, setPatients] = useState<any[]>([])
   const [isLoadingPatients, setIsLoadingPatients] = useState(true)
@@ -28,7 +28,9 @@ export default function CaregiverPage() {
   const [isAdding, setIsAdding] = useState(false)
   const [addEmail, setAddEmail] = useState('')
   const [addName, setAddName] = useState('')
+  const [addPassword, setAddPassword] = useState('')
   const [isSelfPatient, setIsSelfPatient] = useState(false)
+  const [addSuccessMessage, setAddSuccessMessage] = useState('')
   const [addError, setAddError] = useState('')
   const [isAddingLoading, setIsAddingLoading] = useState(false)
   
@@ -37,6 +39,41 @@ export default function CaregiverPage() {
   
   // Patient Deletion State
   const [deletingPatient, setDeletingPatient] = useState<{ id: string; full_name: string; email: string } | null>(null)
+
+  // Patient Invite State
+  const [generatedInvite, setGeneratedInvite] = useState<string | null>(null)
+  const [isGeneratingInvite, setIsGeneratingInvite] = useState(false)
+  const [hasCopiedInvite, setHasCopiedInvite] = useState(false)
+  const [inviteError, setInviteError] = useState('')
+
+  async function handleGeneratePatientInvite() {
+    if (!caregiver) return
+    setIsGeneratingInvite(true)
+    setInviteError('')
+    setHasCopiedInvite(false)
+    try {
+      const res = await fetch('/api/invites/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          caregiverId: caregiver.id,
+          targetRole: 'patient',
+          maxUses: 1
+        })
+      })
+      const data = await res.json()
+      if (!res.ok) {
+        setInviteError(data.error || 'Failed to generate invite code.')
+      } else {
+        setGeneratedInvite(data.invite?.code || data.code)
+      }
+    } catch (err: any) {
+      console.error(err)
+      setInviteError('Connection error while generating invite code.')
+    } finally {
+      setIsGeneratingInvite(false)
+    }
+  }
 
   function handlePatientDeleted(deletedId: string) {
     setPatients(prev => prev.filter(p => p.id !== deletedId))
@@ -76,9 +113,16 @@ export default function CaregiverPage() {
       const saved = localStorage.getItem('care_companion_caregiver')
       if (saved) {
         try {
-          setCaregiver(JSON.parse(saved))
+          const parsed = JSON.parse(saved)
+          if (parsed && parsed.id) {
+            setCaregiver(parsed)
+            setIsCheckingAuth(false)
+            return
+          }
         } catch (e) {}
       }
+      setIsCheckingAuth(false)
+      router.replace('/')
     }
     loadCaregiver()
     window.addEventListener('care_companion_auth_change', loadCaregiver)
@@ -89,7 +133,7 @@ export default function CaregiverPage() {
     }
 
     return () => window.removeEventListener('care_companion_auth_change', loadCaregiver)
-  }, [])
+  }, [router])
 
   const fetchPatients = useCallback(async () => {
     if (!caregiver) return
@@ -147,43 +191,17 @@ export default function CaregiverPage() {
     }
   }, [selectedPatientId])
 
-  function handleLogin(profile: { id: string; full_name: string; email: string }) {
-    setCaregiver(profile)
-    localStorage.setItem('care_companion_caregiver', JSON.stringify(profile))
-    
-    // Sync logic: Only one email can be logged in across the app.
-    const savedPatient = localStorage.getItem('care_companion_patient')
-    if (savedPatient) {
-      try {
-        const parsed = JSON.parse(savedPatient)
-        if (parsed.email !== profile.email) {
-          const isTest = parsed.email.includes('@test.com') || profile.email.includes('@test.com')
-          if (!isTest) {
-            localStorage.removeItem('care_companion_patient')
-          }
-        }
-      } catch (e) {}
-    }
-  }
-
   function handleLogout() {
     setCaregiver(null)
     setSelectedPatientId(null)
     localStorage.removeItem('care_companion_caregiver')
+    router.replace('/')
   }
 
   async function handleSwitchToPatient(patient: any) {
     if (typeof window !== 'undefined') {
       localStorage.setItem('care_companion_recent_patient_id', patient.id)
       localStorage.setItem('care_companion_patient', JSON.stringify(patient))
-      
-      // Sync logic: Clear caregiver if emails mismatch (except for test accounts)
-      if (caregiver && caregiver.email !== patient.email) {
-        const isTest = caregiver.email.includes('@test.com') || patient.email.includes('@test.com')
-        if (!isTest) {
-          localStorage.removeItem('care_companion_caregiver')
-        }
-      }
     }
 
     if (caregiver) {
@@ -216,6 +234,7 @@ export default function CaregiverPage() {
   async function handleAddPatient(e: React.FormEvent) {
     e.preventDefault()
     setAddError('')
+    setAddSuccessMessage('')
     if (!caregiver) return
 
     const targetEmail = isSelfPatient ? caregiver.email : addEmail.trim()
@@ -230,51 +249,89 @@ export default function CaregiverPage() {
       return
     }
 
+    if (!isSelfPatient) {
+      if (!addPassword) {
+        setAddError('Please provide a password for the patient.')
+        return
+      }
+      if (addPassword.length < 8) {
+        setAddError('Password must be at least 8 characters long.')
+        return
+      }
+    }
+
     setIsAddingLoading(true)
     const cleanEmail = targetEmail.toLowerCase()
 
     try {
-      // 1. Find if patient profile exists
-      let patientId: string | null = null
-      const { data: existing } = await supabase
-        .from('profiles')
-        .select('id')
-        .eq('role', 'patient')
-        .eq('email', cleanEmail)
-        .single()
-
-      if (existing) {
-        patientId = existing.id
-      } else {
-        // Create new patient
-        const { data: created, error: createError } = await supabase
+      if (isSelfPatient) {
+        // Link self
+        let patientId: string | null = null
+        const { data: existing } = await supabase
           .from('profiles')
-          .insert({
-            email: cleanEmail,
-            full_name: targetName,
-            role: 'patient'
-          })
           .select('id')
-          .single()
+          .eq('role', 'patient')
+          .eq('email', cleanEmail)
+          .maybeSingle()
 
-        if (createError) throw createError
-        if (created) patientId = created.id
-      }
+        if (existing) {
+          patientId = existing.id
+        } else {
+          const { data: created, error: createError } = await supabase
+            .from('profiles')
+            .insert({
+              email: cleanEmail,
+              full_name: targetName,
+              role: 'patient'
+            })
+            .select('id')
+            .single()
 
-      if (patientId) {
-        // 2. Link them
-        const { error: linkError } = await supabase
-          .from('patient_caregiver_relations')
-          .upsert({ patient_id: patientId, caregiver_id: caregiver.id })
-        
-        if (linkError) throw linkError
+          if (createError) throw createError
+          if (created) patientId = created.id
+        }
 
-        // Success!
-        setIsAdding(false)
-        setAddEmail('')
-        setAddName('')
-        setIsSelfPatient(false)
-        fetchPatients()
+        if (patientId) {
+          const { error: linkError } = await supabase
+            .from('patient_caregiver_relations')
+            .upsert({ patient_id: patientId, caregiver_id: caregiver.id })
+          
+          if (linkError) throw linkError
+
+          setIsAdding(false)
+          setAddEmail('')
+          setAddName('')
+          setAddPassword('')
+          setIsSelfPatient(false)
+          fetchPatients()
+        }
+      } else {
+        // Create patient via API with password
+        const res = await fetch('/api/caregiver/create-patient', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            caregiverId: caregiver.id,
+            patientName: targetName,
+            patientEmail: cleanEmail,
+            password: addPassword
+          })
+        })
+
+        const data = await res.json()
+        if (!res.ok) {
+          setAddError(data.error || 'Failed to create patient account.')
+        } else {
+          setAddSuccessMessage(`Patient account created! They can now log in using ${cleanEmail}.`)
+          setTimeout(() => {
+            setIsAdding(false)
+            setAddEmail('')
+            setAddName('')
+            setAddPassword('')
+            setAddSuccessMessage('')
+            fetchPatients()
+          }, 1500)
+        }
       }
     } catch (err: any) {
       console.error(err)
@@ -284,10 +341,11 @@ export default function CaregiverPage() {
     }
   }
 
-  if (!caregiver) {
+  if (isCheckingAuth || !caregiver) {
     return (
-      <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 py-8 md:py-12 flex-1 flex flex-col">
-        <LoginScreen role="caregiver" onLogin={handleLogin} />
+      <div className="min-h-screen bg-[#F7F4EC] dark:bg-slate-950 flex flex-col items-center justify-center p-6 text-center">
+        <div className="w-10 h-10 border-4 border-purple-600 border-t-transparent rounded-full animate-spin mb-4" />
+        <p className="text-stone-600 dark:text-slate-400 font-medium text-sm">Redirecting to sign in...</p>
       </div>
     )
   }
@@ -315,6 +373,164 @@ export default function CaregiverPage() {
           onDeleted={handlePatientDeleted}
         />
       )}
+
+      {/* Generated Patient Invite Modal */}
+      {generatedInvite && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          backdropFilter: 'blur(4px)',
+          zIndex: 9999,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '1rem'
+        }}>
+          <div style={{
+            backgroundColor: '#ffffff',
+            borderRadius: '1.25rem',
+            padding: '2rem',
+            maxWidth: '30rem',
+            width: '100%',
+            boxShadow: '0 20px 25px -5px rgb(0 0 0 / 0.1)',
+            textAlign: 'center'
+          }}>
+            <div style={{
+              width: '4rem',
+              height: '4rem',
+              borderRadius: '50%',
+              backgroundColor: '#EDE9FE',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              margin: '0 auto 1.25rem'
+            }}>
+              <Ticket size={32} className="text-purple-600" />
+            </div>
+            <h3 style={{ fontSize: '1.35rem', fontWeight: 800, marginBottom: '0.5rem', color: '#1E293B' }}>
+              Patient Invitation Link
+            </h3>
+            <p style={{ color: '#64748B', fontSize: '0.85rem', marginBottom: '1.5rem', lineHeight: 1.5 }}>
+              Share this dedicated link with your patient. When they open it, they can register with their email and password, and they will automatically connect to your dashboard.
+            </p>
+
+            {/* Direct Link Copy Card */}
+            <div style={{
+              backgroundColor: '#F8FAFC',
+              border: '1px solid #E2E8F0',
+              borderRadius: '0.75rem',
+              padding: '0.85rem 1rem',
+              marginBottom: '1rem',
+              textAlign: 'left'
+            }}>
+              <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#64748B', display: 'block', marginBottom: '0.35rem' }}>
+                DIRECT REGISTRATION LINK
+              </span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <input
+                  type="text"
+                  readOnly
+                  value={typeof window !== 'undefined' ? `${window.location.origin}/invite/${generatedInvite}` : `/invite/${generatedInvite}`}
+                  style={{
+                    width: '100%',
+                    padding: '0.4rem 0.6rem',
+                    borderRadius: '0.5rem',
+                    border: '1px solid #CBD5E1',
+                    fontSize: '0.8rem',
+                    color: '#1E293B',
+                    backgroundColor: '#FFFFFF'
+                  }}
+                />
+                <button
+                  type="button"
+                  onClick={() => {
+                    const url = `${window.location.origin}/invite/${generatedInvite}`
+                    navigator.clipboard.writeText(url)
+                    setHasCopiedInvite(true)
+                    setTimeout(() => setHasCopiedInvite(false), 2500)
+                  }}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.35rem',
+                    padding: '0.45rem 0.85rem',
+                    backgroundColor: hasCopiedInvite ? '#10B981' : '#6F8F7A',
+                    color: '#ffffff',
+                    border: 'none',
+                    borderRadius: '0.5rem',
+                    fontWeight: 700,
+                    fontSize: '0.8rem',
+                    cursor: 'pointer',
+                    whiteSpace: 'nowrap'
+                  }}
+                >
+                  {hasCopiedInvite ? <Check size={15} /> : <Copy size={15} />}
+                  {hasCopiedInvite ? 'Copied Link!' : 'Copy Link'}
+                </button>
+              </div>
+            </div>
+
+            {/* Code Box */}
+            <div style={{
+              backgroundColor: '#F1F5F9',
+              borderRadius: '0.5rem',
+              padding: '0.5rem 0.75rem',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              marginBottom: '1.5rem',
+              fontSize: '0.8rem',
+              color: '#475569'
+            }}>
+              <span>Invite Code: <strong style={{ color: '#1E40AF', fontFamily: 'monospace' }}>{generatedInvite}</strong></span>
+              <button
+                type="button"
+                onClick={() => {
+                  navigator.clipboard.writeText(generatedInvite)
+                  setHasCopiedInvite(true)
+                  setTimeout(() => setHasCopiedInvite(false), 2000)
+                }}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: '#1E40AF',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  fontSize: '0.75rem',
+                  textDecoration: 'underline'
+                }}
+              >
+                Copy Code Only
+              </button>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => {
+                setGeneratedInvite(null)
+                setInviteError('')
+              }}
+              style={{
+                width: '100%',
+                padding: '0.75rem',
+                backgroundColor: '#F1F5F9',
+                color: '#334155',
+                border: '1px solid #CBD5E1',
+                borderRadius: '0.5rem',
+                fontWeight: 700,
+                cursor: 'pointer'
+              }}
+            >
+              Done
+            </button>
+          </div>
+        </div>
+      )}
+
       <Header 
         userName={caregiver.full_name}
         userEmail={caregiver.email}
@@ -330,9 +546,28 @@ export default function CaregiverPage() {
       <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 py-8 md:py-12 flex-1 flex flex-col">
       {!selectedPatientId ? (
         <div style={{ padding: '1rem', width: '100%' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', width: '100%' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', width: '100%', flexWrap: 'wrap', gap: '0.75rem' }}>
             <h1 style={{ fontSize: '1.5rem', fontWeight: 800, margin: 0 }}>Your Patients</h1>
-            <div style={{ display: 'flex', gap: '1rem' }}>
+            <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+              <button 
+                onClick={handleGeneratePatientInvite}
+                disabled={isGeneratingInvite}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.4rem',
+                  padding: '0.5rem 1rem',
+                  backgroundColor: '#EDE9FE',
+                  color: '#6D28D9',
+                  borderRadius: '0.5rem',
+                  border: '1px solid #DDD6FE',
+                  fontWeight: 700,
+                  cursor: isGeneratingInvite ? 'not-allowed' : 'pointer'
+                }}
+              >
+                <Ticket size={16} />
+                {isGeneratingInvite ? 'Generating...' : 'Invite Patient Code'}
+              </button>
               <button 
                 onClick={() => setEditingProfile({ ...caregiver, role: 'caregiver' } as any)}
                 style={{ padding: '0.5rem 1rem', backgroundColor: '#F1F5F9', color: '#475569', borderRadius: '0.5rem', border: '1px solid #CBD5E1', fontWeight: 700, cursor: 'pointer' }}
@@ -347,6 +582,18 @@ export default function CaregiverPage() {
               </button>
             </div>
           </div>
+
+          {inviteError && (
+            <div style={{
+              backgroundColor: '#FEF2F2',
+              border: '1px solid #FCA5A5',
+              borderRadius: '0.5rem',
+              padding: '0.75rem 1rem',
+              marginBottom: '1rem'
+            }}>
+              <p style={{ color: '#DC2626', fontWeight: 600, margin: 0, fontSize: '0.9rem' }}>{inviteError}</p>
+            </div>
+          )}
 
           {isAdding && (
             <div className="card-accessible" style={{ backgroundColor: '#F8FAFC', marginBottom: '2rem' }}>
@@ -378,9 +625,42 @@ export default function CaregiverPage() {
                       onChange={(e) => setAddEmail(e.target.value)}
                       style={{ padding: '0.75rem', borderRadius: '0.5rem', border: '1px solid #CBD5E1' }}
                     />
+                    <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+                      <input
+                        type="text"
+                        placeholder="Create Patient Password (min 8 chars)"
+                        value={addPassword}
+                        onChange={(e) => setAddPassword(e.target.value)}
+                        style={{ padding: '0.75rem', borderRadius: '0.5rem', border: '1px solid #CBD5E1', width: '100%', paddingRight: '7rem' }}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const rand = 'Pt' + Math.random().toString(36).substring(2, 8) + '!' + Math.floor(Math.random() * 90 + 10)
+                          setAddPassword(rand)
+                        }}
+                        style={{
+                          position: 'absolute',
+                          right: '0.5rem',
+                          fontSize: '0.75rem',
+                          padding: '0.35rem 0.6rem',
+                          backgroundColor: '#F1F5F9',
+                          border: '1px solid #CBD5E1',
+                          borderRadius: '0.35rem',
+                          cursor: 'pointer',
+                          fontWeight: 600,
+                          color: '#334155'
+                        }}
+                      >
+                        Auto-Generate
+                      </button>
+                    </div>
                   </>
                 )}
                 
+                {addSuccessMessage && (
+                  <p style={{ color: '#16A34A', fontWeight: 600, margin: 0, fontSize: '0.85rem' }}>{addSuccessMessage}</p>
+                )}
                 {addError && <p style={{ color: 'var(--color-accessible-red)', fontWeight: 600, margin: 0 }}>{addError}</p>}
                 
                 <button 
@@ -388,7 +668,7 @@ export default function CaregiverPage() {
                   disabled={isAddingLoading}
                   style={{ padding: '0.75rem', backgroundColor: 'var(--color-accessible-blue)', color: '#fff', borderRadius: '0.5rem', border: 'none', fontWeight: 700, cursor: isAddingLoading ? 'not-allowed' : 'pointer', opacity: isAddingLoading ? 0.7 : 1 }}
                 >
-                  {isAddingLoading ? 'Processing...' : 'Add Patient'}
+                  {isAddingLoading ? 'Creating Patient Account...' : 'Create Patient Account'}
                 </button>
               </form>
             </div>
