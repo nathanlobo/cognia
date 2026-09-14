@@ -16,8 +16,8 @@ module.exports = {
           sageDark: '#A3B19B',      // Darker sage for icons/borders
           peach: '#F3D5B5',         // Warm peach for memory/activity
           peachLight: '#FDECE1',    // Lighter peach background
-          blue: '#6B8E9B',          // Soft slate blue for buttons/active elements
-          blueLight: '#E3EDF2',     // Very light blue for secondary items
+          blue: '#6F8F7A',          // Sage green for buttons/active elements
+          blueLight: '#E8EFEA',     // Very light sage for secondary items
           navy: '#3D4559',          // Dark navy for caregiver section and text
           navyLight: '#5A637A',
           cream: '#FCFBF8',         // White alternative for cards
@@ -38,13 +38,13 @@ module.exports = {
         },
         // Accessible action colors (Non-jarring, distinct hues)
         accessible: {
-          blue: '#1D4ED8',      // Action buttons / primary links
-          blueHover: '#1E40AF',
-          green: '#15803D',     // Affirmative / Success states
-          greenHover: '#166534',
+          blue: '#6F8F7A',      // Sage green primary
+          blueHover: '#577361', // Forest green hover
+          green: '#6F8F7A',     // Affirmative / Success states
+          greenHover: '#577361',
           amber: '#B45309',     // Gentle guidance / alerts (no alarmist reds)
           red: '#B91C1C',       // Clear stop / error actions
-          focusRing: '#2563EB', // High-visibility 4px focus outline
+          focusRing: '#6F8F7A', // High-visibility sage focus outline
         },
       },
       fontSize: {

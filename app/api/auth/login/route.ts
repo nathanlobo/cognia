@@ -23,31 +23,20 @@ export async function POST(req: NextRequest) {
 
     const cleanEmail = String(email).trim().toLowerCase()
 
-    // 1. Fetch user profile (filtered by role if provided, otherwise all matching this email)
-    let query = supabase
+    // 1. Fetch user profiles matching this email
+    let profiles: any[] = []
+    const { data, error: selectError } = await supabase
       .from('profiles')
       .select('id, full_name, email, role, password_hash, preferences')
       .eq('email', cleanEmail)
 
-    if (role) {
-      query = query.eq('role', role)
-    }
-
-    let profiles: any[] = []
-    const { data, error: selectError } = await query
-
     if (selectError) {
       // Fallback if password_hash column not added to DB yet
-      let fallbackQuery = supabase
+      const { data: fallbackData, error: fallbackError } = await supabase
         .from('profiles')
         .select('id, full_name, email, role, preferences')
         .eq('email', cleanEmail)
 
-      if (role) {
-        fallbackQuery = fallbackQuery.eq('role', role)
-      }
-
-      const { data: fallbackData, error: fallbackError } = await fallbackQuery
       if (fallbackError || !fallbackData || fallbackData.length === 0) {
         return NextResponse.json(
           { error: 'No account found with this email. Please check your email or sign up.' },
@@ -66,6 +55,16 @@ export async function POST(req: NextRequest) {
       )
     }
 
+    // Filter by requested role if provided, supporting combined roles like 'caregiver, patient' or 'both'
+    if (role) {
+      const roleMatches = profiles.filter(
+        (p) => p.role === role || p.role?.includes(role) || p.role === 'both'
+      )
+      if (roleMatches.length > 0) {
+        profiles = roleMatches
+      }
+    }
+
     // 2. Verify password across matching candidate profiles
     let matchingProfile: any = null
     for (const cand of profiles) {
@@ -77,6 +76,13 @@ export async function POST(req: NextRequest) {
     }
 
     if (!matchingProfile) {
+      const hasGoogleOnly = profiles.some(p => !(p.password_hash || p.preferences?.password_hash))
+      if (hasGoogleOnly) {
+        return NextResponse.json(
+          { error: 'This account was registered with Google. Please click "Continue with Google" to sign in.' },
+          { status: 401 }
+        )
+      }
       return NextResponse.json(
         { error: 'Incorrect email or password. Please try again.' },
         { status: 401 }
@@ -117,7 +123,7 @@ export async function POST(req: NextRequest) {
         id: profile.id,
         full_name: profile.full_name,
         email: profile.email,
-        role: profile.role
+        role: role || profile.role
       }
     })
   } catch (err: any) {

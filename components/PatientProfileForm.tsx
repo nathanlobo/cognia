@@ -1,7 +1,8 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { supabase } from '@/lib/supabase'
+import { Upload, X, Check } from 'lucide-react'
 
 interface PatientProfileFormProps {
   patientId: string
@@ -25,6 +26,9 @@ export default function PatientProfileForm({ patientId, onSave }: PatientProfile
   const [famMemoryTitle, setFamMemoryTitle] = useState('')
   const [famMemoryDesc, setFamMemoryDesc] = useState('')
   const [famMemoryReminder, setFamMemoryReminder] = useState('')
+  const [famMemoryImage, setFamMemoryImage] = useState('')
+  const [uploadingImage, setUploadingImage] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   // 2. Hobby Memories
   const [hobbyMemoryTitle, setHobbyMemoryTitle] = useState('')
@@ -53,6 +57,7 @@ export default function PatientProfileForm({ patientId, onSave }: PatientProfile
     famMemoryTitle,
     famMemoryDesc,
     famMemoryReminder,
+    famMemoryImage,
     hobbyMemoryTitle,
     hobbyMemoryDesc,
     hobbyMemoryReminder,
@@ -62,6 +67,58 @@ export default function PatientProfileForm({ patientId, onSave }: PatientProfile
   })
   
   const hasChanges = currentStateString !== initialState
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    if (!file.type.startsWith('image/')) {
+      alert('Please select a valid image file (JPG, PNG, WebP).')
+      return
+    }
+
+    if (file.size > 10 * 1024 * 1024) {
+      alert('Image is too large. Please select a photo under 10MB.')
+      return
+    }
+
+    setUploadingImage(true)
+    const reader = new FileReader()
+    reader.onload = (event) => {
+      const img = new Image()
+      img.onload = () => {
+        // Resize to max 800px on longest side for optimal resolution and fast saving
+        const maxDim = 800
+        let width = img.width
+        let height = img.height
+
+        if (width > height && width > maxDim) {
+          height = Math.round((height * maxDim) / width)
+          width = maxDim
+        } else if (height > maxDim) {
+          width = Math.round((width * maxDim) / height)
+          height = maxDim
+        }
+
+        const canvas = document.createElement('canvas')
+        canvas.width = width
+        canvas.height = height
+        const ctx = canvas.getContext('2d')
+        if (ctx) {
+          ctx.drawImage(img, 0, 0, width, height)
+          const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.82)
+          setFamMemoryImage(compressedDataUrl)
+        }
+        setUploadingImage(false)
+      }
+      img.onerror = () => {
+        setUploadingImage(false)
+        alert('Failed to process the chosen image.')
+      }
+      img.src = event.target?.result as string
+    }
+    reader.readAsDataURL(file)
+  }
 
   useEffect(() => {
     async function loadPreferences() {
@@ -101,6 +158,7 @@ export default function PatientProfileForm({ patientId, onSave }: PatientProfile
         const loadedFamTitle = p.family_memory_title || ''
         const loadedFamDesc = p.family_memory_desc || ''
         const loadedFamReminder = p.family_memory_reminder || ''
+        const loadedFamImage = p.family_memory_image || ''
 
         // 2. Hobby Memories strictly from DB
         const loadedHobbyTitle = p.hobby_memory_title || ''
@@ -124,6 +182,7 @@ export default function PatientProfileForm({ patientId, onSave }: PatientProfile
         setFamMemoryTitle(loadedFamTitle)
         setFamMemoryDesc(loadedFamDesc)
         setFamMemoryReminder(loadedFamReminder)
+        setFamMemoryImage(loadedFamImage)
 
         setHobbyMemoryTitle(loadedHobbyTitle)
         setHobbyMemoryDesc(loadedHobbyDesc)
@@ -145,6 +204,7 @@ export default function PatientProfileForm({ patientId, onSave }: PatientProfile
           famMemoryTitle: loadedFamTitle,
           famMemoryDesc: loadedFamDesc,
           famMemoryReminder: loadedFamReminder,
+          famMemoryImage: loadedFamImage,
           hobbyMemoryTitle: loadedHobbyTitle,
           hobbyMemoryDesc: loadedHobbyDesc,
           hobbyMemoryReminder: loadedHobbyReminder,
@@ -207,6 +267,7 @@ export default function PatientProfileForm({ patientId, onSave }: PatientProfile
       family_memory_desc: famMemoryDesc.trim(),
       family_memory_members: familyMembers.trim(),
       family_memory_reminder: famMemoryReminder.trim(),
+      family_memory_image: famMemoryImage || null,
 
       hobby_memory_title: hobbyMemoryTitle.trim(),
       hobby_memory_desc: hobbyMemoryDesc.trim(),
@@ -267,20 +328,20 @@ export default function PatientProfileForm({ patientId, onSave }: PatientProfile
   }
 
   return (
-    <div className="bg-white border-2 border-slate-200 rounded-2xl p-6 shadow-sm">
+    <div className="bg-[#FFFDF7] dark:bg-[#1E2922] border-2 border-[#E8EFEA] dark:border-[#2F3F36] rounded-2xl p-6 shadow-xs">
       <div className="mb-6">
-        <h2 className="text-xl font-bold text-slate-800 flex items-center gap-2">
+        <h2 className="text-xl font-bold text-[#29352F] dark:text-[#F7F4EC] flex items-center gap-2">
           <span className="text-2xl" aria-hidden="true">✨</span>
           AI Personalization Profile
         </h2>
-        <p className="text-sm text-slate-500 mt-1">
+        <p className="text-sm text-[#6B7C73] dark:text-[#A3B3AA] mt-1">
           Fill out these details to help our AI generate highly personalized cognitive exercises matching the patient's lived experience.
         </p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-5">
         <div>
-          <label htmlFor="region" className="block text-sm font-bold text-slate-700 mb-1">
+          <label htmlFor="region" className="block text-sm font-bold text-[#29352F] dark:text-[#D5DED8] mb-1">
             Cultural & Geographic Region
           </label>
           <input
@@ -289,12 +350,12 @@ export default function PatientProfileForm({ patientId, onSave }: PatientProfile
             value={region}
             onChange={(e) => setRegion(e.target.value)}
             placeholder="e.g., Assam, Meghalaya, Scotland, etc."
-            className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all text-slate-900"
+            className="w-full px-4 py-3 rounded-xl border border-[#E8EFEA] dark:border-[#33423A] bg-white dark:bg-[#16201B] text-[#29352F] dark:text-[#F7F4EC] placeholder-slate-400 dark:placeholder-[#6B7C73] focus:border-[#6F8F7A] focus:ring-2 focus:ring-[#6F8F7A]/30 transition-all"
           />
         </div>
 
         <div>
-          <label htmlFor="foods" className="block text-sm font-bold text-slate-700 mb-1">
+          <label htmlFor="foods" className="block text-sm font-bold text-[#29352F] dark:text-[#D5DED8] mb-1">
             Favorite Foods (comma separated)
           </label>
           <input
@@ -303,12 +364,12 @@ export default function PatientProfileForm({ patientId, onSave }: PatientProfile
             value={foods}
             onChange={(e) => setFoods(e.target.value)}
             placeholder="e.g., Assam Tea, Pitha, Masor Tenga"
-            className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all text-slate-900"
+            className="w-full px-4 py-3 rounded-xl border border-[#E8EFEA] dark:border-[#33423A] bg-white dark:bg-[#16201B] text-[#29352F] dark:text-[#F7F4EC] placeholder-slate-400 dark:placeholder-[#6B7C73] focus:border-[#6F8F7A] focus:ring-2 focus:ring-[#6F8F7A]/30 transition-all"
           />
         </div>
 
         <div>
-          <label htmlFor="hobbies" className="block text-sm font-bold text-slate-700 mb-1">
+          <label htmlFor="hobbies" className="block text-sm font-bold text-[#29352F] dark:text-[#D5DED8] mb-1">
             Hobbies & Interests (comma separated)
           </label>
           <input
@@ -317,12 +378,12 @@ export default function PatientProfileForm({ patientId, onSave }: PatientProfile
             value={hobbies}
             onChange={(e) => setHobbies(e.target.value)}
             placeholder="e.g., Gardening, Knitting, Reading"
-            className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all text-slate-900"
+            className="w-full px-4 py-3 rounded-xl border border-[#E8EFEA] dark:border-[#33423A] bg-white dark:bg-[#16201B] text-[#29352F] dark:text-[#F7F4EC] placeholder-slate-400 dark:placeholder-[#6B7C73] focus:border-[#6F8F7A] focus:ring-2 focus:ring-[#6F8F7A]/30 transition-all"
           />
         </div>
 
         <div>
-          <label htmlFor="routine" className="block text-sm font-bold text-slate-700 mb-1">
+          <label htmlFor="routine" className="block text-sm font-bold text-[#29352F] dark:text-[#D5DED8] mb-1">
             Daily Routine (key events)
           </label>
           <textarea
@@ -331,12 +392,12 @@ export default function PatientProfileForm({ patientId, onSave }: PatientProfile
             onChange={(e) => setRoutine(e.target.value)}
             placeholder="e.g.&#10;Morning: Tea at 8 AM&#10;Evening: Walk in the garden"
             rows={3}
-            className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all text-slate-900"
+            className="w-full px-4 py-3 rounded-xl border border-[#E8EFEA] dark:border-[#33423A] bg-white dark:bg-[#16201B] text-[#29352F] dark:text-[#F7F4EC] placeholder-slate-400 dark:placeholder-[#6B7C73] focus:border-[#6F8F7A] focus:ring-2 focus:ring-[#6F8F7A]/30 transition-all"
           ></textarea>
         </div>
 
         <div>
-          <label htmlFor="dailyTask" className="block text-sm font-bold text-slate-700 mb-1">
+          <label htmlFor="dailyTask" className="block text-sm font-bold text-[#29352F] dark:text-[#D5DED8] mb-1">
             Caregiver Daily Task Message
           </label>
           <input
@@ -345,26 +406,26 @@ export default function PatientProfileForm({ patientId, onSave }: PatientProfile
             value={dailyTask}
             onChange={(e) => setDailyTask(e.target.value)}
             placeholder="e.g., Please remind them to water the Tulsi plant today."
-            className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all text-slate-900"
+            className="w-full px-4 py-3 rounded-xl border border-[#E8EFEA] dark:border-[#33423A] bg-white dark:bg-[#16201B] text-[#29352F] dark:text-[#F7F4EC] placeholder-slate-400 dark:placeholder-[#6B7C73] focus:border-[#6F8F7A] focus:ring-2 focus:ring-[#6F8F7A]/30 transition-all"
           />
         </div>
 
-        {/* ── Memories & Reminiscence Hub (3 Categories) ── */}
-        <div className="pt-6 border-t-2 border-slate-200">
-          <div className="mb-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        {/* Customizable Memory Bank Fields */}
+        <div className="pt-4 border-t border-[#E8EFEA] dark:border-[#28372E]">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
             <div>
-              <h3 className="text-lg font-extrabold text-slate-800 flex items-center gap-2">
-                <span className="text-2xl" aria-hidden="true">📖</span>
-                <span>Memories & Reminiscence Hub (3 Sections)</span>
+              <h3 className="text-lg font-bold text-[#29352F] dark:text-[#F7F4EC] flex items-center gap-2">
+                <span>💭</span>
+                Personalized Memory Themes
               </h3>
-              <p className="text-xs md:text-sm text-slate-500 mt-1">
+              <p className="text-xs md:text-sm text-[#6B7C73] dark:text-[#A3B3AA] mt-1">
                 Customize the 3 memory stories stored in the database for the patient portal.
               </p>
             </div>
             <button
               type="button"
               onClick={handleAutoFillSuggestions}
-              className="self-start sm:self-auto text-xs font-bold px-3.5 py-2 rounded-xl bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200 transition cursor-pointer flex items-center gap-1.5"
+              className="self-start sm:self-auto text-xs font-bold px-3.5 py-2 rounded-xl bg-[#E8EFEA] dark:bg-[#28372E] text-[#42594B] dark:text-[#A5C4B7] hover:bg-[#D5E3DA] dark:hover:bg-[#334539] border border-[#6F8F7A]/30 dark:border-[#3E5246] transition cursor-pointer flex items-center gap-1.5 shadow-xs"
             >
               <span>✨</span>
               <span>Auto-fill Starter Suggestions</span>
@@ -373,23 +434,77 @@ export default function PatientProfileForm({ patientId, onSave }: PatientProfile
 
           <div className="space-y-6">
             {/* Section 1: Family Memories */}
-            <div className="bg-[#FDECE1]/60 border-2 border-[#F3D5B5] rounded-2xl p-5 shadow-sm">
+            <div className="bg-[#FDECE1]/60 dark:bg-[#2A1E17] border-2 border-[#F3D5B5] dark:border-[#52321D] rounded-2xl p-5 shadow-sm">
               <div className="flex items-center justify-between gap-2 mb-3">
                 <div className="flex items-center gap-2">
                   <span className="text-xl">👨‍👩‍👧</span>
-                  <h4 className="text-base font-bold text-[#C05621]">1. Family Memories (Fam Memories)</h4>
+                  <h4 className="text-base font-bold text-[#C05621] dark:text-[#E27D44]">1. Family Memories (Fam Memories)</h4>
                 </div>
-                <span className="text-[11px] font-bold px-2.5 py-1 rounded-full bg-white/80 text-[#C05621] border border-[#F3D5B5]">
-                  AI Theme Artwork Enabled
-                </span>
+                <div className="flex items-center gap-2">
+                  {famMemoryImage ? (
+                    <span className="text-[11px] font-bold px-2.5 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800 flex items-center gap-1">
+                      <Check className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
+                      Custom Photo
+                    </span>
+                  ) : (
+                    <span className="text-[11px] font-bold px-2.5 py-1 rounded-full bg-white/80 dark:bg-slate-900/80 text-[#C05621] dark:text-[#E27D44] border border-[#F3D5B5] dark:border-[#52321D]">
+                      AI Theme Artwork Enabled
+                    </span>
+                  )}
+                </div>
               </div>
+
+              {/* Hidden file input for family photo upload */}
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                onChange={handleImageUpload}
+                className="hidden"
+              />
+
               <div className="flex flex-col sm:flex-row gap-4 mb-3">
-                <div className="w-full sm:w-32 h-24 rounded-xl overflow-hidden shrink-0 border border-[#F3D5B5] shadow-xs relative">
-                  <img src="/images/memories/family_cover.jpg" alt="Family Memory Theme" className="w-full h-full object-cover" />
+                <div className="w-full sm:w-36 flex flex-col gap-2 shrink-0">
+                  <div className="w-full h-28 rounded-xl overflow-hidden border border-[#F3D5B5] dark:border-[#52321D] shadow-xs relative bg-black/5 dark:bg-black/30">
+                    <img
+                      src={famMemoryImage || '/images/memories/family_cover.jpg'}
+                      alt="Family Memory Theme"
+                      className="w-full h-full object-cover"
+                    />
+                    {uploadingImage && (
+                      <div className="absolute inset-0 bg-black/60 flex items-center justify-center text-white text-xs font-medium">
+                        Processing...
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-1.5 w-full">
+                    <button
+                      type="button"
+                      disabled={uploadingImage}
+                      onClick={() => fileInputRef.current?.click()}
+                      className="flex-1 py-1.5 px-2 text-xs font-semibold rounded-lg bg-white dark:bg-[#1E2922] text-[#C05621] dark:text-[#E27D44] border border-[#F3D5B5] dark:border-[#52321D] hover:bg-[#FDF6F0] dark:hover:bg-[#2A372F] transition flex items-center justify-center gap-1 shadow-xs cursor-pointer disabled:opacity-50"
+                    >
+                      <Upload className="w-3.5 h-3.5" />
+                      <span>{famMemoryImage ? 'Change' : 'Upload Photo'}</span>
+                    </button>
+                    {famMemoryImage && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setFamMemoryImage('')
+                          if (fileInputRef.current) fileInputRef.current.value = ''
+                        }}
+                        title="Reset to default artwork"
+                        className="py-1.5 px-2 text-xs font-semibold rounded-lg bg-white dark:bg-[#1E2922] text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-900/50 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition shadow-xs cursor-pointer"
+                      >
+                        <X className="w-3.5 h-3.5" />
+                      </button>
+                    )}
+                  </div>
                 </div>
                 <div className="flex-1 space-y-3">
                   <div>
-                    <label htmlFor="famTitle" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                    <label htmlFor="famTitle" className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">
                       Memory Title
                     </label>
                     <input
@@ -398,14 +513,14 @@ export default function PatientProfileForm({ patientId, onSave }: PatientProfile
                       value={famMemoryTitle}
                       onChange={(e) => setFamMemoryTitle(e.target.value)}
                       placeholder="e.g., Sunday Dinners with Sarah & David"
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-[#F3D5B5] bg-white text-slate-900 text-sm focus:ring-2 focus:ring-[#C05621]/30 focus:outline-none"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-[#F3D5B5] dark:border-[#52321D] bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 text-sm focus:ring-2 focus:ring-[#C05621]/30 focus:outline-none"
                     />
                   </div>
                 </div>
               </div>
               <div className="space-y-3">
                 <div>
-                  <label htmlFor="famDesc" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                  <label htmlFor="famDesc" className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">
                     Family Story / Description
                   </label>
                   <textarea
@@ -414,11 +529,11 @@ export default function PatientProfileForm({ patientId, onSave }: PatientProfile
                     onChange={(e) => setFamMemoryDesc(e.target.value)}
                     placeholder="e.g., Sitting together at the dining table, enjoying home-cooked meals, and listening to grandchildren laugh."
                     rows={2}
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#F3D5B5] bg-white text-slate-900 text-sm focus:ring-2 focus:ring-[#C05621]/30 focus:outline-none"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#F3D5B5] dark:border-[#52321D] bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 text-sm focus:ring-2 focus:ring-[#C05621]/30 focus:outline-none"
                   />
                 </div>
                 <div>
-                  <label htmlFor="famReminder" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                  <label htmlFor="famReminder" className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">
                     Loving Reminder Note
                   </label>
                   <input
@@ -427,30 +542,30 @@ export default function PatientProfileForm({ patientId, onSave }: PatientProfile
                     value={famMemoryReminder}
                     onChange={(e) => setFamMemoryReminder(e.target.value)}
                     placeholder="e.g., Your family loves you dearly and is always with you in spirit."
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#F3D5B5] bg-white text-slate-900 text-sm focus:ring-2 focus:ring-[#C05621]/30 focus:outline-none"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#F3D5B5] dark:border-[#52321D] bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 text-sm focus:ring-2 focus:ring-[#C05621]/30 focus:outline-none"
                   />
                 </div>
               </div>
             </div>
 
             {/* Section 2: Hobby Memories */}
-            <div className="bg-[#E6F4EA]/60 border-2 border-[#A8DAB5] rounded-2xl p-5 shadow-sm">
+            <div className="bg-[#E6F4EA]/60 dark:bg-[#16271D] border-2 border-[#A8DAB5] dark:border-[#224E33] rounded-2xl p-5 shadow-sm">
               <div className="flex items-center justify-between gap-2 mb-3">
                 <div className="flex items-center gap-2">
                   <span className="text-xl">🎨</span>
-                  <h4 className="text-base font-bold text-[#137333]">2. Hobby & Interest Memories (Hobby Memories)</h4>
+                  <h4 className="text-base font-bold text-[#137333] dark:text-[#46B96D]">2. Hobby & Interest Memories (Hobby Memories)</h4>
                 </div>
-                <span className="text-[11px] font-bold px-2.5 py-1 rounded-full bg-white/80 text-[#137333] border border-[#A8DAB5]">
+                <span className="text-[11px] font-bold px-2.5 py-1 rounded-full bg-white/80 dark:bg-slate-900/80 text-[#137333] dark:text-[#46B96D] border border-[#A8DAB5] dark:border-[#224E33]">
                   AI Theme Artwork Enabled
                 </span>
               </div>
               <div className="flex flex-col sm:flex-row gap-4 mb-3">
-                <div className="w-full sm:w-32 h-24 rounded-xl overflow-hidden shrink-0 border border-[#A8DAB5] shadow-xs relative">
+                <div className="w-full sm:w-32 h-24 rounded-xl overflow-hidden shrink-0 border border-[#A8DAB5] dark:border-[#224E33] shadow-xs relative">
                   <img src="/images/memories/hobby_cover.jpg" alt="Hobby Memory Theme" className="w-full h-full object-cover" />
                 </div>
                 <div className="flex-1 space-y-3">
                   <div>
-                    <label htmlFor="hobbyTitle" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                    <label htmlFor="hobbyTitle" className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">
                       Hobby Memory Title
                     </label>
                     <input
@@ -459,14 +574,14 @@ export default function PatientProfileForm({ patientId, onSave }: PatientProfile
                       value={hobbyMemoryTitle}
                       onChange={(e) => setHobbyMemoryTitle(e.target.value)}
                       placeholder="e.g., Afternoon Gardening & Planting Roses"
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-[#A8DAB5] bg-white text-slate-900 text-sm focus:ring-2 focus:ring-[#137333]/30 focus:outline-none"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-[#A8DAB5] dark:border-[#224E33] bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 text-sm focus:ring-2 focus:ring-[#137333]/30 focus:outline-none"
                     />
                   </div>
                 </div>
               </div>
               <div className="space-y-3">
                 <div>
-                  <label htmlFor="hobbyDesc" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                  <label htmlFor="hobbyDesc" className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">
                     Hobby Story / Description
                   </label>
                   <textarea
@@ -475,11 +590,11 @@ export default function PatientProfileForm({ patientId, onSave }: PatientProfile
                     onChange={(e) => setHobbyMemoryDesc(e.target.value)}
                     placeholder="e.g., Caring for the blooming rose bushes, pruning the fresh leaves, and feeling the warm morning sunshine in the backyard."
                     rows={2}
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#A8DAB5] bg-white text-slate-900 text-sm focus:ring-2 focus:ring-[#137333]/30 focus:outline-none"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#A8DAB5] dark:border-[#224E33] bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 text-sm focus:ring-2 focus:ring-[#137333]/30 focus:outline-none"
                   />
                 </div>
                 <div>
-                  <label htmlFor="hobbyReminder" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                  <label htmlFor="hobbyReminder" className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">
                     Hobby Reflection Note
                   </label>
                   <input
@@ -488,30 +603,30 @@ export default function PatientProfileForm({ patientId, onSave }: PatientProfile
                     value={hobbyMemoryReminder}
                     onChange={(e) => setHobbyMemoryReminder(e.target.value)}
                     placeholder="e.g., Working with nature and crafts has always brought deep peace and calm."
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#A8DAB5] bg-white text-slate-900 text-sm focus:ring-2 focus:ring-[#137333]/30 focus:outline-none"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#A8DAB5] dark:border-[#224E33] bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 text-sm focus:ring-2 focus:ring-[#137333]/30 focus:outline-none"
                   />
                 </div>
               </div>
             </div>
 
             {/* Section 3: Regional & Cultural Memories */}
-            <div className="bg-[#E8F0FE]/60 border-2 border-[#AECBFA] rounded-2xl p-5 shadow-sm">
+            <div className="bg-[#E8F0FE]/60 dark:bg-[#162238] border-2 border-[#AECBFA] dark:border-[#223E6E] rounded-2xl p-5 shadow-sm">
               <div className="flex items-center justify-between gap-2 mb-3">
                 <div className="flex items-center gap-2">
                   <span className="text-xl">🏞️</span>
-                  <h4 className="text-base font-bold text-[#1A73E8]">3. Regional & Cultural Memories (Regional Memories)</h4>
+                  <h4 className="text-base font-bold text-[#1A73E8] dark:text-[#6BA5F2]">3. Regional & Cultural Memories (Regional Memories)</h4>
                 </div>
-                <span className="text-[11px] font-bold px-2.5 py-1 rounded-full bg-white/80 text-[#1A73E8] border border-[#AECBFA]">
+                <span className="text-[11px] font-bold px-2.5 py-1 rounded-full bg-white/80 dark:bg-slate-900/80 text-[#1A73E8] dark:text-[#6BA5F2] border border-[#AECBFA] dark:border-[#223E6E]">
                   AI Theme Artwork Enabled
                 </span>
               </div>
               <div className="flex flex-col sm:flex-row gap-4 mb-3">
-                <div className="w-full sm:w-32 h-24 rounded-xl overflow-hidden shrink-0 border border-[#AECBFA] shadow-xs relative">
+                <div className="w-full sm:w-32 h-24 rounded-xl overflow-hidden shrink-0 border border-[#AECBFA] dark:border-[#223E6E] shadow-xs relative">
                   <img src="/images/memories/regional_cover.jpg" alt="Regional Memory Theme" className="w-full h-full object-cover" />
                 </div>
                 <div className="flex-1 space-y-3">
                   <div>
-                    <label htmlFor="regTitle" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                    <label htmlFor="regTitle" className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">
                       Regional Memory Title
                     </label>
                     <input
@@ -520,14 +635,14 @@ export default function PatientProfileForm({ patientId, onSave }: PatientProfile
                       value={regionalMemoryTitle}
                       onChange={(e) => setRegionalMemoryTitle(e.target.value)}
                       placeholder="e.g., Memories of Hometown Rivers & Morning Tea"
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-[#AECBFA] bg-white text-slate-900 text-sm focus:ring-2 focus:ring-[#1A73E8]/30 focus:outline-none"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-[#AECBFA] dark:border-[#223E6E] bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 text-sm focus:ring-2 focus:ring-[#1A73E8]/30 focus:outline-none"
                     />
                   </div>
                 </div>
               </div>
               <div className="space-y-3">
                 <div>
-                  <label htmlFor="regDesc" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                  <label htmlFor="regDesc" className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">
                     Regional & Cultural Story
                   </label>
                   <textarea
@@ -536,11 +651,11 @@ export default function PatientProfileForm({ patientId, onSave }: PatientProfile
                     onChange={(e) => setRegionalMemoryDesc(e.target.value)}
                     placeholder="e.g., The crisp morning air, drinking freshly brewed tea on the veranda, and listening to traditional festive songs."
                     rows={2}
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#AECBFA] bg-white text-slate-900 text-sm focus:ring-2 focus:ring-[#1A73E8]/30 focus:outline-none"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#AECBFA] dark:border-[#223E6E] bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 text-sm focus:ring-2 focus:ring-[#1A73E8]/30 focus:outline-none"
                   />
                 </div>
                 <div>
-                  <label htmlFor="regReminder" className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                  <label htmlFor="regReminder" className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1">
                     Cultural Heritage Note
                   </label>
                   <input
@@ -549,7 +664,7 @@ export default function PatientProfileForm({ patientId, onSave }: PatientProfile
                     value={regionalMemoryReminder}
                     onChange={(e) => setRegionalMemoryReminder(e.target.value)}
                     placeholder="e.g., The beloved sights and traditions of your homeland always remain close to your heart."
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#AECBFA] bg-white text-slate-900 text-sm focus:ring-2 focus:ring-[#1A73E8]/30 focus:outline-none"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-[#AECBFA] dark:border-[#223E6E] bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 text-sm focus:ring-2 focus:ring-[#1A73E8]/30 focus:outline-none"
                   />
                 </div>
               </div>
@@ -557,12 +672,12 @@ export default function PatientProfileForm({ patientId, onSave }: PatientProfile
           </div>
         </div>
 
-        <div className="pt-4 border-t border-slate-200">
-          <h3 className="text-lg font-bold text-slate-800 mb-4">Vital Details (For Memory Exercises)</h3>
+        <div className="pt-4 border-t border-slate-200 dark:border-slate-800">
+          <h3 className="text-lg font-bold text-slate-800 dark:text-slate-100 mb-4">Vital Details (For Memory Exercises)</h3>
           
           <div className="space-y-4">
             <div>
-              <label htmlFor="address" className="block text-sm font-bold text-slate-700 mb-1">
+              <label htmlFor="address" className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-1">
                 Home Address
               </label>
               <input
@@ -571,12 +686,12 @@ export default function PatientProfileForm({ patientId, onSave }: PatientProfile
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
                 placeholder="e.g., 123 Maple Street, Springville"
-                className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all text-slate-900"
+                className="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:border-[#6F8F7A] focus:ring-2 focus:ring-[#6F8F7A]/30 transition-all"
               />
             </div>
 
             <div>
-              <label htmlFor="phone" className="block text-sm font-bold text-slate-700 mb-1">
+              <label htmlFor="phone" className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-1">
                 Phone Number
               </label>
               <input
@@ -585,12 +700,12 @@ export default function PatientProfileForm({ patientId, onSave }: PatientProfile
                 value={phoneNumber}
                 onChange={(e) => setPhoneNumber(e.target.value)}
                 placeholder="e.g., 555-0198"
-                className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all text-slate-900"
+                className="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:border-[#6F8F7A] focus:ring-2 focus:ring-[#6F8F7A]/30 transition-all"
               />
             </div>
 
             <div>
-              <label htmlFor="family" className="block text-sm font-bold text-slate-700 mb-1">
+              <label htmlFor="family" className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-1">
                 Family Members (Relation: Name)
               </label>
               <textarea
@@ -599,14 +714,14 @@ export default function PatientProfileForm({ patientId, onSave }: PatientProfile
                 onChange={(e) => setFamilyMembers(e.target.value)}
                 placeholder="e.g.&#10;Daughter: Sarah&#10;Son: David"
                 rows={3}
-                className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all text-slate-900"
+                className="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:border-[#6F8F7A] focus:ring-2 focus:ring-[#6F8F7A]/30 transition-all"
               ></textarea>
             </div>
           </div>
         </div>
 
         {saveStatus === 'error' && (
-          <div className="text-red-600 text-sm font-bold bg-red-50 p-3 rounded-lg border border-red-200">
+          <div className="text-red-600 dark:text-red-400 text-sm font-bold bg-red-50 dark:bg-red-950/40 p-3 rounded-lg border border-red-200 dark:border-red-800">
             {errorMessage}
           </div>
         )}
@@ -615,13 +730,13 @@ export default function PatientProfileForm({ patientId, onSave }: PatientProfile
           <button
             type="submit"
             disabled={saveStatus === 'saving' || !hasChanges}
-            className="px-6 py-3 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:bg-slate-400 disabled:cursor-not-allowed text-white rounded-xl font-bold shadow-sm transition-colors"
+            className="px-6 py-3 bg-gradient-to-r from-[#6F8F7A] via-[#5F7F6B] to-[#526F5D] hover:from-[#577361] hover:to-[#4A6855] disabled:opacity-50 disabled:from-[#8E9F95] disabled:to-[#7E8F85] disabled:cursor-not-allowed text-white rounded-xl font-bold shadow-sm transition-all cursor-pointer"
           >
             {saveStatus === 'saving' ? 'Saving...' : 'Save Profile'}
           </button>
           
           {saveStatus === 'saved' && (
-            <span className="text-green-600 font-bold flex items-center gap-2 animate-in fade-in duration-300">
+            <span className="text-green-600 dark:text-green-400 font-bold flex items-center gap-2 animate-in fade-in duration-300">
               <span>✅</span> Saved successfully
             </span>
           )}

@@ -48,15 +48,15 @@ export default function StreakBanner({ patientId }: StreakBannerProps) {
   const activeDaysCount = Math.min(streak, 7)
   
   return (
-    <div className="w-full bg-blue-50 dark:bg-slate-900 border-b-2 border-blue-100 dark:border-slate-800 py-3 px-4 sm:px-6 shadow-sm">
+    <div className="w-full bg-gradient-to-r from-[#E8EFEA] via-[#DFEAE2] to-[#E8EFEA] dark:from-[#141D18] dark:via-[#19241E] dark:to-[#141D18] border-b-2 border-[#6F8F7A]/30 dark:border-[#28372E] py-3 px-4 sm:px-6 shadow-xs">
       <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
         
         {/* Streak Pill */}
-        <div className="flex items-center gap-3 bg-white dark:bg-slate-800 px-5 py-2 rounded-full shadow-sm border border-blue-200 dark:border-slate-700">
-          <Sun className="text-yellow-500" size={24} />
+        <div className="flex items-center gap-3 bg-gradient-to-b from-[#FFFDF7] to-[#F5F8F5] dark:from-[#1E2922] dark:to-[#17211B] px-5 py-2 rounded-full shadow-xs border border-[#6F8F7A]/30 dark:border-[#33423A]">
+          <Sun className="text-[#D9A441]" size={24} />
           <div>
-            <span className="font-extrabold text-blue-900 dark:text-blue-100 text-lg block leading-tight">{streak} Days Active</span>
-            <span className="text-xs text-blue-600 dark:text-blue-400 font-semibold uppercase tracking-wider block">Current Streak</span>
+            <span className="font-extrabold text-[#29352F] dark:text-[#F7F4EC] text-lg block leading-tight">{streak} Days Active</span>
+            <span className="text-xs text-[#577361] dark:text-[#8BAFA0] font-semibold uppercase tracking-wider block">Current Streak</span>
           </div>
         </div>
 
@@ -73,12 +73,12 @@ export default function StreakBanner({ patientId }: StreakBannerProps) {
 
             return (
               <div key={index} className="flex flex-col items-center gap-1">
-                <span className="text-xs font-bold text-slate-400 dark:text-slate-500">{days[dayIndex]}</span>
+                <span className="text-xs font-bold text-[#6B7C73] dark:text-[#A3B3AA]">{days[dayIndex]}</span>
                 <div 
-                  className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold shadow-inner ${
+                  className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold shadow-inner transition-all ${
                     isChecked 
-                      ? 'bg-green-500 text-white border-2 border-green-600' 
-                      : 'bg-slate-100 dark:bg-slate-800 text-slate-300 dark:text-slate-600 border-2 border-slate-200 dark:border-slate-700'
+                      ? 'bg-gradient-to-br from-[#6F8F7A] via-[#5F7F6B] to-[#526F5D] text-white border-2 border-[#526F5D] shadow-xs' 
+                      : 'bg-gradient-to-b from-[#FFFDF7] to-[#F5F8F5] dark:bg-gradient-to-b dark:from-[#1E2922] dark:to-[#17211B] text-[#8E9F95] dark:text-[#577361] border-2 border-[#E8EFEA] dark:border-[#33423A]'
                   }`}
                   title={isChecked ? 'Completed' : 'Missed'}
                 >

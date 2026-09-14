@@ -109,7 +109,7 @@ export default function AutoLogin() {
   if (loading) {
     return (
       <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(255,255,255,0.85)', backdropFilter: 'blur(4px)', zIndex: 9999, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <p style={{ fontSize: '1.2rem', fontWeight: 'bold', color: '#1E40AF' }}>Setting up test environment...</p>
+        <p style={{ fontSize: '1.2rem', fontWeight: 'bold', color: '#42594B' }}>Setting up test environment...</p>
       </div>
     )
   }

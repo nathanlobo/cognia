@@ -113,6 +113,20 @@ export function incrementFallbackInviteUses(code: string) {
   }
 }
 
+export function getFallbackInvitesByCaregiver(caregiverId: string): InMemInvite[] {
+  const list: InMemInvite[] = []
+  fallbackStore.forEach(inv => {
+    if (inv.created_by === caregiverId) {
+      list.push(inv)
+    }
+  })
+  return list
+}
+
+export function deleteFallbackInvite(code: string): boolean {
+  return fallbackStore.delete(code.toUpperCase())
+}
+
 /* -------------------------------------------------------------------------- */
 /*                               OTP MANAGEMENT                               */
 /* -------------------------------------------------------------------------- */
@@ -206,3 +220,51 @@ export function consumeVerifiedEmail(email: string) {
   const cleanEmail = email.trim().toLowerCase()
   otpStore.delete(cleanEmail)
 }
+
+/* -------------------------------------------------------------------------- */
+/*                           PASSWORD RESET TOKENS                            */
+/* -------------------------------------------------------------------------- */
+
+export interface ResetTokenRecord {
+  email: string
+  expiresAt: number
+}
+
+declare global {
+  // eslint-disable-next-line no-var
+  var __cognia_reset_token_store__: Map<string, ResetTokenRecord> | undefined
+}
+
+const resetTokenStore: Map<string, ResetTokenRecord> =
+  globalThis.__cognia_reset_token_store__ ||
+  (globalThis.__cognia_reset_token_store__ = new Map())
+
+export function generateResetToken(): string {
+  return crypto.randomBytes(32).toString('hex')
+}
+
+export function storeResetToken(email: string, token: string, expiryMinutes = 60) {
+  const cleanEmail = email.trim().toLowerCase()
+  resetTokenStore.set(token, {
+    email: cleanEmail,
+    expiresAt: Date.now() + expiryMinutes * 60 * 1000
+  })
+}
+
+export function verifyResetToken(token: string): { valid: boolean; email?: string; error?: string } {
+  if (!token) return { valid: false, error: 'Reset token is required.' }
+  const record = resetTokenStore.get(token)
+  if (!record) {
+    return { valid: false, error: 'Invalid or expired password reset link. Please request a new one.' }
+  }
+  if (Date.now() > record.expiresAt) {
+    resetTokenStore.delete(token)
+    return { valid: false, error: 'Password reset link has expired. Please request a new one.' }
+  }
+  return { valid: true, email: record.email }
+}
+
+export function consumeResetToken(token: string) {
+  resetTokenStore.delete(token)
+}
+

@@ -12,13 +12,13 @@ interface WelcomeProps {
 
 export default function PatientWelcomeScreen({ patientName, patientId, onStart }: WelcomeProps) {
   const today = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })
-  const [streak, setStreak] = useState<number>(1)
+  const [streak, setStreak] = useState<number>(0)
 
   useEffect(() => {
     if (patientId) {
       fetchPatientStreak(patientId).then((data) => {
         if (data && typeof data.current_streak === 'number') {
-          setStreak(Math.max(1, data.current_streak))
+          setStreak(data.current_streak)
         }
       })
     }

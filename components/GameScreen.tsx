@@ -417,7 +417,7 @@ export default function GameScreen({ patientId, patientHistory, preferences, onC
 
             if (results.poseLandmarks) {
               drawConnectors(ctx, results.poseLandmarks, POSE_CONNECTIONS, {
-                color: '#3b82f6',
+                color: '#6F8F7A',
                 lineWidth: 3,
               })
               drawLandmarks(ctx, results.poseLandmarks, {
@@ -899,8 +899,7 @@ export default function GameScreen({ patientId, patientHistory, preferences, onC
         <div className="flex flex-col items-center justify-center gap-4 py-6 px-2 text-center">
           <div
             aria-hidden="true"
-            className="w-24 h-24 rounded-full flex items-center justify-center text-5xl"
-            style={{ backgroundColor: '#DBEAFE' }}
+            className="w-24 h-24 rounded-full flex items-center justify-center text-5xl bg-gradient-to-br from-[#EAEFEA] to-[#D5E2D9] dark:from-[#26382D] dark:to-[#1A261F] border border-[#6F8F7A]/30 shadow-inner"
           >
             🧠
           </div>
@@ -951,12 +950,12 @@ export default function GameScreen({ patientId, patientHistory, preferences, onC
                     flex: 1,
                     padding: '0.75rem',
                     borderRadius: '1rem',
-                    border: `2px solid ${gameMode === m ? (m === 'guide' ? '#7C3AED' : 'var(--color-accessible-blue)') : '#E2E8F0'}`,
-                    backgroundColor: gameMode === m ? (m === 'guide' ? '#EDE9FE' : '#DBEAFE') : '#F8FAFC',
+                    border: `2px solid ${gameMode === m ? (m === 'guide' ? '#D9A441' : '#6F8F7A') : '#E2E8F0'}`,
+                    backgroundColor: gameMode === m ? (m === 'guide' ? '#FDF4E2' : '#E8EFEA') : '#F8FAFC',
                     cursor: 'pointer',
                     fontWeight: 700,
                     fontSize: 'var(--font-size-accessible-sm)',
-                    color: gameMode === m ? (m === 'guide' ? '#5B21B6' : '#1E40AF') : '#64748B',
+                    color: gameMode === m ? (m === 'guide' ? '#854D0E' : '#29352F') : '#64748B',
                     transition: 'all 200ms ease',
                     display: 'flex',
                     flexDirection: 'column',
@@ -993,8 +992,7 @@ export default function GameScreen({ patientId, patientHistory, preferences, onC
         <div className="flex flex-col items-center justify-center gap-4 py-6 px-2 text-center">
           <div
             aria-hidden="true"
-            className="w-24 h-24 rounded-full flex items-center justify-center text-5xl"
-            style={{ backgroundColor: '#DBEAFE' }}
+            className="w-24 h-24 rounded-full flex items-center justify-center text-5xl bg-gradient-to-br from-[#EAEFEA] to-[#D5E2D9] dark:from-[#26382D] dark:to-[#1A261F] border border-[#6F8F7A]/30 shadow-inner"
           >
             <span style={{ animation: 'spin 3s linear infinite' }}>⚙️</span>
           </div>
@@ -1286,12 +1284,12 @@ export default function GameScreen({ patientId, patientHistory, preferences, onC
               role="status"
               aria-live="polite"
               className="flex items-center gap-3 rounded-2xl px-5 py-4"
-              style={{ backgroundColor: '#EFF6FF', border: '2px solid #BFDBFE' }}
+              style={{ backgroundColor: '#E8EFEA', border: '2px solid #B5CEBF' }}
             >
-              <span className="text-blue-600" aria-hidden="true" style={{ animation: 'pulse 1.5s ease-in-out infinite' }}>
+              <span className="text-[#577361] dark:text-[#8BAFA0]" aria-hidden="true" style={{ animation: 'pulse 1.5s ease-in-out infinite' }}>
                 <Volume2 size={32} />
               </span>
-              <p className="font-semibold" style={{ fontSize: 'var(--font-size-accessible-base)', color: '#1E40AF' }}>
+              <p className="font-semibold text-[#29352F] dark:text-[#F7F4EC]" style={{ fontSize: 'var(--font-size-accessible-base)' }}>
                 Listening… please follow the instructions above.
               </p>
             </div>

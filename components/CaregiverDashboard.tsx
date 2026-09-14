@@ -156,8 +156,8 @@ function TrendChart({ sessions }: TrendChartProps) {
       {/* Legend */}
       <div className="flex gap-6 mb-4 flex-wrap">
         {[
-          { color: 'var(--color-accessible-blue)', label: 'Cognitive accuracy %' },
-          { color: 'var(--color-accessible-green)', label: 'Motor speed score' },
+          { color: '#6F8F7A', label: 'Cognitive accuracy %' },
+          { color: '#D9A441', label: 'Motor speed score' },
         ].map(({ color, label }) => (
           <div key={label} className="flex items-center gap-2">
             <div className="w-4 h-4 rounded" style={{ backgroundColor: color }} aria-hidden="true" />
@@ -186,7 +186,7 @@ function TrendChart({ sessions }: TrendChartProps) {
                   className="w-full rounded-t-lg transition-all duration-700"
                   style={{
                     height: `${b.accPct}%`,
-                    backgroundColor: 'var(--color-accessible-blue)',
+                    backgroundColor: '#6F8F7A',
                     minHeight: '4px',
                   }}
                   title={`Accuracy: ${b.accPct}%`}
@@ -199,7 +199,7 @@ function TrendChart({ sessions }: TrendChartProps) {
                   className="w-full rounded-t-lg transition-all duration-700"
                   style={{
                     height: `${b.motorPct}%`,
-                    backgroundColor: 'var(--color-accessible-green)',
+                    backgroundColor: '#D9A441',
                     minHeight: '4px',
                   }}
                   title={`Motor score: ${b.motorPct}`}
@@ -209,10 +209,10 @@ function TrendChart({ sessions }: TrendChartProps) {
 
             {/* Percentage labels */}
             <div className="flex gap-1 w-full justify-center text-center">
-              <span style={{ fontSize: '0.7rem', color: 'var(--color-accessible-blue)', fontWeight: 700, flex: 1 }}>
+              <span style={{ fontSize: '0.7rem', color: '#6F8F7A', fontWeight: 700, flex: 1 }}>
                 {b.accPct}%
               </span>
-              <span style={{ fontSize: '0.7rem', color: 'var(--color-accessible-green)', fontWeight: 700, flex: 1 }}>
+              <span style={{ fontSize: '0.7rem', color: '#D9A441', fontWeight: 700, flex: 1 }}>
                 {b.motorPct}
               </span>
             </div>
@@ -241,7 +241,7 @@ function InsightBadge({ type, text }: InsightBadgeProps) {
   const styles: Record<InsightBadgeProps['type'], { bg: string; border: string; icon: string; color: string }> = {
     positive: { bg: '#DCFCE7', border: '#86EFAC', icon: '✅', color: 'var(--color-accessible-green)' },
     warning:  { bg: '#FEF9C3', border: '#FDE047', icon: '⚠️',  color: '#854D0E' },
-    info:     { bg: '#EFF6FF', border: '#BFDBFE', icon: '💡',  color: '#1E40AF' },
+    info:     { bg: '#E8EFEA', border: '#B5CEBF', icon: '💡',  color: '#3D5245' },
   }
   const s = styles[type]
 
@@ -398,7 +398,7 @@ export default function CaregiverDashboard({ liveSessions = [] }: CaregiverDashb
       
       // Header
       doc.setFontSize(22)
-      doc.setTextColor(30, 64, 175) // blue-800
+      doc.setTextColor(87, 115, 97) // sage-dark
       doc.text('Cognia Clinical Report', 14, 22)
       
       doc.setFontSize(10)
@@ -425,7 +425,7 @@ export default function CaregiverDashboard({ liveSessions = [] }: CaregiverDashb
       pdfInsights.forEach((ins) => {
         if (ins.type === 'positive') doc.setTextColor(21, 128, 61) // green-700
         else if (ins.type === 'warning') doc.setTextColor(185, 28, 28) // red-700
-        else doc.setTextColor(30, 64, 175) // blue-800
+        else doc.setTextColor(87, 115, 97) // sage-dark
         
         doc.setFontSize(10)
         doc.setFont("helvetica", "bold")
@@ -433,41 +433,38 @@ export default function CaregiverDashboard({ liveSessions = [] }: CaregiverDashb
         
         doc.setFont("helvetica", "normal")
         doc.setTextColor(71, 85, 105) // slate-600
-        
-        const splitText = doc.splitTextToSize(ins.text, 160)
-        doc.text(splitText, 35, yPos)
-        yPos += (splitText.length * 6) + 4
+        doc.text(ins.text, 14, yPos + 6)
+        yPos += 14
       })
-      
-      // Session History Table
-      yPos += 5
-      
-      const tableData = allSessions.map((s) => {
-        const corr = s.results.filter((r) => r.isCorrect).length
-        const rt   = (avg(s.results.map((r) => r.reactionTimeMs)) / 1000).toFixed(1)
+
+      // Table of sessions
+      const tableRows = allSessions.map((s) => {
+        const corr   = s.results.filter((r) => r.isCorrect).length
+        const accPct = pct(corr, s.results.length)
+        const rtSec  = (avg(s.results.map((r) => r.reactionTimeMs)) / 1000).toFixed(1)
         return [
           formatDate(s.completedAt),
-          `${pct(corr, s.results.length)}%`,
-          `${rt}s`
+          `${accPct}%`,
+          `${rtSec}s`,
+          String(s.results.length)
         ]
       })
-      
+
       autoTable(doc, {
-        startY: yPos,
-        head: [['Date', 'Accuracy', 'Avg Response Time']],
-        body: tableData,
-        theme: 'striped',
-        headStyles: { fillColor: [30, 64, 175] },
-        margin: { top: 14, left: 14, right: 14 },
+        startY: yPos + 10,
+        head: [['Date', 'Accuracy', 'Avg Response', 'Rounds']],
+        body: tableRows,
+        headStyles: { fillColor: [111, 143, 122] }, // #6F8F7A Sage Green
+        styles: { fontSize: 9 },
       })
-      
-      doc.save(`care-companion-report-${new Date().toISOString().slice(0, 10)}.pdf`)
-      
-      setTimeout(() => setExportState('done'), 600)
-    } catch (e) {
-      console.error(e)
+
+      doc.save(`cognia-clinical-report-${new Date().toISOString().split('T')[0]}.pdf`)
+      setExportState('done')
+      setTimeout(() => setExportState('idle'), 4000)
+    } catch (err) {
+      console.error(err)
+      setExportState('idle')
     }
-    setTimeout(() => setExportState('idle'), 3500)
   }
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -475,24 +472,25 @@ export default function CaregiverDashboard({ liveSessions = [] }: CaregiverDashb
   // ─────────────────────────────────────────────────────────────────────────
 
   return (
-    <div className="flex flex-col gap-8 pb-12">
+    <div
+      className="max-w-4xl mx-auto flex flex-col gap-6"
+      style={{ padding: '0 1rem' }}
+    >
 
-      {/* ── Page header ─────────────────────────────────────────────────── */}
-      <div className="flex items-start justify-between gap-4 flex-wrap">
+      {/* ── Patient Profile Header / Quick Switch ─────────────────────────── */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 py-2">
         <div>
           <h1
-            className="font-extrabold tracking-tight"
+            className="font-extrabold tracking-tight m-0"
             style={{ fontSize: 'var(--font-size-accessible-2xl)', color: 'var(--color-content-primary)' }}
           >
-            Caregiver Dashboard
+            Caregiver Clinical Hub
           </h1>
           <p
-            className="mt-1"
-            style={{ fontSize: 'var(--font-size-accessible-sm)', color: 'var(--color-content-muted)' }}
+            className="m-0 mt-1"
+            style={{ fontSize: 'var(--font-size-accessible-base)', color: 'var(--color-content-secondary)' }}
           >
-            {allSessions.length > 0
-              ? `Last session: ${formatDate(allSessions[0].completedAt)}`
-              : 'No sessions recorded yet.'}
+            Real-time dual-task performance telemetry & cognitive indicators.
           </p>
         </div>
 
@@ -520,23 +518,23 @@ export default function CaregiverDashboard({ liveSessions = [] }: CaregiverDashb
       </div>
 
       {/* ── Tabs Navigation ──────────────────────────────────────────────── */}
-      <div className="flex gap-4 border-b-2 border-slate-200 mb-4">
+      <div className="flex gap-4 border-b-2 border-[#E8EFEA] dark:border-[#28372E] mb-4">
         <button
           onClick={() => setActiveTab('overview')}
-          className={`pb-3 px-2 text-xl font-bold transition-all ${
+          className={`pb-3 px-2 text-xl font-bold transition-all cursor-pointer ${
             activeTab === 'overview'
-              ? 'border-b-4 border-blue-600 text-blue-600'
-              : 'text-slate-500 hover:text-slate-700 border-b-4 border-transparent'
+              ? 'border-b-4 border-[#6F8F7A] text-[#42594B] dark:border-[#8BAFA0] dark:text-[#A5C4B7]'
+              : 'text-[#6B7C73] dark:text-[#A3B3AA] hover:text-[#29352F] dark:hover:text-[#F7F4EC] border-b-4 border-transparent'
           }`}
         >
           Overview
         </button>
         <button
           onClick={() => setActiveTab('stats')}
-          className={`pb-3 px-2 text-xl font-bold transition-all ${
+          className={`pb-3 px-2 text-xl font-bold transition-all cursor-pointer ${
             activeTab === 'stats'
-              ? 'border-b-4 border-blue-600 text-blue-600'
-              : 'text-slate-500 hover:text-slate-700 border-b-4 border-transparent'
+              ? 'border-b-4 border-[#6F8F7A] text-[#42594B] dark:border-[#8BAFA0] dark:text-[#A5C4B7]'
+              : 'text-[#6B7C73] dark:text-[#A3B3AA] hover:text-[#29352F] dark:hover:text-[#F7F4EC] border-b-4 border-transparent'
           }`}
         >
           Patient Stats
@@ -561,8 +559,8 @@ export default function CaregiverDashboard({ liveSessions = [] }: CaregiverDashb
             value={`${metrics.accuracy}%`}
             sub={`Across ${allSessions.flatMap((s) => s.results).length} rounds`}
             icon="🧠"
-            accent="var(--color-accessible-blue)"
-            bg="#DBEAFE"
+            accent="#6F8F7A"
+            bg="#E8EFEA"
             trend={metrics.accTrend}
           />
           <MetricCard
@@ -599,13 +597,13 @@ export default function CaregiverDashboard({ liveSessions = [] }: CaregiverDashb
           <section
             aria-labelledby="insights-heading"
             className="card-accessible"
-            style={{ borderColor: '#C7D2FE' }}
+            style={{ borderColor: '#6F8F7A' }}
           >
             <div className="flex items-center gap-3 mb-5">
               <div
                 className="w-10 h-10 rounded-2xl flex items-center justify-center text-xl"
                 aria-hidden="true"
-                style={{ backgroundColor: '#EEF2FF' }}
+                style={{ backgroundColor: '#E8EFEA' }}
               >
                 🤖
               </div>

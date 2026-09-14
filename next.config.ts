@@ -17,18 +17,6 @@ const nextConfig: NextConfig = {
       },
     ];
 
-    // In local development behind reverse proxies (like test.codinx.app),
-    // prevent stale chunk caching that causes React hydration mismatches.
-    if (isDev) {
-      headersList.push({
-        source: '/_next/:path*',
-        headers: [
-          { key: 'Cache-Control', value: 'no-store, no-cache, must-revalidate' },
-          { key: 'Pragma', value: 'no-cache' },
-        ],
-      });
-    }
-
     return headersList;
   },
 };

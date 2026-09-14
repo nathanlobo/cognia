@@ -138,16 +138,59 @@ export async function POST(req: NextRequest) {
     // 2. Check if user already exists
     const { data: existingUser } = await supabase
       .from('profiles')
-      .select('id')
-      .eq('email', cleanEmail)
+      .select('id, full_name, password_hash, preferences')
+      .ilike('email', cleanEmail)
       .eq('role', role)
       .maybeSingle()
 
     if (existingUser) {
-      return NextResponse.json(
-        { error: `An account with this email already exists for ${role}. Please log in instead.` },
-        { status: 409 }
-      )
+      const storedHash = existingUser.password_hash || existingUser.preferences?.password_hash
+      if (storedHash) {
+        return NextResponse.json(
+          { error: `An account with this email already exists for ${role}. Please log in instead.` },
+          { status: 409 }
+        )
+      }
+
+      // Account was created via Google and has no password yet - set password on existing profile
+      const passwordHash = hashPassword(password)
+      let updatedProfile: any = existingUser
+
+      const { data: updated, error: updateError } = await supabase
+        .from('profiles')
+        .update({
+          password_hash: passwordHash,
+          full_name: cleanName || existingUser.full_name
+        })
+        .eq('id', existingUser.id)
+        .select('id, full_name, email, role')
+        .single()
+
+      if (updateError) {
+        await supabase
+          .from('profiles')
+          .update({
+            preferences: {
+              ...(existingUser.preferences || {}),
+              password_hash: passwordHash
+            }
+          })
+          .eq('id', existingUser.id)
+      } else if (updated) {
+        updatedProfile = updated
+      }
+
+      consumeVerifiedEmail(cleanEmail)
+
+      return NextResponse.json({
+        success: true,
+        profile: {
+          id: updatedProfile.id,
+          full_name: updatedProfile.full_name,
+          email: cleanEmail,
+          role: role
+        }
+      })
     }
 
     // 3. Hash Password

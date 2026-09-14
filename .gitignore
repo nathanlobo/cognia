@@ -79,3 +79,4 @@ graphify-out/.manifest.json
 graphify-out/.needs_update
 graphify-out/20*
 
+supabase/.schema_hash

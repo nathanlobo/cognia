@@ -17,11 +17,11 @@ export async function POST(req: NextRequest) {
     // 1. Verify caregiver
     const { data: caregiver, error: cgError } = await supabase
       .from('profiles')
-      .select('id, full_name, role')
+      .select('id, full_name, role, email')
       .eq('id', caregiverId)
       .maybeSingle()
 
-    if (cgError || !caregiver || caregiver.role !== 'caregiver') {
+    if (cgError || !caregiver || (!caregiver.role?.includes('caregiver') && caregiver.role !== 'caregiver, patient')) {
       return NextResponse.json(
         { error: 'Authorized caregiver account not found.' },
         { status: 403 }
@@ -40,7 +40,28 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    // 3. Validate password
+    // 3. Handle case where caregiver is adding themselves as patient
+    if (cleanEmail === caregiver.email?.toLowerCase()) {
+      const currentRole = caregiver.role || 'caregiver'
+      const combinedRole = currentRole.includes('patient') ? currentRole : 'caregiver, patient'
+
+      await supabase
+        .from('profiles')
+        .update({ role: combinedRole })
+        .eq('id', caregiver.id)
+
+      await supabase
+        .from('patient_caregiver_relations')
+        .upsert({ patient_id: caregiver.id, caregiver_id: caregiver.id })
+
+      return NextResponse.json({
+        success: true,
+        message: 'Caregiver linked as self patient successfully.',
+        patient: { id: caregiver.id, full_name: caregiver.full_name, email: caregiver.email, role: combinedRole }
+      })
+    }
+
+    // 4. Validate password
     const passwordValidation = validatePassword(password)
     if (!passwordValidation.valid) {
       return NextResponse.json(
@@ -49,15 +70,32 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    // 4. Check if patient already exists
-    const { data: existingPatient } = await supabase
+    // 5. Check if profile already exists for this email
+    const { data: existingUser } = await supabase
       .from('profiles')
-      .select('id')
+      .select('id, full_name, email, role')
       .eq('email', cleanEmail)
-      .eq('role', 'patient')
       .maybeSingle()
 
-    if (existingPatient) {
+    if (existingUser) {
+      if (existingUser.role === 'caregiver') {
+        // Upgrade existing caregiver to combined 'caregiver, patient'
+        await supabase
+          .from('profiles')
+          .update({ role: 'caregiver, patient' })
+          .eq('id', existingUser.id)
+
+        await supabase
+          .from('patient_caregiver_relations')
+          .upsert({ patient_id: existingUser.id, caregiver_id: caregiver.id })
+
+        return NextResponse.json({
+          success: true,
+          message: 'User updated to include patient role and linked successfully.',
+          patient: { id: existingUser.id, full_name: existingUser.full_name, email: existingUser.email, role: 'caregiver, patient' }
+        })
+      }
+
       return NextResponse.json(
         { error: 'A patient account with this email already exists.' },
         { status: 409 }

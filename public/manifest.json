@@ -4,8 +4,8 @@
   "description": "A familiar daily cognitive companion",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#1E40AF",
+  "background_color": "#FAF8F2",
+  "theme_color": "#6F8F7A",
   "icons": [
     {
       "src": "/icon-192.png",
